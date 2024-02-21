@@ -3,6 +3,7 @@ import 'package:migu/presentation/auth/Additional_info_register_Screen.dart';
 import 'package:migu/presentation/auth/Addpet_Screen.dart';
 import 'package:migu/presentation/auth/login_screen.dart';
 import 'package:migu/presentation/auth/register_Screen.dart';
+import 'package:migu/presentation/home/add_antiparasitic_Screen.dart';
 import 'package:migu/presentation/home/addvaccine_Screen.dart';
 import 'package:migu/presentation/home/home_Screen.dart';
 
@@ -47,6 +48,13 @@ final appRouter = GoRouter(initialLocation: "/home/0", routes: [
     path: "/login",
     builder: (context, state) {
       return LoginScreen();
+    },
+  ),
+
+    GoRoute(
+    path: "/Addantiparasitic",
+    builder: (context, state) {
+      return Addantiparasitic();
     },
   )
 ]);

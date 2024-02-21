@@ -25,11 +25,11 @@ class HomeView extends StatelessWidget {
               },
               onSelected: (String choice) {
                 // Aquí puedes definir las acciones que quieras realizar
-                print('Usuario seleccionó: $choice');
+                context.push("/Addantiparasitic");
               },
             ),
           ],
-          toolbarHeight: 80,
+          toolbarHeight: 80,  
           backgroundColor: Color(0xFF272B4E), // Color azul marino
           title: Row(
             children: [
@@ -51,13 +51,11 @@ class HomeView extends StatelessWidget {
                 radius: 18.0, // Radio para hacerlo redondo
               ),
               IconButton(
-                
                 icon: Icon(Icons.arrow_drop_down_rounded, color: Colors.white),
                 onPressed: () {
                   context.go("/register");
                   // Acción al presionar el icono de fecha
                 },
-                
               ),
             ],
           ),
@@ -98,7 +96,7 @@ class HomeView extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                CustomWidget(),
+                CustomWidget1(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -106,7 +104,9 @@ class HomeView extends StatelessWidget {
                       "   Historial ",
                       style: TextStyle(fontSize: 20),
                     ),
-                    TextButton(onPressed: () {}, child: Text("+Agregar"))
+                    TextButton(onPressed: () {
+                                context.push("/Addantiparasitic");
+                    }, child: Text("+Agregar"))
                   ],
                 ),
                 Expanded(
@@ -125,7 +125,7 @@ class HomeView extends StatelessWidget {
                 )
               ],
             )), // Contenido de la pestaña 1
-            Center(child: CustomWidget()), // Contenido de la pestaña 2
+            Center(child: CustomWidget1()), // Contenido de la pestaña 2
           ],
         ),
       ),
@@ -133,7 +133,7 @@ class HomeView extends StatelessWidget {
   }
 }
 
-class CustomWidget extends StatelessWidget {
+class CustomWidget1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(

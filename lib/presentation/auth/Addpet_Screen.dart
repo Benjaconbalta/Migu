@@ -27,6 +27,7 @@ class _AddPetState extends State<AddPet> {
 
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -41,30 +42,47 @@ class _AddPetState extends State<AddPet> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+         
          Spacer(),
             GestureDetector(
               onTap: () {
                 // Implementa la lógica para subir la foto
               },
-              child: Container(
+               child: Container(
                 width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.green,
-                    width: 2,
-                    style: BorderStyle.solid,
-                  ),
-                ),
-                child: Icon(
-                  Icons.camera_alt,
-                  size: 50,
+        height: 150,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Colors.green,
+            width: 1,
+            
+            
+          ),
+        ),
+                 child: Stack(
+                           alignment: Alignment.center,
+                           children: [
+                           
+                             Text(
+                               'Subir Foto',
+                               style: TextStyle(
                   color: Colors.green,
-                ),
-              ),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                               ),
+                             ),
+                           ],
+                         ),
+               ),
+      
+    
             ),
             SizedBox(height: 20),
+              Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text("Nombre", style: TextStyle(fontSize: 17))),
+
             CustomTextFormField(
               label: 'Nombre de la Mascota',
               // Añade cualquier lógica necesaria para el campo de texto
@@ -73,7 +91,10 @@ class _AddPetState extends State<AddPet> {
 
       
             SizedBox(height: 20),
-                  Text("Especie:"),
+                  Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text("Especie", style: TextStyle(fontSize: 17))),
+
 
                ToggleButtons(
                 borderWidth: 0,
@@ -166,7 +187,7 @@ class SquareButton extends StatelessWidget {
 
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: selected ? Color(0xff3D9A51) : Colors.white, // Color de fondo del botón
+        backgroundColor: selected ? Color(0xffD8EBDC) : Colors.white, // Color de fondo del botón
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20), // Bordes redondeados
         ),
@@ -175,12 +196,56 @@ class SquareButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(height: 30,),
-          FaIcon(
-            icon,
-            size: 40,
-            color: Colors.black, // Color del icono
-          ),
+            FaIcon(
+             icon,
+             size: 40,
+             color: Colors.black, // Color del icono
+           ),
+          
           SizedBox(height: 10), // Espaciado entre el icono y el texto
+          Text(
+            text,
+            style: TextStyle(
+              color: Colors.black, // Color del texto
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class SquareButton2 extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final VoidCallback onPressed;
+  final bool selected;
+
+  const SquareButton2({
+    required this.icon,
+    required this.text,
+    required this.onPressed,
+    required this.selected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: selected ? Color(0xffD8EBDC) : Colors.white, // Color de fondo del botón
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10), // Bordes redondeados
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+       
+
           Text(
             text,
             style: TextStyle(

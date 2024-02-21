@@ -19,11 +19,8 @@ class RegisterScreen extends StatelessWidget {
           SizedBox(
             height: 100,
           ),
-          Text(
-            "MIGU",
-            style: TextStyle(
-                color: Colors.green, fontSize: 30, fontWeight: FontWeight.bold),
-          ),
+          Image.asset("assets/Migu.png",width: 90,height: 60,),
+         
           SizedBox(height: 100),
           Container(
               constraints: BoxConstraints(maxWidth: 300),
@@ -36,7 +33,7 @@ class RegisterScreen extends StatelessWidget {
                     ),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Colors.green, width: 1)
+                        side: BorderSide(color:Color(0xff3D9A51), width: 1)
                         // Bordes cuadrados
                         ),
                   ),

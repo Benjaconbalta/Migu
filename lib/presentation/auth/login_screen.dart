@@ -10,6 +10,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      backgroundColor: Colors.white,
     body: Column(
         // mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -17,12 +18,9 @@ class LoginScreen extends StatelessWidget {
           SizedBox(
             height: 100,
           ),
-          Text(
-            "MIGU",
-            style: TextStyle(
-                color: Colors.green, fontSize: 30, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 100),
+         Image.asset("assets/Migu.png",width: 90,height: 60,),
+         
+          SizedBox(height: 80),
           Container(
               constraints: BoxConstraints(maxWidth: 300),
               child: ElevatedButton.icon(
@@ -34,7 +32,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Colors.green, width: 1)
+                        side: BorderSide(color: Color(0xff3D9A51), width: 1)
                         // Bordes cuadrados
                         ),
                   ),
@@ -91,6 +89,10 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
+            Padding(
+              padding: EdgeInsets.only(right: 300),
+              child: Text(" password", style: TextStyle(fontSize: 17))),
+
            Container(
             width: 360,
             child: CustomTextFormField(
@@ -125,7 +127,7 @@ class LoginScreen extends StatelessWidget {
             padding: const EdgeInsets.all(30.0),
           
           ),
-          SizedBox(height: 80),
+          SizedBox(height: 20),
           // Spacer(), // Spacer para llenar el espacio restante
 
           RichText(

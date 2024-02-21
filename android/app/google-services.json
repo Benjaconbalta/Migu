@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "567940150908",
+    "project_id": "migu-8983a",
+    "storage_bucket": "migu-8983a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567940150908:android:1d9cb64b31e8b524023bf9",
+        "android_client_info": {
+          "package_name": "com.example.migu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3tumLMiDRbsjf_b6-20tJWPf7h55rJ2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

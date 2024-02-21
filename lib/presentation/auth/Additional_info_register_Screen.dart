@@ -9,6 +9,7 @@ class AdditionalInfoRegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -18,20 +19,14 @@ class AdditionalInfoRegisterScreen extends StatelessWidget {
               SizedBox(
             height: 100,
           ),
+           Image.asset("assets/Migu.png",width: 90,height: 60,),
          
-            Text(
-              'MIGU',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.green,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+         
             SizedBox(height: 90),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+           
                 Expanded(
                   child: CustomTextFormField(
                     label: 'Nombre',
@@ -39,6 +34,7 @@ class AdditionalInfoRegisterScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 10),
+               
                 Expanded(
                   child: CustomTextFormField(
                     label: 'Apellido',
