@@ -28,37 +28,37 @@ final goRouterProvider = Provider((ref) {
     GoRoute(
       path: "/addvaccine",
       builder: (context, state) {
-        return AddVaccineScreen();
+        return const AddVaccineScreen();
       },
     ),
     GoRoute(
       path: "/register",
       builder: (context, state) {
-        return RegisterScreen();
+        return const RegisterScreen();
       },
     ),
     GoRoute(
       path: "/additionalInfo",
       builder: (context, state) {
-        return AdditionalInfoRegisterScreen();
+        return const AdditionalInfoRegisterScreen();
       },
     ),
     GoRoute(
       path: "/addpet",
       builder: (context, state) {
-        return AddPet();
+        return const AddPet();
       },
     ),
     GoRoute(
       path: "/login",
       builder: (context, state) {
-        return LoginScreen();
+        return  const LoginScreen();
       },
     ),
      GoRoute(
       path: "/IntoVaccine",
       builder: (context, state) {
-        return IntoVaccine();
+        return const IntoVaccine();
       },
     ),
 
@@ -66,7 +66,7 @@ final goRouterProvider = Provider((ref) {
     GoRoute(
       path: "/Addantiparasitic",
       builder: (context, state) {
-        return Addantiparasitic();
+        return const Addantiparasitic();
       },
     )
   ],

@@ -110,7 +110,7 @@ class AddVaccineScreen extends ConsumerWidget {
         appBar: AppBar(
           title: editrueorfalse
               ? const Text(("Editar Vacuna"))
-              : const Text("Agregar Vacuna") ,
+              : const Text("Agregar Vacuna"),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -121,12 +121,12 @@ class AddVaccineScreen extends ConsumerWidget {
                     ? MyDropdown(
                         defaultValue: infoedit.type,
                         label: "Tipo",
-                       onChanged: (tipo) {
+                        onChanged: (tipo) {
                           ref
                               .read(typeProvider.notifier)
                               .update((state) => tipo!);
                         },
-                          options: const [
+                        options: const [
                           'Antirrábica ',
                           'Sextuple',
                           'Octuple',
@@ -140,14 +140,13 @@ class AddVaccineScreen extends ConsumerWidget {
                           "Giardia",
                           "Otra"
                         ],
-                     
                       )
                     : MyDropdown1(
-                      onChanged: (ti) {
+                        onChanged: (ti) {
                           ref
                               .read(typeProvider.notifier)
-                              .update((state) =>ti! );
-                      },
+                              .update((state) => ti!);
+                        },
                         label: "tipo",
                         options: const [
                           'Antirrábica ',
@@ -191,11 +190,11 @@ class AddVaccineScreen extends ConsumerWidget {
                         },
                       )
                     : MyDropdown2(
-                      onChanged: (p0) {
-                         ref
+                        onChanged: (p0) {
+                          ref
                               .read(marcaProvider.notifier)
                               .update((state) => p0!);
-                      },
+                        },
                         label: "marca",
                         options: const [
                           'Rabguard',
@@ -214,7 +213,7 @@ class AddVaccineScreen extends ConsumerWidget {
                               'Otra',
                         ],
                       ),
-               const Align(
+                const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Fecha de vacunacion*",
@@ -245,14 +244,14 @@ class AddVaccineScreen extends ConsumerWidget {
                               .update((state) => date);
                         },
                       ),
-               const SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Align(
                     alignment: Alignment.centerLeft,
                     child: Row(
                       children: [
-                      const  Text(
+                        const Text(
                           "Proxima dosis ",
                           style: TextStyle(fontSize: 18, color: Colors.black),
                         ),
@@ -291,7 +290,7 @@ class AddVaccineScreen extends ConsumerWidget {
                       final date = DateTime(year, month, day);
                       ref.read(nextDosis.notifier).update((state) => date);
                     }),
-               const SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 Container(
@@ -303,7 +302,7 @@ class AddVaccineScreen extends ConsumerWidget {
                   color: Colors.grey[200], // Fondo gris claro
                   child: Row(
                     children: [
-                     const Text("Etiqueta Vacuna"),
+                      const Text("Etiqueta Vacuna"),
                       GestureDetector(
                           onTap: () {
                             showDialog(
@@ -329,7 +328,7 @@ class AddVaccineScreen extends ConsumerWidget {
                             );
                           },
                           child: const Icon(Icons.help)),
-                    const  SizedBox(
+                      const SizedBox(
                         width: 50,
                       ),
                       Container(
@@ -359,7 +358,7 @@ class AddVaccineScreen extends ConsumerWidget {
                   color: Colors.grey[200], // Fondo gris claro
                   child: Row(
                     children: [
-                     const Text("Certificado"),
+                      const Text("Certificado"),
                       GestureDetector(
                           onTap: () {
                             showDialog(
@@ -385,7 +384,7 @@ class AddVaccineScreen extends ConsumerWidget {
                             );
                           },
                           child: const Icon(Icons.help)),
-                    const  SizedBox(
+                      const SizedBox(
                         width: 50,
                       ),
                       Container(
@@ -395,7 +394,7 @@ class AddVaccineScreen extends ConsumerWidget {
                             ? Image.network(nn.photocertificate)
                             : image2Temp == ""
                                 ? TextButton(
-                                    child:const Text("Foto"),
+                                    child: const Text("Foto"),
                                     onPressed: () {
                                       takePhoto2();
                                     },
@@ -422,6 +421,62 @@ class AddVaccineScreen extends ConsumerWidget {
                       // }
 
                       if (editrueorfalse) {
+                        if (nn.type.isEmpty ||
+                          nn.brand .isEmpty ||
+                            nn.photovaccinelabel.isEmpty ||
+                            nn.photocertificate.isEmpty) {
+              
+                          final snackBar = SnackBar(
+                            content: const Text(
+                                '¡porfavor rellenar todos los campos'),
+                            action: SnackBarAction(
+                              label: 'Cerrar',
+                              onPressed: () {
+                                // Aquí puedes agregar cualquier acción que desees realizar
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                              },
+                            ),
+                          );
+
+                          // Mostrar el Snackbar en el contexto actual
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } else {
+                          FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .collection("vaccine")
+                              .doc(nn.id)
+                              .update(({
+                                "type": tipo == "" ? nn.type : tipo,
+                                "brand": marca == "" ? nn.brand : marca,
+                                "vaccination": "",
+                                "date": datevacine == DateTime.now()
+                                    ? nn.date
+                                    : datevacine,
+                                "nextdose": nestdosis == DateTime.now()
+                                    ? nn.nextdose
+                                    : nestdosis,
+                                "photovaccinelabel": image1firebase == ""
+                                    ? nn.photovaccinelabel
+                                    : image1firebase,
+                                "photocertificate": imagen2firebase == ""
+                                    ? nn.photocertificate
+                                    : imagen2firebase,
+                              }))
+                              .then((value) => {
+                                    ref
+                                        .read(editvaccineProvider.notifier)
+                                        .update((state) => false)
+                                  })
+                              .then((value) => {
+                                    ref
+                                        .read(pressVaccineIntoProvider.notifier)
+                                        .update((state) => false)
+                                  })
+                              .then((value) => {context.go("/home/0")});
+                        }
+                      } else {
                         if (tipo.isEmpty ||
                             marca.isEmpty ||
                             image1firebase.isEmpty ||
@@ -442,94 +497,40 @@ class AddVaccineScreen extends ConsumerWidget {
                           // Mostrar el Snackbar en el contexto actual
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         } else {
-                               FirebaseFirestore.instance
-                            .collection("users")
-                            .doc(FirebaseAuth.instance.currentUser!.uid)
-                            .collection("vaccine")
-                            .doc(nn.id)
-                            .update(({
-                              "type": tipo == "" ? nn.type : tipo,
-                              "brand": marca == "" ? nn.brand : marca,
-                              "vaccination": "",
-                              "date": datevacine == DateTime.now()
-                                  ? nn.date
-                                  : datevacine,
-                              "nextdose": nestdosis == DateTime.now()
-                                  ? nn.nextdose
-                                  : nestdosis,
-                              "photovaccinelabel": image1firebase == ""
-                                  ? nn.photovaccinelabel
-                                  : image1firebase,
-                              "photocertificate": imagen2firebase == ""
-                                  ? nn.photocertificate
-                                  : imagen2firebase,
-                            }))
-                            .then((value) => {
-                                  ref
-                                      .read(editvaccineProvider.notifier)
-                                      .update((state) => false)
-                                })
-                            .then((value) => {
-                                  ref
-                                      .read(pressVaccineIntoProvider.notifier)
-                                      .update((state) => false)
-                                })
-                            .then((value) => {context.go("/home/0")});
+                          ref
+                              .read(vaccineandAntiparasitesProvider.notifier)
+                              .addVaccine(tipo, marca, "", datevacine,
+                                  nestdosis, image1firebase, imagen2firebase)
+                              .then((value) => ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text('¡Vacuna Agregada!'),
+                                  )))
+                              .then((value) => {context.pop()})
+                              .then((value) => {
+                                    ref
+                                        .read(imagerProvider.notifier)
+                                        .update((state) => ""),
+                                    ref
+                                        .read(imager2Provider.notifier)
+                                        .update((state) => "")
+                                  });
                         }
-                   
-                      } else {
-
-                        
-                        if (tipo.isEmpty ||
-                            marca.isEmpty||
-                            image1firebase.isEmpty ||
-                            imagen2firebase.isEmpty ) {
-                          final snackBar = SnackBar(
-                            content: const Text(
-                                '¡porfavor rellenar todos los campos'),
-                            action: SnackBarAction(
-                              label: 'Cerrar',
-                              onPressed: () {
-                                // Aquí puedes agregar cualquier acción que desees realizar
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                              },
-                            ),
-                          );
-
-                          // Mostrar el Snackbar en el contexto actual
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }else{
-      ref
-                            .read(vaccineandAntiparasitesProvider.notifier)
-                            .addVaccine(tipo, marca, "", datevacine, nestdosis,
-                                image1firebase, imagen2firebase)
-                            .then((value) => ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  content: Text('¡Vacuna Agregada!'),
-                                )))
-                            .then((value) => {context.pop()})
-                            .then((value) => {
-                                  ref
-                                      .read(imagerProvider.notifier)
-                                      .update((state) => ""),
-                                  ref
-                                      .read(imager2Provider.notifier)
-                                      .update((state) => "")
-                                });
                       }
-                        }
-
 
                       // context.go("/home/0");
                       // Aquí puedes manejar la acción de continuar
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(18),
-                      child: editrueorfalse? const Text("Editar",style: TextStyle(color: Colors.white),):const Text(
-                        "Continuar",
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      child: editrueorfalse
+                          ? const Text(
+                              "Editar",
+                              style: TextStyle(color: Colors.white),
+                            )
+                          : const Text(
+                              "Continuar",
+                              style: TextStyle(color: Colors.white),
+                            ),
                     ),
                   ),
                 ),
@@ -540,7 +541,6 @@ class AddVaccineScreen extends ConsumerWidget {
   }
 }
 
-
 class MultiSelectDropdown extends StatefulWidget {
   final String nameInput;
   const MultiSelectDropdown({super.key, required this.nameInput});
@@ -550,9 +550,9 @@ class MultiSelectDropdown extends StatefulWidget {
 }
 
 class _MultiSelectDropdownState extends State<MultiSelectDropdown> {
- final List<String> _selectedOptions = [];
+  final List<String> _selectedOptions = [];
   String? _selectedOption;
- final List<String> _options = [
+  final List<String> _options = [
     'Antirrabica ',
     'sextumple',
     'Octuple',
@@ -576,7 +576,7 @@ class _MultiSelectDropdownState extends State<MultiSelectDropdown> {
           '${widget.nameInput}*',
           style: TextStyle(fontSize: 18, color: Colors.black),
         ),
-       const SizedBox(
+        const SizedBox(
           height: 7,
         ),
         DropdownButtonFormField(
@@ -614,7 +614,8 @@ class _MultiSelectDropdownState extends State<MultiSelectDropdown> {
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: Colors.red),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           ),
           selectedItemBuilder: (BuildContext context) {
             return _selectedOptions.map<Widget>((String option) {
@@ -665,7 +666,7 @@ class _MyDropdown2State extends State<MyDropdown2> {
               '${widget.label}*',
               style: TextStyle(fontSize: 18, color: Colors.black),
             ),
-          const  SizedBox(height: 7),
+            const SizedBox(height: 7),
             DropdownButtonFormField(
               isExpanded: true,
               hint: const Text(
@@ -688,7 +689,7 @@ class _MyDropdown2State extends State<MyDropdown2> {
                     value: option,
                     child: Text(
                       option,
-                      style:const TextStyle(fontSize: 15),
+                      style: const TextStyle(fontSize: 15),
                     ),
                   );
                 }),
@@ -699,7 +700,7 @@ class _MyDropdown2State extends State<MyDropdown2> {
                   borderSide: const BorderSide(color: Colors.red),
                 ),
                 contentPadding:
-                  const  EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               ),
             ),
           ],

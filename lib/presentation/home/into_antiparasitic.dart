@@ -24,144 +24,132 @@ final infoeditantiparasitesProvider = StateProvider<Antiparasites>((ref) {
 
 
 class IntoAntiparasites extends ConsumerWidget {
-  const IntoAntiparasites({super.key});
+  const IntoAntiparasites({Key? key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final nn = ref.watch(antiparasitesProvider);
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Column(
       children: [
-        SizedBox(
-          height: 10,
-        ),
+        SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton.icon(
-                onPressed: () {
-                    ref.read(editantiparasitesProvider.notifier).update((state) => false);
-                    ref
-                        .read(pressAntiparasitesIntoProvider.notifier)
-                        .update((state) => false);
-                },
-                  icon: Icon(Icons.arrow_back,color: Colors.black,),
-                label: Text("Atras",style: TextStyle(color: Colors.black),)),
+              onPressed: () {
+                ref.read(editantiparasitesProvider.notifier).update((state) => false);
+                ref.read(pressAntiparasitesIntoProvider.notifier).update((state) => false);
+              },
+              icon: const Icon(Icons.arrow_back, color: Colors.black),
+              label: const Text("Atras", style: TextStyle(color: Colors.black)),
+            ),
             TextButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.share),
-                label: Text("Compartir")),
+              onPressed: () {},
+              icon: const Icon(Icons.share),
+              label: const Text("Compartir"),
+            ),
           ],
         ),
         Container(
           height: 100,
-          width: 270,
-          padding: EdgeInsets.all(10.0),
-          color: Colors.grey[200], // Fondo gris claro
+          width: screenWidth * 0.8,
+          padding: const EdgeInsets.all(10.0),
+          color: Colors.grey[200],
           child: Row(
-            
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (nn.brand == "Bravecto")
-                    Image.asset(width: 70, 'assets/Frame1000004649.png'),
- if(nn.brand!="Bravecto")
-  Icon(Icons.image,size: 70,)
-
-                  // Image.network()
+                    Image.asset('assets/Frame1000004651.png', width: screenWidth * 0.15),
+                  if (nn.brand != "Bravecto")
+                    Icon(Icons.image, size: screenWidth * 0.19),
                 ],
               ),
-              SizedBox(
-                width: 20,
-              ),
+              SizedBox(width: screenWidth * 0.05),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                   mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "${nn.type}",
-                    style:
-                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 4), // Espacio entre los textos
-                  Text(
-                    "${nn.brand}",
-                    style: TextStyle(fontSize: 16.0, color: Colors.red),
-                  ),
+                  nn.type.isEmpty
+                      ? const Text("No-Tipo")
+                      : Text(
+                          " Antiparasitario ${nn.type}",
+                          style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                        ),
+                  const SizedBox(height: 4),
+                  nn.brand=="Seleccionar"
+                      ? Text("No-Marca")
+                      : Text(
+                          "${nn.brand}",
+                          style: TextStyle(fontSize: 16.0, color: Colors.red),
+                        ),
                 ],
               ),
-       
             ],
           ),
         ),
-        SizedBox(
-          height: 20,
-        ),
-       
+        SizedBox(height: 20),
         Padding(
-            padding: EdgeInsets.only(right: 160),
-            child: RichText(text: TextSpan(children: [
-              TextSpan(text: "Ultima dosis: ",style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w500)),
-              TextSpan(text: "${nn.date.year}",style: TextStyle(color: Colors.black))
-              
-            ])) ),
-        SizedBox(
-          height: 20,
+          padding: EdgeInsets.only(right: screenWidth * 0.3),
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(text: "Ultima dosis: ", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500)),
+                TextSpan(text: "${nn.nextdose.day} ${getShortMonthName(nn.nextdose.month)} ${nn.nextdose.year}", style: TextStyle(color: Colors.black)),
+              ],
+            ),
+          ),
         ),
+        SizedBox(height: 20),
         Padding(
-            padding: EdgeInsets.only(right: 130),
-            child: RichText(text: TextSpan(children: [
-              TextSpan(text: "Proxima dosis: ",style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w500)),
-              TextSpan(text: "${nn.nextdose.day} ${getShortMonthName(nn.nextdose.month)} ${nn.nextdose.year}",style: TextStyle(color: Colors.black))
-              
-            ]))),
-        SizedBox(
-          height: 20,
+          padding: EdgeInsets.only(right: screenWidth * 0.3),
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(text: "Proxima dosis: ", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500)),
+                TextSpan(text: "${nn.nextdose.day} ${getShortMonthName(nn.nextdose.month)} ${nn.nextdose.year}", style: TextStyle(color: Colors.black)),
+              ],
+            ),
+          ),
         ),
-        Spacer(
-          flex: 1,
-        ),
-
-               ElevatedButton(
-  onPressed: () {
-     context.push("/Addantiparasitic");
+        SizedBox(height: 20),
+        Spacer(),
+        ElevatedButton(
+          
+          onPressed: () {
+            context.push("/Addantiparasitic");
             ref.read(editantiparasitesProvider.notifier).update((state) => true);
             ref.read(infoeditantiparasitesProvider.notifier).update((state) => nn);
-    // Aquí puedes añadir la función que se ejecutará cuando se presione el botón
-  },
-  style: ElevatedButton.styleFrom(
-    padding: EdgeInsets.symmetric(horizontal: 160, vertical: 20), // Padding del botón
-backgroundColor: Colors.white,// Color de fondo blanco
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(15), // Bordes redondeados
-      side: BorderSide(color: Colors.green), // Bordes de color verde
-    ),
-    
-  ),
-  child: Text(
-    'Editar',
-    style: TextStyle(color: Colors.black), // Color del texto
-  ),
-),
-
+          },
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.4, vertical: 20),
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+              side: BorderSide(color: Colors.green),
+            ),
+          ),
+          child: Text(
+            'Editar',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
         TextButton(
-            onPressed: () {
-              FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(FirebaseAuth.instance.currentUser!.uid)
-                  .collection("Antiparasites")
-                  .doc(nn.id)
-                  .delete()
-                  .then((value) => {
-                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Antiparasitario borrado!'),
-                  ))
-                  })
-                  .then((value) => {
-                    ref.read(pressAntiparasitesIntoProvider.notifier).update((state) => false)
-                  });
-            },
-            child: Text("Eliminar",   style: TextStyle(color: Colors.red),))
+          onPressed: () {
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .collection("Antiparasites")
+                .doc(nn.id)
+                .delete()
+                .then((value) => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Antiparasitario borrado!'))))
+                .then((value) => ref.read(pressAntiparasitesIntoProvider.notifier).update((state) => false));
+          },
+          child: Text("Eliminar", style: TextStyle(color: Colors.red)),
+        ),
       ],
     );
   }

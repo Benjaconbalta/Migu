@@ -65,7 +65,7 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           children: [
-            Align(
+        const    Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Tipo*",
@@ -120,7 +120,7 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
                 ? MyDropdown(
                     defaultValue: infoedit.brand,
                     label: "Marca",
-                    options: [
+                    options: const [
                       "Bravecto",
                       "NEXGARD",
                       "ADVOCATE",
@@ -137,7 +137,8 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
                       "drag pharma",
                       "veterquimica",
                       "virbac",
-                      "Otro"
+                      "Otro",
+                      "Seleccionar"
                     ],
                     onChanged: (marc) {
                       ref
@@ -169,7 +170,8 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
                         "drag pharma",
                         "veterquimica",
                         "virbac",
-                        "Otro"
+                        "Otro",
+                        "Seleccionar"
                       ]),
             SizedBox(
               height: 30,
@@ -212,20 +214,17 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
                     .update((state) => date);
               },
             ),
-            Spacer(),
+         const   Spacer(),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10), // Bordes cuadrados
                   ),
-                  backgroundColor: Color(0xFF3D9A51),
-                  padding: EdgeInsets.symmetric(horizontal: 130, vertical: 20)),
+                  backgroundColor: const Color(0xFF3D9A51),
+                  padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 20)),
               onPressed: () {
-                if (typeAntiparasites.isEmpty || marcaAntiparasites.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('porfavor reyenar todo los campos '),
-                  ));
-                } else {
+              
+              
                   if (editrueorfalse) {
                     FirebaseFirestore.instance
                         .collection("users")
@@ -258,7 +257,7 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
                   } else {
                     ref
                         .read(vaccineandAntiparasitesRepositoryProvider)
-                        .addAntiparasites(typeAntiparasites, marcaAntiparasites,
+                        .addAntiparasites(typeAntiparasites.isEmpty?"Seleccionar":typeAntiparasites, marcaAntiparasites.isEmpty?"Seleccionar":marcaAntiparasites,
                             date, nextAntiparasites)
                         .then((value) => {
                               ScaffoldMessenger.of(context)
@@ -274,12 +273,14 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
                         .then((value) => {context.pop()})
                         .then((value) => {});
                   }
-                }
+                },
 
                 // context.go("/home/0");
                 // Aquí puedes manejar la acción de continuar
-              },
-              child: Text(
+              
+              child: editrueorfalse? Text("Editar", style: TextStyle(
+                  color: Colors.white,
+                ),): Text(
                 "Agregar",
                 style: TextStyle(
                   color: Colors.white,
