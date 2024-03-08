@@ -1,106 +1,297 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:migu/domain/entities/antiparasites.dart';
 import 'package:migu/presentation/auth/Addpet_Screen.dart';
 import 'package:migu/presentation/home/addvaccine_Screen.dart';
+import 'package:migu/presentation/home/into_antiparasitic.dart';
+import 'package:migu/presentation/providers/Vaccineandantiparasites/Vaccineandantiparasites_repository_provider.dart';
+import 'package:migu/presentation/providers/Vaccineandantiparasites/vaccineandAntiparasites_provider.dart';
+import 'package:migu/presentation/views/home_view.dart';
 
-class Addantiparasitic extends StatefulWidget {
+final typeAntiparasitesProvider = StateProvider<String>((ref) {
+  return "";
+});
+final marcaAntiparasitesProvider = StateProvider<String>((ref) {
+  return "";
+});
+
+final dataAntiparasitesProvider = StateProvider<DateTime>((ref) {
+  return DateTime.now();
+});
+final nextAntiparasitesProvider = StateProvider<DateTime>((ref) {
+  return DateTime.now();
+});
+
+class Addantiparasitic extends ConsumerStatefulWidget {
   const Addantiparasitic({super.key});
 
   @override
-  State<Addantiparasitic> createState() => _AddantiparasiticState();
+  _AddantiparasiticState createState() => _AddantiparasiticState();
 }
 
-class _AddantiparasiticState extends State<Addantiparasitic> {
-     late List<bool> _selections;
-    @override
+class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
+  late List<bool> _selections;
+  @override
   void initState() {
     super.initState();
     _selections = List.generate(2, (index) => false); // Inicializar selecciones
   }
+
   @override
   Widget build(BuildContext context) {
+    final antiparasites = ref.watch(antiparasitesFirebaseProvider);
+    final typeAntiparasites = ref.watch(typeAntiparasitesProvider);
+    final marcaAntiparasites = ref.watch(marcaAntiparasitesProvider);
+    final nextAntiparasites = ref.watch(nextAntiparasitesProvider);
+    final date = ref.watch(dataAntiparasitesProvider);
+    final editrueorfalse = ref.watch(editantiparasitesProvider);
+    final nn = ref.watch(antiparasitesProvider);
+    final infoedit = ref.watch(infoeditantiparasitesProvider);
+int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción predeterminada
+  List<String> options = ["Interna", "Externa"];
+
+  
     return Scaffold(
       appBar: AppBar(
-        title: Text("Agregar Antiparasitario  "),
+        title: editrueorfalse
+            ? Text("Editar Antiparasitario")
+            : Text("Agregar Antiparasitario  "),
       ),
       body: Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 30), 
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
-         
-        
           children: [
-          Align( alignment: Alignment.centerLeft, child: Text("Tipo*",style: TextStyle(fontSize:18,color: Colors.black ),)),
-          ToggleButtons(
-              
-            
-                  borderWidth: 0,
-                  borderColor: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-            children: [
-              SquareButton2(
-                icon:FontAwesomeIcons.dog,
-                text: 'Interna',
-                onPressed: () {
-                    setState(() {
-                      _selections[0] = !_selections[0];
-                    });
-                },
-                selected: _selections[0],
-              ),
-             
-       
-              SquareButton2(
-                icon:FontAwesomeIcons.cat,
-                text: 'Externa',
-                onPressed: () {
-                    setState(() {
-                      _selections[1] = !_selections[1];
-                    });
-                },
-                selected: _selections[1],
-              ),
-             
-            ],
-            isSelected: _selections,
-            onPressed: (int index) {
-              // setState(() {
-              //   _selections[index] = !_selections[index];
-              // });
-            },
-          
-            
-            ),
-        
-        
-              MultiSelectDropdown(nameInput: "Marca",),
-                         SizedBox(height: 30,),
-                         Align( alignment: Alignment.centerLeft, child: Text("Fecha de vacunacion*",style: TextStyle(fontSize:18,color: Colors.black ),)),
-                    DatePicker(),
-                             SizedBox(height: 20,),
-                                  Align( alignment: Alignment.centerLeft, child: Text("Proxima dosis",style: TextStyle(fontSize:18,color: Colors.black ),)),
-                      DatePicker(),
-                       SizedBox(height: 220,),
-        
-                        ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10), // Bordes cuadrados
-                    ),
-                    backgroundColor: Color(0xFF3D9A51),
-                    padding: EdgeInsets.symmetric(horizontal: 130,vertical: 20)),
-                onPressed: () {
-                  // context.go("/home/0");
-                  // Aquí puedes manejar la acción de continuar
-                },
+            Align(
+                alignment: Alignment.centerLeft,
                 child: Text(
-                  "Agregar",
-                  style: TextStyle(color: Colors.white,),
+                  "Tipo*",
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                )),
+         ToggleButtons(
+      borderWidth: 0,
+      borderColor: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      selectedColor: Colors.green, // Color de la opción seleccionada
+      children: [
+        SquareButton2(
+          icon: FontAwesomeIcons.dog,
+          text: 'Interna',
+          onPressed: () {
+            setState(() {
+              _selectedIndex = 0; // Cambia el índice de la opción seleccionada
+              ref
+                  .read(typeAntiparasitesProvider.notifier)
+                  .update((state) => "Interna");
+            });
+          },
+          selected: _selectedIndex == 0, // Verifica si esta opción está seleccionada
+        ),
+        SquareButton2(
+          icon: FontAwesomeIcons.cat,
+          text: 'Externa',
+          onPressed: () {
+            setState(() {
+              _selectedIndex = 1; // Cambia el índice de la opción seleccionada
+              ref
+                  .read(typeAntiparasitesProvider.notifier)
+                  .update((state) => "externa");
+            });
+          },
+          selected: _selectedIndex == 1, // Verifica si esta opción está seleccionada
+        ),
+      ],
+      isSelected: [
+        _selectedIndex == 0, // Opción interna
+        _selectedIndex == 1, // Opción externa (predeterminada)
+      ],
+      onPressed: (int index) {
+        setState(() {
+          _selectedIndex = index; // Cambia el índice de la opción seleccionada
+          ref.read(typeAntiparasitesProvider.notifier).update((state) =>
+              index == 0 ? "Interna" : "Externa"); // Actualiza el estado según la selección
+        });
+      },
+    ),
+            editrueorfalse
+                ? MyDropdown(
+                    defaultValue: infoedit.brand,
+                    label: "Marca",
+                    options: [
+                      "Bravecto",
+                      "NEXGARD",
+                      "ADVOCATE",
+                      "CEVA",
+                      "FRONTLINE SPRAY",
+                      "Ehlinger",
+                      "Zoetis",
+                      "NEXGARD SPECTRA",
+                      "Skouts Honor",
+                      "TICKELESS",
+                      "cleanvet",
+                      "frontline plus",
+                      "Bayer/Elanco",
+                      "drag pharma",
+                      "veterquimica",
+                      "virbac",
+                      "Otro"
+                    ],
+                    onChanged: (marc) {
+                      ref
+                          .read(marcaAntiparasitesProvider.notifier)
+                          .update((state) => marc!);
+                    },
+                  )
+                : MyDropdown1(
+                    onChanged: (marc) {
+                      ref
+                          .read(marcaAntiparasitesProvider.notifier)
+                          .update((state) => marc!);
+                    },
+                    label: "marca",
+                    options: [
+                        "Bravecto",
+                        "NEXGARD",
+                        "ADVOCATE",
+                        "CEVA",
+                        "FRONTLINE SPRAY",
+                        "Ehlinger",
+                        "Zoetis",
+                        "NEXGARD SPECTRA",
+                        "Skouts Honor",
+                        "TICKELESS",
+                        "cleanvet",
+                        "frontline plus",
+                        "Bayer/Elanco",
+                        "drag pharma",
+                        "veterquimica",
+                        "virbac",
+                        "Otro"
+                      ]),
+            SizedBox(
+              height: 30,
+            ),
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Fecha de vacunacion*",
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                )),
+            DatePicker(
+              deaydefault: nn.date.day,
+              monthdefault: nn.date.month,
+              yeardefault: nn.date.year,
+              onDateChanged: (year, month, day) {
+                final date = DateTime(year, month, day);
+                print("date${date}");
+                ref
+                    .read(dataAntiparasitesProvider.notifier)
+                    .update((state) => date);
+              },
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Proxima dosis",
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                )),
+            DatePicker(
+              deaydefault: nn.nextdose.day,
+              monthdefault: nn.nextdose.month,
+              yeardefault: nn.nextdose.year,
+              onDateChanged: (year, month, day) {
+                final date = DateTime(year, month, day);
+                ref
+                    .read(nextAntiparasitesProvider.notifier)
+                    .update((state) => date);
+              },
+            ),
+            Spacer(),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10), // Bordes cuadrados
+                  ),
+                  backgroundColor: Color(0xFF3D9A51),
+                  padding: EdgeInsets.symmetric(horizontal: 130, vertical: 20)),
+              onPressed: () {
+                if (typeAntiparasites.isEmpty || marcaAntiparasites.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('porfavor reyenar todo los campos '),
+                  ));
+                } else {
+                  if (editrueorfalse) {
+                    FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .collection("Antiparasites")
+                        .doc(nn.id)
+                        .update(({
+                          "type": typeAntiparasites == ""
+                              ? nn.type
+                              : typeAntiparasites,
+                          "brand": marcaAntiparasites == ""
+                              ? nn.brand
+                              : marcaAntiparasites,
+                          "date": date == DateTime.now() ? nn.date : date,
+                          "nextdose": nextAntiparasites == DateTime.now()
+                              ? nn.nextdose
+                              : nextAntiparasites,
+                        }))
+                        .then((value) => {
+                              ref
+                                  .read(editantiparasitesProvider.notifier)
+                                  .update((state) => false)
+                            })
+                        .then((value) => {
+                              ref
+                                  .read(pressAntiparasitesIntoProvider.notifier)
+                                  .update((state) => false)
+                            })
+                        .then((value) => {context.go("/home/0")});
+                  } else {
+                    ref
+                        .read(vaccineandAntiparasitesRepositoryProvider)
+                        .addAntiparasites(typeAntiparasites, marcaAntiparasites,
+                            date, nextAntiparasites)
+                        .then((value) => {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('¡subido con exito!'),
+                                // action: SnackBarAction(
+                                //   label: 'Cerrar',
+                                //   onPressed: () =>
+                                //       ScaffoldMessenger.of(context).hideCurrentSnackBar(),
+                                // ),
+                              ))
+                            })
+                        .then((value) => {context.pop()})
+                        .then((value) => {});
+                  }
+                }
+
+                // context.go("/home/0");
+                // Aquí puedes manejar la acción de continuar
+              },
+              child: Text(
+                "Agregar",
+                style: TextStyle(
+                  color: Colors.white,
                 ),
               ),
+            ),
+            SizedBox(
+              height: 10,
+            )
           ],
         ),
       ),
-
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 // const colorSeed = Color(0xff424CB8);
-const colorSeed = Color(0x4d6059);
+const colorSeed = Colors.white;
 const scaffoldBackgroundColor = Color(0xFFF8F7F7);
 
 class AppTheme {

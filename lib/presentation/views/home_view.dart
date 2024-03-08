@@ -1,41 +1,119 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:migu/domain/entities/antiparasites.dart';
+import 'package:migu/domain/entities/vaccine.dart';
+import 'package:migu/presentation/auth/Addpet_Screen.dart';
+import 'package:migu/presentation/home/into_antiparasitic.dart';
+import 'package:migu/presentation/home/into_vaccine.dart';
+import 'package:migu/presentation/providers/Vaccineandantiparasites/vaccineandAntiparasites_provider.dart';
+import 'package:migu/presentation/providers/auth/auth_provider.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends ConsumerWidget {
   const HomeView({Key? key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vacinestream = ref.watch(vaccineFirebaseProvider);
+    final pressFalseorTrue = ref.watch(pressVaccineIntoProvider);
+    final pressAntiparasites = ref.watch(pressAntiparasitesIntoProvider);
+    final antiparasites = ref.watch(antiparasitesFirebaseProvider);
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           actions: [
-            PopupMenuButton<String>(
-              icon: const Icon(Icons.abc),
-              itemBuilder: (BuildContext context) {
-                return {'Cambiar mascota', 'cerrar sesíon', 'Opción 3'}
-                    .map((String choice) {
-                  return PopupMenuItem<String>(
-                    value: choice,
-                    child: Text(choice),
+                 StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data!.exists) {
+                  var photoUrl = snapshot.data!.get('urlImage');
+                  var name = snapshot.data!.get('name');
+                  // ref.read(namepetProvider.notifier).update((state) => name);
+                  return CircleAvatar(
+                    
+                    backgroundImage:
+                        NetworkImage(photoUrl), // Imagen del perfil del usuario
+                    radius: 18.0, // Radio para hacerlo redondo
                   );
-                }).toList();
-              },
-              onSelected: (String choice) {
-                // Aquí puedes definir las acciones que quieras realizar
-                context.push("/Addantiparasitic");
+                } else {
+                  return SizedBox.shrink();
+                }
               },
             ),
+
+            StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data!.exists) {
+                  var photoUrl = snapshot.data!.get('urlImage');
+                  var name = snapshot.data!.get('name');
+                  // ref.read(namepetProvider.notifier).update((state) => name);
+                  return PopupMenuButton<String>(
+                    icon:
+                        const Icon(Icons.arrow_drop_down, color: Colors.white),
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        '$name',
+                        'Editar Mascota',
+                        'Contactar Soporte',
+                        "Patreon",
+                        "Cerrar sesión"
+                      ].map((String choice) {
+                        if (choice == '$name') {
+                          return PopupMenuItem<String>(
+                            value: choice,
+                            child: Row(
+                              children: [
+                                Text("🐶"),
+                                SizedBox(
+                                    width:
+                                        8), // Espacio entre la imagen y el texto
+                                Text(choice),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return PopupMenuItem<String>(
+                            value: choice,
+                            child: Text(choice),
+                          );
+                        }
+                      }).toList();
+                    },
+                    onSelected: (String choice) async {
+                      if (choice == "Cerrar sesión") {
+                        await FirebaseAuth.instance.signOut();
+                      }
+                      // Aquí puedes definir las acciones que quieras realizar
+                      // context.push("/Addantiparasitic");
+                    },
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              },
+            ),
+       
+            // Resto del contenido de tu pantalla
           ],
-          toolbarHeight: 80,  
+          toolbarHeight: 80,
           backgroundColor: Color(0xFF272B4E), // Color azul marino
           title: Row(
             children: [
               Expanded(
                 child: Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.topLeft,
                   child: Text(
                     'Carnet Veterinario',
                     style: TextStyle(
@@ -44,18 +122,6 @@ class HomeView extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://w7.pngwing.com/pngs/711/768/png-transparent-white-and-brown-dog-illustration-emoji-emoticon-dog-smiley-whatsapp-emoji-carnivoran-dog-like-mammal-car-thumbnail.png'), // Imagen del perfil del usuario
-                radius: 18.0, // Radio para hacerlo redondo
-              ),
-              IconButton(
-                icon: Icon(Icons.arrow_drop_down_rounded, color: Colors.white),
-                onPressed: () {
-                  context.go("/register");
-                  // Acción al presionar el icono de fecha
-                },
               ),
             ],
           ),
@@ -66,7 +132,7 @@ class HomeView extends StatelessWidget {
               child: TabBar(
                 tabs: [
                   Tab(text: 'Vacunas'), // Pestaña 1
-                  Tab(text: 'Desparasitación'), // Pestaña 2
+                  Tab(text: 'Antiparasitarios'), // Pestaña 2
                 ],
                 indicator: BoxDecoration(
                   color: Colors
@@ -91,41 +157,436 @@ class HomeView extends StatelessWidget {
         body: TabBarView(
           children: [
             Center(
-                child: Column(
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                CustomWidget1(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "   Historial ",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    TextButton(onPressed: () {
-                                context.push("/Addantiparasitic");
-                    }, child: Text("+Agregar"))
-                  ],
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: Image.network(
-                            "https://w7.pngwing.com/pngs/23/16/png-transparent-pharmacy-logo-pharmaceutical-drug-pasteur-blue-drug-pharmacist.png"),
-                        title: Text("Rabguard"),
-                        subtitle: Text("Antirrabica"),
-                        trailing: Text("8 dic 2021"),
-                      );
-                    },
-                  ),
-                )
-              ],
-            )), // Contenido de la pestaña 1
-            Center(child: CustomWidget1()), // Contenido de la pestaña 2
+                child: pressFalseorTrue
+                    ? IntoVaccine()
+                    : Column(
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          CustomWidget1(
+                              message: "Aún no hay vacunas registradas",
+                              isEmpty: vacinestream.value?.isEmpty ?? true,
+                              type: "vaccine",
+                              route: "/addvaccine",
+                              text: "  Agregar vacuna    "),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 40),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Historial ",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      context.push("/addvaccine");
+                                    },
+                                    child: Icon(
+                                      Icons.add_circle_outline,
+                                      size: 30,
+                                    ))
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Expanded(
+                              child: vacinestream.when(
+                            data: (data) {
+                              if (data.isEmpty) {
+                                return Column(
+                                  children: [
+                                    // CustomWidget1(),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 70),
+                                      child: Text(
+                                        "Aún no hay vacunas registradas",
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.grey),
+                                      ),
+                                    ),
+                                    Spacer(
+                                      flex: 1,
+                                    ),
+                                    Container(
+                                      height: 120,
+                                      width: 300,
+                                      padding: EdgeInsets.all(30.0),
+                                      color:
+                                          Colors.grey[200], // Fondo gris claro
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width:
+                                                    220, // Limita el ancho del contenedor del texto
+                                                child: Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .only(
+                                                          bottom:
+                                                              25), // Ajusta el margen superior del icono
+                                                      child: Icon(
+                                                          Icons.error_outline,
+                                                          color: Colors
+                                                              .black), // Icono de advertencia, puedes elegir cualquier otro icono
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            5), // Espacio entre el icono y el texto
+                                                    Expanded(
+                                                      child: Text(
+                                                        "Importante: siempre consulta a un veterinario sobre cómo medicar a tu mascota",
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            color:
+                                                                Colors.black),
+                                                        textAlign: TextAlign
+                                                            .center, // Alinea el texto al centro horizontalmente
+                                                        overflow: TextOverflow
+                                                            .clip, // Permite que el texto se ajuste automáticamente a la línea siguiente
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              // Image.network()
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 40,
+                                    )
+                                  ],
+                                );
+                              }
+
+                              return ListView.builder(
+                                  itemCount: data.length,
+                                  itemBuilder: (context, index) {
+                                    Vaccine vaccine = data[index];
+
+                                    // DocumentSnapshot document =
+
+                                    //     snapshot.data!.docs[index];
+
+                                    late Widget leadingWidget;
+
+                                    // Comprobamos la marca de la vacuna y asignamos la imagen correspondiente
+                                    if (vaccine.brand == "Rabguard") {
+                                      leadingWidget = Image.asset(
+                                          'assets/Frame1000004649.png');
+                                    } else if (vaccine.brand == "Canigen") {
+                                      leadingWidget =
+                                          Image.asset('assets/Frame13336.png');
+                                    } else if (vaccine.brand == "Nobivac") {
+                                      leadingWidget = Image.asset(
+                                          'assets/Frame1000004650.png');
+                                    } else {
+                                      leadingWidget = Icon(Icons.image);
+                                    }
+
+                                    // Agrega más
+                                    // Aquí puedes acceder a los datos de cada documento
+                                    // Por ejemplo, para acceder al campo "nombre":
+                                    // String nombre = document['nombre'];
+                                    return Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Divider(
+                                          color: Colors
+                                              .grey, // Color de la línea separadora
+                                          thickness:
+                                              0.9, // Grosor de la línea separadora
+                                          indent:
+                                              20, // Margen en el inicio de la línea
+                                          endIndent:
+                                              16, // Margen en el final de la línea
+                                        ),
+                                        ListTile(
+                                          onTap: () {
+                                            ref
+                                                .read(sightinProvider.notifier)
+                                                .update((state) => vaccine);
+                                            ref
+                                                .read(pressVaccineIntoProvider
+                                                    .notifier)
+                                                .update((state) => true);
+                                          },
+                                          leading: leadingWidget,
+                                          title: Text(vaccine.brand),
+                                          subtitle: Text(
+                                            vaccine.type,
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          trailing: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                '${vaccine.date.day} ${getShortMonthName(vaccine.date.month)} ${vaccine.date.year} ',
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.grey),
+                                              ), // Texto que deseas mostrar
+                                              Icon(
+                                                Icons.arrow_forward_ios,
+                                                color: Colors.black,
+                                              ), // Icono de flecha
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                            error: (error, stackTrace) {
+                              return Text("erros${error}");
+                            },
+                            loading: () {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            },
+                          )
+
+                              //  ListView.builder(
+                              //   itemCount: 4,
+                              //   itemBuilder: (context, index) {
+                              //  return ListTile(
+                              //    leading: Image.network(
+                              //        "https://w7.pngwing.com/pngs/23/16/png-transparent-pharmacy-logo-pharmaceutical-drug-pasteur-blue-drug-pharmacist.png"),
+                              //    title: Text("Rabguard"),
+                              //    subtitle: Text("Antirrabica"),
+                              //    trailing: Text("8 dic 2021"),
+                              //  );
+                              //   },
+                              // ),
+                              )
+                        ],
+                      )), // Contenido de la pestaña 1
+            pressAntiparasites
+                ? IntoAntiparasites()
+                : Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      CustomWidget1(
+                        isEmpty: antiparasites.value?.isEmpty ?? true,
+                        text: "   agregar antiparasitario   ",
+                        message: "Aun no hay antiparasitarios registrados",
+                        type: "antiparasitic",
+                        route: "/Addantiparasitic",
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 40),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Historial ",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w500),
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  context.push("/Addantiparasitic");
+                                },
+                                child: Icon(
+                                  Icons.add_circle_outline,
+                                  size: 30,
+                                ))
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: antiparasites.when(
+                          data: (data) {
+                            if (data.isEmpty) {
+                              return Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  // CustomWidget1(),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 20),
+                                    child: Text(
+                                      "Aún no hay antiparasitarios registradas",
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.grey),
+                                    ),
+                                  ),
+                                  Spacer(
+                                    flex: 1,
+                                  ),
+                                  Container(
+                                    height: 120,
+                                    width: 300,
+                                    padding: EdgeInsets.all(30.0),
+                                    color: Colors.grey[200], // Fondo gris claro
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width:
+                                                  220, // Limita el ancho del contenedor del texto
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .only(
+                                                        bottom:
+                                                            25), // Ajusta el margen superior del icono
+                                                    child: Icon(
+                                                        Icons.error_outline,
+                                                        color: Colors
+                                                            .black), // Icono de advertencia, puedes elegir cualquier otro icono
+                                                  ),
+                                                  SizedBox(
+                                                      width:
+                                                          5), // Espacio entre el icono y el texto
+                                                  Expanded(
+                                                    child: Text(
+                                                      "Importante: siempre consulta a un veterinario sobre cómo medicar a tu mascota",
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.black),
+                                                      textAlign: TextAlign
+                                                          .center, // Alinea el texto al centro horizontalmente
+                                                      overflow: TextOverflow
+                                                          .clip, // Permite que el texto se ajuste automáticamente a la línea siguiente
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+
+                                            // Image.network()
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 40,
+                                  )
+                                ],
+                              );
+                            }
+                            return ListView.builder(
+                                itemCount: data.length,
+                                itemBuilder: (context, index) {
+                                  Antiparasites antiparasitee = data[index];
+                                  late Widget leadingWidget;
+
+                                  if (antiparasitee.brand == "Bravecto") {
+                                    leadingWidget = Image.asset(
+                                        "assets/Frame1000004651.png");
+                                  } else {
+                                    leadingWidget = Icon(Icons.image);
+                                  }
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Divider(
+                                        color: Colors
+                                            .grey, // Color de la línea separadora
+                                        thickness:
+                                            0.9, // Grosor de la línea separadora
+                                        indent:
+                                            20, // Margen en el inicio de la línea
+                                        endIndent:
+                                            16, // Margen en el final de la línea
+                                      ),
+                                      ListTile(
+                                        onTap: () {
+                                          ref
+                                              .read(antiparasitesProvider
+                                                  .notifier)
+                                              .update((state) => antiparasitee);
+                                          ref
+                                              .read(
+                                                  pressAntiparasitesIntoProvider
+                                                      .notifier)
+                                              .update((state) => true);
+                                        },
+                                        leading: leadingWidget,
+                                        title: Text(antiparasitee.brand),
+                                        subtitle: Text(
+                                          antiparasitee.type,
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        trailing: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              '${antiparasitee.date.day} ${getShortMonthName(antiparasitee.date.month)} ${antiparasitee.date.year} ',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.grey),
+                                            ),
+                                            Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: Colors.black,
+                                            ), // Icono de flecha
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                          error: (error, stackTrace) {
+                            return Text("error${error}");
+                          },
+                          loading: () {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ) // Contenido de la pestaña 2
           ],
         ),
       ),
@@ -133,14 +594,154 @@ class HomeView extends StatelessWidget {
   }
 }
 
-class CustomWidget1 extends StatelessWidget {
+Stream<List<Vaccine>> getvaccinefilter() {
+  final currentDate = DateTime.now();
+  final twoMonthsFromNow =
+      currentDate.add(Duration(days: 60)); // 60 días = 2 meses
+
+  return FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection("vaccine")
+      .where('nextdose',
+          isGreaterThan:
+              currentDate) // Filtra las próximas dosis que están en el futuro
+      .where('nextdose',
+          isLessThan:
+              twoMonthsFromNow) // Filtra las próximas dosis que están dentro de los próximos 2 meses
+      .snapshots()
+      .map((querySnapshot) {
+    return querySnapshot.docs.map((doc) {
+      final data = doc.data();
+      final dateTimestamp = data['date'] as Timestamp;
+      final nextdoseTimestamp = data['nextdose'] as Timestamp;
+      return Vaccine(
+        photovaccinelabel: data["photovaccinelabel"],
+        photocertificate: data["photocertificate"],
+        vaccination: data["vaccination"],
+        type: data['type'] ?? '',
+        brand: data['brand'] ?? '',
+        date: dateTimestamp.toDate(),
+        nextdose: nextdoseTimestamp.toDate(),
+        id: doc.id,
+      );
+    }).toList();
+  }).map((list) => list.cast<Vaccine>());
+}
+
+Stream<List<Antiparasites>> getAntiparasitesfilter() {
+  final currentDate = DateTime.now();
+  final twoMonthsFromNow =
+      currentDate.add(const Duration(days: 60)); // 60 días = 2 meses
+
+  return FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection("Antiparasites")
+      .where('nextdose',
+          isGreaterThan:
+              currentDate) // Filtra las próximas dosis que están en el futuro
+      .where('nextdose',
+          isLessThan:
+              twoMonthsFromNow) // Filtra las próximas dosis que están dentro de los próximos 2 meses
+      .snapshots()
+      .map((querySnapshot) {
+    return querySnapshot.docs.map((doc) {
+      final data = doc.data();
+      final dateTimestamp = data['date'] as Timestamp;
+      final nextdoseTimestamp = data['nextdose'] as Timestamp;
+      return Antiparasites(
+        type: data['type'] ?? '',
+        brand: data['brand'] ?? '',
+        date: dateTimestamp.toDate(),
+        nextdose: nextdoseTimestamp.toDate(),
+        id: doc.id,
+      );
+    }).toList();
+  }).map((list) => list.cast<Antiparasites>());
+}
+
+String getShortMonthName(int monthNumber) {
+  // Lista de nombres abreviados de los meses en español
+  List<String> shortMonthNames = [
+    'Ene',
+    'Feb',
+    'Mar',
+    'Abr',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dic'
+  ];
+
+  // Retorna el nombre abreviado del mes correspondiente al número de mes proporcionado
+  return shortMonthNames[monthNumber - 1];
+}
+
+class GetAntiparasitesfilter extends StatelessWidget {
+  const GetAntiparasitesfilter({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    return StreamBuilder<List<Antiparasites>>(
+      stream: getAntiparasitesfilter(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Muestra un indicador de carga mientras se carga el stream
+          return Padding(
+            padding: const EdgeInsets.all(40),
+            child: Text("No hay Recordatorios"),
+          );
+        } else if (snapshot.hasError) {
+          // Muestra un mensaje de error si ocurre un error
+          return Text('Error: ${snapshot.error}');
+        } else {
+          // Muestra los datos si el stream ha sido cargado correctamente
+          final antiparasitesList = snapshot.data ?? [];
+          return antiparasitesList.isEmpty
+              ? Padding(
+                  padding: EdgeInsets.all(40),
+                  child: Text("No hay Recordatorios"))
+              : Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: Container(
+                    color: Colors.grey[200], // Fondo gris claro
+                    padding: EdgeInsets.all(20.0),
+                    width: 340,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Mostrar los contenedores existentes con separadores
+                        for (var i = 0; i < antiparasitesList.length; i++)
+                          Column(
+                            children: [
+                              _buildAntiparasiteContainer(antiparasitesList[i]),
+                              if (i < antiparasitesList.length - 1)
+                                Divider(), // Agrega un Divider excepto después del último
+                              // E
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+        }
+      },
+    );
+  }
+
+  Widget _buildAntiparasiteContainer(Antiparasites antiparasite) {
+    DateTime currentDate = DateTime.now();
+    int differenceInDays = currentDate.difference(antiparasite.date).inDays;
+    bool isDelayed = differenceInDays > 0;
+
     return Container(
-      height: 160,
-      width: 370,
-      padding: EdgeInsets.all(30.0),
-      color: Colors.grey[200], // Fondo gris claro
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,13 +749,21 @@ class CustomWidget1 extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Próxima dosis',
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Icon(Icons.notifications),
+                  Text(
+                    " Próxima dosis",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 4), // Espacio entre los textos
               Text(
-                'Antirrábica',
+                antiparasite.brand,
                 style: TextStyle(fontSize: 16.0),
               ),
             ],
@@ -163,26 +772,253 @@ class CustomWidget1 extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '10 Ene 2024',
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                "${antiparasite.date.day} ${getShortMonthName(antiparasite.date.month)} ${antiparasite.date.year}", // Ajusta según tu modelo de datos
+                style: TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(height: 4), // Espacio entre los textos
-              Text(
-                '8 días de atrazo',
-                style: TextStyle(fontSize: 16.0, color: Colors.red),
-              ),
+              isDelayed
+                  ? Text(
+                      'La fecha está atrasada por $differenceInDays días.',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.red,
+                      ),
+                    )
+                  : Text("")
             ],
           ),
-          TextButton(
-              onPressed: () {
-                context.push("/addvaccine");
-              },
-              child: const Icon(Icons.add))
         ],
       ),
     );
   }
 }
+
+class GetVaccinefilter extends StatelessWidget {
+  const GetVaccinefilter({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<Vaccine>>(
+      stream: getvaccinefilter(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Muestra un indicador de carga mientras se carga el stream
+          return Padding(
+            padding: const EdgeInsets.all(40),
+            child: Text("No hay Recordatorios"),
+          );
+        } else if (snapshot.hasError) {
+          // Muestra un mensaje de error si ocurre un error
+          return Text('Error: ${snapshot.error}');
+        } else {
+          // Muestra los datos si el stream ha sido cargado correctamente
+          final vaccineList = snapshot.data ?? [];
+          return vaccineList.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.all(40),
+                  child: Text("No hay Recordatorios"),
+                )
+              : Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: Container(
+                    color: Colors.grey[200], // Fondo gris claro
+                    padding: EdgeInsets.all(20.0),
+                    width: 340,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Mostrar los contenedores existentes con separadores
+                        for (var i = 0; i < vaccineList.length; i++)
+                          Column(
+                            children: [
+                              _buildVaccineContainer(vaccineList[i]),
+                              if (i < vaccineList.length - 1)
+                                Divider(), // Agrega un Divider excepto después del último
+                              // E
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+        }
+      },
+    );
+  }
+
+  Widget _buildVaccineContainer(Vaccine vaccine) {
+    DateTime currentDate = DateTime.now();
+    int differenceInDays = currentDate.difference(vaccine.date).inDays;
+    bool isDelayed = differenceInDays > 0;
+
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.notifications),
+                  Text(
+                    " Próxima dosis",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 4), // Espacio entre los textos
+              Text(
+                vaccine.brand,
+                style: TextStyle(fontSize: 16.0),
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "${vaccine.date.day} ${getShortMonthName(vaccine.date.month)} ${vaccine.date.year}", // Ajusta según tu modelo de datos
+                style: TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 4), // Espacio entre los textos
+              isDelayed
+                  ? Text(
+                      '$differenceInDays días de atraso.',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.red,
+                      ),
+                    )
+                  : Text("")
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomWidget1 extends ConsumerWidget {
+  final String message;
+  final String route;
+  final String type;
+  final bool isEmpty;
+  final String text;
+
+  const CustomWidget1(
+      {Key? key,
+      this.isEmpty = false,
+      this.message = "",
+      this.type = "",
+      this.text = "",
+      this.route = ""})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // si la proxima dosis existe y fecha actual y la proxima dosis tiene difenrete de 2 meses hacia bajo la muestra
+    if (isEmpty) {
+      return Container(
+        height: 170,
+        width: 340,
+        padding: EdgeInsets.all(15.0),
+        color: Colors.grey[200], // Fondo gris claro
+        child: Column(children: [
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Próxima dosis',
+                    style:
+                        TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 4), // Espacio entre los textos
+                  Text(
+                    "${message}",
+                    style: TextStyle(fontSize: 15.0, color: Colors.grey),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [],
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          TextButton.icon(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(10), // Bordes redondeados
+                  ),
+                ),
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                  EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10), // Espaciado interno del botón
+                ),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Color(0xff00B368)), // Color de fondo del botón
+              ),
+              onPressed: () {
+                // ref.read(editvaccineProvider.notifier).update((state) => true);
+                context.push("${route}");
+              },
+              icon: Icon(Icons.add, color: Colors.white),
+              label: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  "${text}       ",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ))
+        ]),
+      );
+    }
+    return type == "antiparasitic"
+        ? GetAntiparasitesfilter()
+        : GetVaccinefilter();
+  }
+}
+
+final sightinProvider = StateProvider<Vaccine>((ref) {
+  return Vaccine(
+      brand: "",
+      date: DateTime.now(),
+      nextdose: DateTime.now(),
+      photocertificate: "",
+      photovaccinelabel: "",
+      type: "",
+      vaccination: "",
+      id: "");
+});
+
+final pressVaccineIntoProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
+final pressAntiparasitesIntoProvider = StateProvider<bool>((ref) {
+  return false;
+});
 
 class Historial extends StatelessWidget {
   const Historial({super.key});
