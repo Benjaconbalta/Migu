@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
       );
     } else {
       // Si el documento no existe en la colección "users", muestra el widget CreateUser
-      return AddPet();
+      return const AddPet();
     }
   },
 ),

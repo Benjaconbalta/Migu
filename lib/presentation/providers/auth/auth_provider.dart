@@ -1,11 +1,9 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:migu/domain/entities/user.dart';
 import 'package:migu/domain/repository/auth_respository.dart';
 import 'package:migu/infrastrocture/repository/auth_repository_impl.dart';
-
 
 final authProvider = StateNotifierProvider<AuthNotifier, UserApp>((ref) {
   final authRepositoy = AuthRepositoryImpl();
@@ -14,32 +12,31 @@ final authProvider = StateNotifierProvider<AuthNotifier, UserApp>((ref) {
 
 class AuthNotifier extends StateNotifier<UserApp> {
   final AuthRepository authRepository;
-  AuthNotifier({required this.authRepository}) : super(UserApp(email: "",fullName: "",uid: ""));
+  AuthNotifier({required this.authRepository})
+      : super(UserApp(email: "", fullName: "", uid: ""));
 
-  Future<void> loginUser(String email, String password,BuildContext context) async {
+  Future<void> loginUser(
+      String email, String password, BuildContext context) async {
     try {
-      final user = await authRepository.login(email, password,context);
-      print("user$user");
+      await authRepository.login(email, password, context);
     } catch (e) {
-      print("error");
+      return;
     }
   }
 
-  Future<void> registerUser(String email, String password,BuildContext context) async {
+  Future<void> registerUser(
+      String email, String password, BuildContext context) async {
     try {
-      final userregister =
-          await authRepository.register(email, password, "sdasdasdsadas",context);
-    
+       await authRepository.register(
+          email, password, "sdasdasdsadas", context);
     } catch (e) {
       // logout();
     }
   }
 
   Future<void> logoutapp() async {
-     await FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut();
   }
-
-
 }
 
 enum AuthStatus { checking, authenticated, notAuthenticated }

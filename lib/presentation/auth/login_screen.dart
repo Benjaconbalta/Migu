@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:migu/config/router/app_route_notifier.dart';
 import 'package:migu/presentation/providers/auth/login_form_provider.dart';
 import 'package:migu/widgets/shared/custom_text_form_field.dart';
  void signInwithGoogle() async {
@@ -18,7 +17,6 @@ import 'package:migu/widgets/shared/custom_text_form_field.dart';
     );
     UserCredential userCretendial =
         await FirebaseAuth.instance.signInWithCredential(credential);
-    print(userCretendial.user?.displayName);
   }
 
 class LoginScreen extends ConsumerWidget {
@@ -35,7 +33,7 @@ class LoginScreen extends ConsumerWidget {
           // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
+         const SizedBox(
               height: 100,
             ),
             Image.asset(
@@ -44,19 +42,19 @@ class LoginScreen extends ConsumerWidget {
               height: 60,
             ),
 
-            SizedBox(height: 80),
+           const SizedBox(height: 80),
             Container(
-                constraints: BoxConstraints(maxWidth: 300),
+                constraints: const BoxConstraints(maxWidth: 300),
                 child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         vertical: 15,
                         horizontal: 30,
                       ),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(color: Color(0xff3D9A51), width: 1)
+                          side:const BorderSide(color: Color(0xff3D9A51), width: 1)
                           // Bordes cuadrados
                           ),
                     ),
@@ -67,15 +65,15 @@ class LoginScreen extends ConsumerWidget {
                       FontAwesomeIcons.google,
                       color: Colors.black,
                     ),
-                    label: Text(
+                    label: const Text(
                       "Iniciar Sesión con Google",
                       style: TextStyle(
                         color: Colors.black,
                       ),
                     ))),
 
-            SizedBox(height: 10),
-            Padding(
+          const  SizedBox(height: 10),
+         const   Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -87,7 +85,7 @@ class LoginScreen extends ConsumerWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding:  EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
                       "o",
                       style: TextStyle(fontSize: 18),
@@ -103,8 +101,8 @@ class LoginScreen extends ConsumerWidget {
               ),
             ),
 
-            SizedBox(height: 20),
-            Padding(
+          const SizedBox(height: 20),
+          const  Padding(
                 padding: EdgeInsets.only(right: 300),
                 child: Text("Correo", style: TextStyle(fontSize: 17))),
 
@@ -120,12 +118,12 @@ class LoginScreen extends ConsumerWidget {
                     : null,
               ),
             ),
-            SizedBox(height: 20),
-            Padding(
+         const   SizedBox(height: 20),
+         const   Padding(
                 padding: EdgeInsets.only(right: 300),
                 child: Text(" password", style: TextStyle(fontSize: 17))),
 
-            Container(
+           Container(
               width: 360,
               child: CustomTextFormField(
                 hint: "password",
@@ -137,7 +135,7 @@ class LoginScreen extends ConsumerWidget {
                     : null,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               width: 300,
               child: ElevatedButton(
@@ -155,29 +153,29 @@ class LoginScreen extends ConsumerWidget {
 
                   // Aquí puedes manejar la acción de continuar
                 },
-                child: Text(
+                child: const Text(
                   "Continuar",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
-            SizedBox(height: 10),
-            Padding(
+           const SizedBox(height: 10),
+           const Padding(
               padding: const EdgeInsets.all(30.0),
             ),
-            SizedBox(height: 20),
+           const SizedBox(height: 20),
             // Spacer(), // Spacer para llenar el espacio restante
 
             RichText(
               text: TextSpan(
-                style: TextStyle(color: Colors.black),
+                style:const TextStyle(color: Colors.black),
                 children: [
-                  TextSpan(
+                 const TextSpan(
                     text: '¿No tienes cuenta? ',
                   ),
                   TextSpan(
                     text: ' Regístrate',
-                    style: TextStyle(color: Colors.green), // Color verde
+                    style: const TextStyle(color: Colors.green), // Color verde
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         // Navigator.push(
@@ -187,7 +185,7 @@ class LoginScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+           const SizedBox(height: 20),
           ],
         ),
       ),

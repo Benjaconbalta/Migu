@@ -68,16 +68,8 @@ class _AddPetState extends ConsumerState<AddPet> {
 
   @override
   Widget build(BuildContext context) {
-    //alexa ,
-    // anillos inteligentes ,
-    //
-    List<bool> _dogSelections = [false];
-    List<bool> _catSelections = [false];
-    List<bool> _otterSelections = [false];
-    int _selectedColorIndex = -1;
     final imageCaptureTemp = ref.watch(imageProvider);
     final typepet = ref.watch(typepetProvider);
-
     final urlFirebaseDowload = ref.watch(urlProvider);
     final namePet = ref.watch(inputvalueProvider);
     return Scaffold(
@@ -186,10 +178,10 @@ class _AddPetState extends ConsumerState<AddPet> {
                         ));
                       }
                       else if (urlFirebaseDowload.isEmpty) {
-  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-    content: Text('Espere mientras la imagen se sube'),
-    duration: Duration(seconds: 3),
-  ));
+                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                     content: Text('Espere mientras la imagen se sube'),
+                     duration: Duration(seconds: 3),
+                    ));
 } 
                       
                        else {
@@ -204,24 +196,9 @@ class _AddPetState extends ConsumerState<AddPet> {
                           "urlImage": urlFirebaseDowload,
                           "type": typepet
                         });
-
-                        // FirebaseFirestore.instance
-                        //     .collection('users')
-
-                        //     .add({
-                        //   "photo": urlFirebaseDowload,
-                        //   "namePet": namePet,
-                        //   "typepet": typepet
-                        // }).then((value) => {
-                        //           ref
-                        //               .read(registerformProvider.notifier)
-                        //               .onFormSubmit(context)
-                        //         });
-                        // ref.read(registerformProvider.notifier).onFormSubmit(context);
-                        // Aquí puedes manejar la acción de continuar
                       }
                     },
-                    child: Text(
+                    child: const Text(
                       "Continuar",
                       style: TextStyle(color: Colors.white),
                     ),
@@ -265,7 +242,7 @@ class SquareButton extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
+         const SizedBox(
             height: 30,
           ),
           FaIcon(
@@ -274,10 +251,10 @@ class SquareButton extends StatelessWidget {
             color: Colors.black, // Color del icono
           ),
 
-          SizedBox(height: 10), // Espaciado entre el icono y el texto
+        const  SizedBox(height: 10), // Espaciado entre el icono y el texto
           Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black, // Color del texto
               fontSize: 16,
             ),
@@ -294,7 +271,7 @@ class SquareButton2 extends StatelessWidget {
   final VoidCallback onPressed;
   final bool selected;
 
-  const SquareButton2({
+  const SquareButton2({super.key, 
     required this.icon,
     required this.text,
     required this.onPressed,
@@ -307,7 +284,7 @@ class SquareButton2 extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: selected
-            ? Color(0xffD8EBDC)
+            ? const Color(0xffD8EBDC)
             : Colors.white, // Color de fondo del botón
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10), // Bordes redondeados
@@ -318,7 +295,7 @@ class SquareButton2 extends StatelessWidget {
         children: [
           Text(
             text,
-            style: TextStyle(
+            style:const TextStyle(
               color: Colors.black, // Color del texto
               fontSize: 16,
             ),

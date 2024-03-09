@@ -39,7 +39,7 @@ class RegisterScreen extends ConsumerWidget {
           // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
+           const SizedBox(
               height: 100,
             ),
             Image.asset(
@@ -48,38 +48,38 @@ class RegisterScreen extends ConsumerWidget {
               height: 60,
             ),
 
-            SizedBox(height: 100),
+           const SizedBox(height: 100),
             Container(
-                constraints: BoxConstraints(maxWidth: 300),
+                constraints:const BoxConstraints(maxWidth: 300),
                 child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         vertical: 15,
                         horizontal: 60,
                       ),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(color: Color(0xff3D9A51), width: 1)
+                          side: const BorderSide(color: Color(0xff3D9A51), width: 1)
                           // Bordes cuadrados
                           ),
                     ),
                     onPressed: () {
                       signInwithGoogle();
                     },
-                    icon: FaIcon(
+                    icon:const FaIcon(
                       FontAwesomeIcons.google,
                       color: Colors.black,
                     ),
-                    label: Text(
+                    label:const Text(
                       "Continuar con google",
                       style: TextStyle(
                         color: Colors.black,
                       ),
                     ))),
 
-            SizedBox(height: 20),
-            Padding(
+          const  SizedBox(height: 20),
+          const  Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -107,8 +107,8 @@ class RegisterScreen extends ConsumerWidget {
               ),
             ),
 
-            SizedBox(height: 20),
-            Padding(
+          const  SizedBox(height: 20),
+          const  Padding(
                 padding: EdgeInsets.only(right: 300),
                 child: Text("Correo", style: TextStyle(fontSize: 17))),
 
@@ -126,7 +126,7 @@ class RegisterScreen extends ConsumerWidget {
                 // Aquí puedes manejar el cambio en el campo de texto
               ),
             ),
-            SizedBox(height: 20),
+          const  SizedBox(height: 20),
 
             Container(
               width: 300,
@@ -136,14 +136,14 @@ class RegisterScreen extends ConsumerWidget {
                       borderRadius:
                           BorderRadius.circular(10), // Bordes cuadrados
                     ),
-                    backgroundColor: Color(0xFF3D9A51),
-                    padding: EdgeInsets.symmetric(vertical: 20)),
+                    backgroundColor:const Color(0xFF3D9A51),
+                    padding:const EdgeInsets.symmetric(vertical: 20)),
                 onPressed: () {
                   if (registerForm.email.isValid) {
                     context.push("/additionalInfo");
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                     const SnackBar(
                         content: Text('Ingresa un email valido'),
                         duration: Duration(seconds: 3), // Duración del Snackbar
                       ),
@@ -154,18 +154,18 @@ class RegisterScreen extends ConsumerWidget {
 
                   // Aquí puedes manejar la acción de continuar
                 },
-                child: Text(
+                child:const Text(
                   "Continuar",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
-            SizedBox(height: 10),
+           const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: RichText(
                 textAlign: TextAlign.center,
-                text: TextSpan(
+                text: const TextSpan(
                     style: TextStyle(color: Colors.black),
                     children: [
                       TextSpan(text: "Al registrarte, aceptas nuestros"),
@@ -183,14 +183,14 @@ class RegisterScreen extends ConsumerWidget {
                     ),
               ),
             ),
-            SizedBox(height: 80),
+           const SizedBox(height: 80),
             // Spacer(), // Spacer para llenar el espacio restante
 
             RichText(
               text: TextSpan(
-                style: TextStyle(color: Colors.black),
+                style:const TextStyle(color: Colors.black),
                 children: [
-                  TextSpan(
+                 const TextSpan(
                     text: '¿Ya tienes una cuenta? ',
                   ),
                   TextSpan(
@@ -205,7 +205,7 @@ class RegisterScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+          const  SizedBox(height: 20),
           ],
         ),
       ),
@@ -227,8 +227,8 @@ class FilledButton extends StatelessWidget {
       child: child,
       style: ElevatedButton.styleFrom(
         primary: Colors.blue, // Cambiar el color del botón aquí
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        textStyle: TextStyle(fontSize: 18),
+        padding:const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        textStyle:const TextStyle(fontSize: 18),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     );

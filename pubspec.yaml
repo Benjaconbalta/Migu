@@ -13,21 +13,36 @@ dependencies:
   firebase_storage: ^11.6.6
   flutter:
     sdk: flutter
+  flutter_native_splash: ^2.3.10
   flutter_riverpod: ^2.4.10
   font_awesome_flutter: ^10.7.0
   formz: ^0.6.1
   go_router: ^13.2.0
   google_sign_in: ^6.2.1
-  icon_forest: ^1.1.8
   image_picker: ^1.0.7
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+
+
+flutter_native_splash:
+  color: "#FFFFFF" # Set white background color (assuming you want this)
+  branding: assets/Migu.png # Path to your app icon (assuming this is correct)
+  android_gravity: center # Center the image on Android (assuming you want this)
+  ios_content_mode: center
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/
+    - assets/icon

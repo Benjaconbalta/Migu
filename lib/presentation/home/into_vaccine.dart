@@ -43,16 +43,16 @@ class IntoVaccine extends ConsumerWidget {
                 ref.read(editvaccineProvider.notifier).update((state) => false);
                 ref.read(pressVaccineIntoProvider.notifier).update((state) => false);
               },
-              icon: Icon(Icons.arrow_back, color: Colors.black),
-              label: Text(
+              icon:const Icon(Icons.arrow_back, color: Colors.black),
+              label:const Text(
                 "Atras",
                 style: TextStyle(color: Colors.black),
               ),
             ),
             TextButton.icon(
               onPressed: () {},
-              icon: Icon(Icons.share),
-              label: Text("Compartir"),
+              icon:const Icon(Icons.share),
+              label:const Text("Compartir"),
             ),
           ],
         ),
@@ -158,8 +158,8 @@ class IntoVaccine extends ConsumerWidget {
           color: Colors.grey[200],
           child: Row(
             children: [
-              Text("Etiqueta Vacuna"),
-              Icon(Icons.help),
+             const Text("Etiqueta Vacuna"),
+             const Icon(Icons.help),
               SizedBox(width: screenWidth * 0.1),
               Container(
                 width: screenWidth * 0.2,
@@ -179,8 +179,8 @@ class IntoVaccine extends ConsumerWidget {
           color: Colors.grey[200],
           child: Row(
             children: [
-              Text("Certificado"),
-              Icon(Icons.help),
+            const  Text("Certificado"),
+            const  Icon(Icons.help),
               SizedBox(width: screenWidth * 0.1),
               Container(
                 width: screenWidth * 0.2,
@@ -191,7 +191,7 @@ class IntoVaccine extends ConsumerWidget {
           ),
         ),
 
-        Spacer(),
+      const  Spacer(),
 
         ElevatedButton(
           onPressed: () {
@@ -207,7 +207,7 @@ class IntoVaccine extends ConsumerWidget {
               side: BorderSide(color: Colors.green),
             ),
           ),
-          child: Text(
+          child:const Text(
             'Editar',
             style: TextStyle(color: Colors.black),
           ),
@@ -231,11 +231,4 @@ class IntoVaccine extends ConsumerWidget {
       ],
     );
   }
-}
-Widget nn() {
-  return Column(
-    children: [
-      Text("asdasd"),
-    ],
-  );
 }

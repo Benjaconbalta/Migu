@@ -81,17 +81,17 @@ class IntoAntiparasites extends ConsumerWidget {
                         ),
                   const SizedBox(height: 4),
                   nn.brand=="Seleccionar"
-                      ? Text("No-Marca")
-                      : Text(
+                      ? const Text("No-Marca")
+                      :  Text(
                           "${nn.brand}",
-                          style: TextStyle(fontSize: 16.0, color: Colors.red),
+                          style: const TextStyle(fontSize: 16.0, color: Colors.red),
                         ),
                 ],
               ),
             ],
           ),
         ),
-        SizedBox(height: 20),
+       const SizedBox(height: 20),
         Padding(
           padding: EdgeInsets.only(right: screenWidth * 0.3),
           child: RichText(
@@ -103,20 +103,20 @@ class IntoAntiparasites extends ConsumerWidget {
             ),
           ),
         ),
-        SizedBox(height: 20),
+       const SizedBox(height: 20),
         Padding(
           padding: EdgeInsets.only(right: screenWidth * 0.3),
           child: RichText(
             text: TextSpan(
               children: [
-                TextSpan(text: "Proxima dosis: ", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500)),
-                TextSpan(text: "${nn.nextdose.day} ${getShortMonthName(nn.nextdose.month)} ${nn.nextdose.year}", style: TextStyle(color: Colors.black)),
+              const  TextSpan(text: "Proxima dosis: ", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500)),
+                TextSpan(text: "${nn.nextdose.day} ${getShortMonthName(nn.nextdose.month)} ${nn.nextdose.year}", style: const TextStyle(color: Colors.black)),
               ],
             ),
           ),
         ),
-        SizedBox(height: 20),
-        Spacer(),
+      const  SizedBox(height: 20),
+      const  Spacer(),
         ElevatedButton(
           
           onPressed: () {
@@ -129,10 +129,10 @@ class IntoAntiparasites extends ConsumerWidget {
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
-              side: BorderSide(color: Colors.green),
+              side: const BorderSide(color: Colors.green),
             ),
           ),
-          child: Text(
+          child: const Text(
             'Editar',
             style: TextStyle(color: Colors.black),
           ),
@@ -148,7 +148,7 @@ class IntoAntiparasites extends ConsumerWidget {
                 .then((value) => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Antiparasitario borrado!'))))
                 .then((value) => ref.read(pressAntiparasitesIntoProvider.notifier).update((state) => false));
           },
-          child: Text("Eliminar", style: TextStyle(color: Colors.red)),
+          child:const Text("Eliminar", style: TextStyle(color: Colors.red)),
         ),
       ],
     );

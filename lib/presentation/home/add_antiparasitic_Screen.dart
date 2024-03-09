@@ -51,15 +51,15 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
     final editrueorfalse = ref.watch(editantiparasitesProvider);
     final nn = ref.watch(antiparasitesProvider);
     final infoedit = ref.watch(infoeditantiparasitesProvider);
-int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción predeterminada
+   int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción predeterminada
   List<String> options = ["Interna", "Externa"];
 
   
     return Scaffold(
       appBar: AppBar(
         title: editrueorfalse
-            ? Text("Editar Antiparasitario")
-            : Text("Agregar Antiparasitario  "),
+            ?const Text("Editar Antiparasitario")
+            :const Text("Agregar Antiparasitario  "),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -76,8 +76,20 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
       borderColor: Colors.white,
       borderRadius: BorderRadius.circular(20),
       selectedColor: Colors.green, // Color de la opción seleccionada
+      
+      isSelected: [
+        _selectedIndex == 0, // Opción interna
+        _selectedIndex == 1, // Opción externa (predeterminada)
+      ],
+      onPressed: (int index) {
+        setState(() {
+          _selectedIndex = index; // Cambia el índice de la opción seleccionada
+          ref.read(typeAntiparasitesProvider.notifier).update((state) =>
+              index == 0 ? "Interna" : "Externa"); // Actualiza el estado según la selección
+        });
+      },
       children: [
-        SquareButton2(
+            SquareButton2(
           icon: FontAwesomeIcons.dog,
           text: 'Interna',
           onPressed: () {
@@ -104,17 +116,7 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
           selected: _selectedIndex == 1, // Verifica si esta opción está seleccionada
         ),
       ],
-      isSelected: [
-        _selectedIndex == 0, // Opción interna
-        _selectedIndex == 1, // Opción externa (predeterminada)
-      ],
-      onPressed: (int index) {
-        setState(() {
-          _selectedIndex = index; // Cambia el índice de la opción seleccionada
-          ref.read(typeAntiparasitesProvider.notifier).update((state) =>
-              index == 0 ? "Interna" : "Externa"); // Actualiza el estado según la selección
-        });
-      },
+      
     ),
             editrueorfalse
                 ? MyDropdown(
@@ -153,7 +155,7 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
                           .update((state) => marc!);
                     },
                     label: "marca",
-                    options: [
+                    options:const [
                         "Bravecto",
                         "NEXGARD",
                         "ADVOCATE",
@@ -173,10 +175,10 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
                         "Otro",
                         "Seleccionar"
                       ]),
-            SizedBox(
+           const SizedBox(
               height: 30,
             ),
-            Align(
+          const  Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Fecha de vacunacion*",
@@ -194,10 +196,10 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
                     .update((state) => date);
               },
             ),
-            SizedBox(
+           const SizedBox(
               height: 20,
             ),
-            Align(
+           const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Proxima dosis",
@@ -278,16 +280,16 @@ int _selectedIndex = typeAntiparasites=="Interna"?0:1; // Índice de la opción 
                 // context.go("/home/0");
                 // Aquí puedes manejar la acción de continuar
               
-              child: editrueorfalse? Text("Editar", style: TextStyle(
+              child: editrueorfalse? const Text("Editar", style:  TextStyle(
                   color: Colors.white,
-                ),): Text(
+                ),): const Text(
                 "Agregar",
                 style: TextStyle(
                   color: Colors.white,
                 ),
               ),
             ),
-            SizedBox(
+          const  SizedBox(
               height: 10,
             )
           ],

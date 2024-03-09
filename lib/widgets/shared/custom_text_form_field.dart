@@ -63,7 +63,7 @@ class CustomTextFormField extends StatelessWidget {
               borderSide: const BorderSide(color: Colors.transparent)),
           isDense: true,
           hintText: hint,
-            hintStyle: TextStyle(fontSize: 16),
+            hintStyle: const TextStyle(fontSize: 16),
           // label: label != null ? Text(label!) : null,
     
           errorText: errorMessage,

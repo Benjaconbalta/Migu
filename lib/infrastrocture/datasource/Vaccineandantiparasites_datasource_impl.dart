@@ -121,12 +121,5 @@ class VaccineandantiparasitesDatasourceImpl extends Vaccineandantiparasites {
 
   @override
   Future<void> getInfopet() async {
-
-     
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .snapshots()
-        .map((event) => {});
   }
 }
