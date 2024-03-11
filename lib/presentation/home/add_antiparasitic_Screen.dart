@@ -68,7 +68,7 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
         const    Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Tipo*",
+                  "Tipo",
                   style: TextStyle(fontSize: 18, color: Colors.black),
                 )),
          ToggleButtons(
@@ -121,7 +121,7 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
             editrueorfalse
                 ? MyDropdown(
                     defaultValue: infoedit.brand,
-                    label: "Marca",
+                    label: "Marca*",
                     options: const [
                       "Bravecto",
                       "NEXGARD",
@@ -181,7 +181,7 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
           const  Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Fecha de vacunacion*",
+                  "Fecha de desparasitación*",
                   style: TextStyle(fontSize: 18, color: Colors.black),
                 )),
             DatePicker(
@@ -190,7 +190,7 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
               yeardefault: nn.date.year,
               onDateChanged: (year, month, day) {
                 final date = DateTime(year, month, day);
-                print("date${date}");
+
                 ref
                     .read(dataAntiparasitesProvider.notifier)
                     .update((state) => date);
@@ -290,7 +290,7 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
               ),
             ),
           const  SizedBox(
-              height: 10,
+              height: 30,
             )
           ],
         ),

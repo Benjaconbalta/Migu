@@ -7,12 +7,13 @@ class VetView extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar:    AppBar(
             toolbarHeight: 80,
-            backgroundColor: Color(0xFF272B4E), // Color azul marino
+            backgroundColor: const Color(0xFF272B4E), // Color azul marino
             title: Row(
               children: [
-                Expanded(
+               const Expanded(
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -23,12 +24,12 @@ class VetView extends StatelessWidget {
                   ),
                   
                 ),
-                CircleAvatar(
+               const CircleAvatar(
                   backgroundImage: NetworkImage('https://w7.pngwing.com/pngs/711/768/png-transparent-white-and-brown-dog-illustration-emoji-emoticon-dog-smiley-whatsapp-emoji-carnivoran-dog-like-mammal-car-thumbnail.png'), // Imagen del perfil del usuario
                   radius: 18.0, // Radio para hacerlo redondo
                 ),
                 IconButton(
-                  icon: Icon(Icons.arrow_drop_down_rounded, color: Colors.white),
+                  icon: const Icon(Icons.arrow_drop_down_rounded, color: Colors.white),
                   onPressed: () {
                     // Acción al presionar el icono de fecha
                   },
@@ -36,7 +37,7 @@ class VetView extends StatelessWidget {
               ],
             ),
          ),
-        body: Column(
+        body: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(

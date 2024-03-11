@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:migu/domain/datasource/auth_datasource.dart';
 import 'package:migu/domain/entities/user.dart';
 
@@ -49,13 +49,6 @@ class AuthDatasourceImpl extends AuthDatasource {
         email: email,
         password: password,
       );
-      //     .then(
-      //   (value) {
-      //     FirebaseFirestore.instance
-      //         .collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection("pet")
-      //         .add({"photo": "photodesderegister", "namePet": "none", "typepet": "none"});
-      //   },
-      // );
       return UserApp(
           uid: credential.user!.uid,
           email: credential.user!.email!,
@@ -73,5 +66,24 @@ class AuthDatasourceImpl extends AuthDatasource {
           .showSnackBar(SnackBar(content: Text("Error del servidor${e}")));
     }
     throw Exception('Error inesperado: ');
+  }
+  
+  @override
+  Future<void> googleLogin() async{
+    GoogleSignInAccount? googleuser = await GoogleSignIn().signIn();
+
+    GoogleSignInAuthentication? googleauth = await googleuser?.authentication;
+    AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleauth?.accessToken,
+      idToken: googleauth?.idToken,
+    );
+    UserCredential userCretendial =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+  
+  }
+  
+  @override
+  Future<void> logout()async {
+        await FirebaseAuth.instance.signOut();
   }
 }

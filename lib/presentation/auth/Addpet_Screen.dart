@@ -80,6 +80,7 @@ class _AddPetState extends ConsumerState<AddPet> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                SizedBox(height: 20,),
                 const Text(
                   'Agrega tu mascota',
                   textAlign: TextAlign.center,
@@ -90,7 +91,7 @@ class _AddPetState extends ConsumerState<AddPet> {
                   ),
                 ),
                 const SizedBox(
-                  height: 100,
+                  height: 50,
                 ),
                 imageCaptureTemp != ""
                     ? Container(

@@ -1,27 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:migu/presentation/providers/auth/auth_provider.dart';
+
 import 'package:migu/presentation/providers/auth/login_form_provider.dart';
 import 'package:migu/widgets/shared/custom_text_form_field.dart';
- void signInwithGoogle() async {
-    GoogleSignInAccount? googleuser = await GoogleSignIn().signIn();
 
-    GoogleSignInAuthentication? googleauth = await googleuser?.authentication;
-    AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleauth?.accessToken,
-      idToken: googleauth?.idToken,
-    );
-    UserCredential userCretendial =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-  }
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
- 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loginForm = ref.watch(loginFormProvider);
@@ -30,50 +20,65 @@ class LoginScreen extends ConsumerWidget {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-         const SizedBox(
+            const SizedBox(
               height: 100,
             ),
             Image.asset(
-              "assets/Migu.png",
+              "assets/Migu1.png",
               width: 90,
               height: 60,
             ),
-
-           const SizedBox(height: 80),
+            const SizedBox(height: 80),
             Container(
                 constraints: const BoxConstraints(maxWidth: 300),
-                child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 30,
-                      ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side:const BorderSide(color: Color(0xff3D9A51), width: 1)
-                          // Bordes cuadrados
-                          ),
+                child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 30,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: const BorderSide(
+                      color: Color(0xff3D9A51),
+                      width: 1,
                     ),
-                    onPressed: () {
-                      signInwithGoogle();
-                    },
-                    icon: const FaIcon(
-                      FontAwesomeIcons.google,
-                      color: Colors.black,
+                  ),
+                ),
+                onPressed: () {
+                      ref.read(authProvider.notifier).googleLogin();
+                  // Acción al presionar el botón de inicio de sesión con Google
+                },
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/google.png', // Reemplaza con la ruta de la imagen de Google
+                      width: 24,
+                      height: 24,
                     ),
-                    label: const Text(
+                    SizedBox(width: 10), // Espacio entre la imagen y el texto
+                    Text(
                       "Iniciar Sesión con Google",
                       style: TextStyle(
                         color: Colors.black,
                       ),
-                    ))),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        
+                    ),
 
-          const  SizedBox(height: 10),
-         const   Padding(
+            const SizedBox(height: 10),
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -85,7 +90,7 @@ class LoginScreen extends ConsumerWidget {
                     ),
                   ),
                   Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
                       "o",
                       style: TextStyle(fontSize: 18),
@@ -101,12 +106,12 @@ class LoginScreen extends ConsumerWidget {
               ),
             ),
 
-          const SizedBox(height: 20),
-          const  Padding(
-                padding: EdgeInsets.only(right: 300),
-                child: Text("Correo", style: TextStyle(fontSize: 17))),
+            const SizedBox(height: 20),
+            // const Padding(
+            //     padding: EdgeInsets.only(right: 300),
+            //     child: Text("Correo", style: TextStyle(fontSize: 17))),
 
-            Container(
+            SizedBox(
               width: 360,
               child: CustomTextFormField(
                 hint: "ejemplo@gmail.com",
@@ -118,15 +123,16 @@ class LoginScreen extends ConsumerWidget {
                     : null,
               ),
             ),
-         const   SizedBox(height: 20),
-         const   Padding(
-                padding: EdgeInsets.only(right: 300),
-                child: Text(" password", style: TextStyle(fontSize: 17))),
+            const SizedBox(height: 20),
+            // const Padding(
+            //     padding: EdgeInsets.only(right: 300),
+            //     child: Text(" password", style: TextStyle(fontSize: 17))),
 
-           Container(
+            SizedBox(
               width: 360,
               child: CustomTextFormField(
-                hint: "password",
+                obscureText: true,
+                hint: "*******",
                 onChanged: (value) => ref
                     .read(loginFormProvider.notifier)
                     .onPasswordChange(value),
@@ -136,7 +142,7 @@ class LoginScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Container(
+            SizedBox(
               width: 300,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -144,8 +150,8 @@ class LoginScreen extends ConsumerWidget {
                       borderRadius:
                           BorderRadius.circular(10), // Bordes cuadrados
                     ),
-                    backgroundColor: Color(0xFF3D9A51),
-                    padding: EdgeInsets.symmetric(vertical: 20)),
+                    backgroundColor: const Color(0xFF3D9A51),
+                    padding: const EdgeInsets.symmetric(vertical: 20)),
                 onPressed: () {
                   // context.push("/additionalInfo");
 
@@ -159,18 +165,18 @@ class LoginScreen extends ConsumerWidget {
                 ),
               ),
             ),
-           const SizedBox(height: 10),
-           const Padding(
-              padding: const EdgeInsets.all(30.0),
+            const SizedBox(height: 10),
+            const Padding(
+              padding:  EdgeInsets.all(30.0),
             ),
-           const SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Spacer(), // Spacer para llenar el espacio restante
 
             RichText(
               text: TextSpan(
-                style:const TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 children: [
-                 const TextSpan(
+                  const TextSpan(
                     text: '¿No tienes cuenta? ',
                   ),
                   TextSpan(
@@ -185,7 +191,7 @@ class LoginScreen extends ConsumerWidget {
                 ],
               ),
             ),
-           const SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),

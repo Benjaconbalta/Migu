@@ -27,15 +27,26 @@ class AuthNotifier extends StateNotifier<UserApp> {
   Future<void> registerUser(
       String email, String password, BuildContext context) async {
     try {
-       await authRepository.register(
-          email, password, "sdasdasdsadas", context);
+      await authRepository.register(email, password, "", context);
     } catch (e) {
       // logout();
     }
   }
 
   Future<void> logoutapp() async {
-    await FirebaseAuth.instance.signOut();
+    try {
+      authRepository.logout();
+    } catch (e) {
+      return;
+    }
+  }
+
+  Future<void> googleLogin() async {
+    try {
+      authRepository.googleLogin();
+    } catch (e) {
+      return;
+    }
   }
 }
 

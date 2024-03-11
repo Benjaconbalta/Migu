@@ -1,82 +1,80 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:migu/presentation/providers/auth/auth_provider.dart';
 import 'package:migu/presentation/providers/auth/register_form_provider.dart';
 import 'package:migu/widgets/shared/custom_text_form_field.dart';
 
-final showerrorProvider = StateProvider<bool>((ref) {
-  return false;
-});
-
- void signInwithGoogle() async {
-    GoogleSignInAccount? googleuser = await GoogleSignIn().signIn();
-
-    GoogleSignInAuthentication? googleauth = await googleuser?.authentication;
-    AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleauth?.accessToken,
-      idToken: googleauth?.idToken,
-    );
-    UserCredential userCretendial =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-    // print(userCretendial.user?.displayName);
-  }
-/// Pantalla de registro de usuarios.
 class RegisterScreen extends ConsumerWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final registerForm = ref.watch(registerformProvider);
-    final show = ref.watch(showerrorProvider);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
            const SizedBox(
               height: 100,
             ),
             Image.asset(
-              "assets/Migu.png",
+              "assets/Migu1.png",
               width: 90,
               height: 60,
             ),
-
            const SizedBox(height: 100),
             Container(
                 constraints:const BoxConstraints(maxWidth: 300),
-                child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 60,
-                      ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: const BorderSide(color: Color(0xff3D9A51), width: 1)
-                          // Bordes cuadrados
-                          ),
+                child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 30,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: const BorderSide(
+                      color: Color(0xff3D9A51),
+                      width: 1,
                     ),
-                    onPressed: () {
-                      signInwithGoogle();
-                    },
-                    icon:const FaIcon(
-                      FontAwesomeIcons.google,
-                      color: Colors.black,
+                  ),
+                ),
+                onPressed: () {
+                      ref.read(authProvider.notifier).googleLogin();
+                  // Acción al presionar el botón de inicio de sesión con Google
+                },
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/google.png', // Reemplaza con la ruta de la imagen de Google
+                      width: 24,
+                      height: 24,
                     ),
-                    label:const Text(
-                      "Continuar con google",
+                    SizedBox(width: 10), // Espacio entre la imagen y el texto
+                    Text(
+                      "Iniciar Sesión con Google",
                       style: TextStyle(
                         color: Colors.black,
                       ),
-                    ))),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+                
+                
+                 ),
 
           const  SizedBox(height: 20),
           const  Padding(
@@ -91,7 +89,7 @@ class RegisterScreen extends ConsumerWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding:  EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
                       "o",
                       style: TextStyle(fontSize: 18),
@@ -108,11 +106,11 @@ class RegisterScreen extends ConsumerWidget {
             ),
 
           const  SizedBox(height: 20),
-          const  Padding(
-                padding: EdgeInsets.only(right: 300),
-                child: Text("Correo", style: TextStyle(fontSize: 17))),
+          // const  Padding(
+          //       padding: EdgeInsets.only(right: 300),
+          //       child: Text("Correo", style: TextStyle(fontSize: 17))),
 
-            Container(
+            SizedBox(
               width: 360,
               child: CustomTextFormField(
                 hint: "ejemplo@gmail.com",
@@ -128,7 +126,7 @@ class RegisterScreen extends ConsumerWidget {
             ),
           const  SizedBox(height: 20),
 
-            Container(
+            SizedBox(
               width: 300,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -149,10 +147,6 @@ class RegisterScreen extends ConsumerWidget {
                       ),
                     );
                   }
-
-                  // ref.read(registerformProvider.notifier).onFormSubmit(context);
-
-                  // Aquí puedes manejar la acción de continuar
                 },
                 child:const Text(
                   "Continuar",
@@ -174,12 +168,6 @@ class RegisterScreen extends ConsumerWidget {
                               " Términos y Condiciones,  Política de privacidad",
                           style: TextStyle(color: Colors.green))
                     ]
-                    //  Text(
-                    //                 softWrap: true,
-                    //                 "Al registrarte, aceptas nuestros Términos y Condiciones, y la Política de privacidad",
-                    //                 style: TextStyle(),
-                    //                 textAlign: TextAlign.center,
-                    //               ),
                     ),
               ),
             ),
@@ -195,7 +183,7 @@ class RegisterScreen extends ConsumerWidget {
                   ),
                   TextSpan(
                     text: 'Inicia sesión',
-                    style: TextStyle(color: Colors.green), // Color verde
+                    style: const TextStyle(color: Colors.green), // Color verde
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         // Navigator.push(

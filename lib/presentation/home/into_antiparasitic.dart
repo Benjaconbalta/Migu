@@ -54,7 +54,7 @@ class IntoAntiparasites extends ConsumerWidget {
         ),
         Container(
           height: 100,
-          width: screenWidth * 0.8,
+          width: screenWidth * 0.9,
           padding: const EdgeInsets.all(10.0),
           color: Colors.grey[200],
           child: Row(

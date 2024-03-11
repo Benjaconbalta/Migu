@@ -147,7 +147,7 @@ class AddVaccineScreen extends ConsumerWidget {
                               .read(typeProvider.notifier)
                               .update((state) => ti!);
                         },
-                        label: "tipo",
+                        label: "Tipo",
                         options: const [
                           'Antirrábica ',
                           'Sextuple',
@@ -195,7 +195,7 @@ class AddVaccineScreen extends ConsumerWidget {
                               .read(marcaProvider.notifier)
                               .update((state) => p0!);
                         },
-                        label: "marca",
+                        label: "Marca",
                         options: const [
                           'Rabguard',
                           'Nobivac',
@@ -213,14 +213,16 @@ class AddVaccineScreen extends ConsumerWidget {
                               'Otra',
                         ],
                       ),
-                const Align(
+ const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Fecha de vacunacion*",
+                      "Fecha de vacunación",
                       style: TextStyle(fontSize: 18, color: Colors.black),
                     )),
                 editrueorfalse
-                    ? DatePicker(
+                    ?
+                    
+                     DatePicker(
                         deaydefault: nn.date.day,
                         monthdefault: nn.date.month,
                         yeardefault: nn.date.year,
@@ -263,7 +265,8 @@ class AddVaccineScreen extends ConsumerWidget {
                                   return AlertDialog(
                                     content: const Wrap(
                                       children: [
-                                        Text(
+                                       
+                                          Text(
                                             'Siempre consulta con un veterinario antes de vacunar'),
                                       ],
                                     ),
@@ -309,10 +312,13 @@ class AddVaccineScreen extends ConsumerWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  content: const Wrap(
+                                  title: const Text("Etiqueta Vacuna  "),
+                                  content:const  Wrap(
                                     children: [
-                                      Text(
+
+                                     const Text(
                                           'Cada vacuna viene con una etiqueta que sirve para certificar el número de Lote.'),
+                                        
                                     ],
                                   ),
                                   actions: <Widget>[
@@ -365,6 +371,7 @@ class AddVaccineScreen extends ConsumerWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
+                                     title: const Text("Certificado  "),
                                   content: const Wrap(
                                     children: [
                                       Text(
@@ -906,23 +913,25 @@ class _DatePickerState extends ConsumerState<DatePicker> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.min,
       children: [
-        _buildDatePicker("Día", _buildDayDropdown()),
+      
+        _buildDatePicker("", _buildDayDropdown()),
         SizedBox(width: 10),
-        _buildDatePicker("Mes", _buildMonthDropdown()),
+        _buildDatePicker("", _buildMonthDropdown()),
         SizedBox(width: 10),
-        _buildDatePicker("Año", _buildYearDropdown()),
+        _buildDatePicker("", _buildYearDropdown()),
       ],
     );
   }
 
   Widget _buildDatePicker(String labelText, Widget dropdown) {
     return Column(
+   
       children: [
         Text(
           labelText,
           style: TextStyle(fontSize: 18, color: Colors.black),
         ),
-        SizedBox(height: 8),
+     
         dropdown,
       ],
     );
@@ -930,7 +939,7 @@ class _DatePickerState extends ConsumerState<DatePicker> {
 
   Widget _buildYearDropdown() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+      padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade400, width: 1.0),
         borderRadius: BorderRadius.circular(8.0),
@@ -953,7 +962,7 @@ class _DatePickerState extends ConsumerState<DatePicker> {
 
   Widget _buildMonthDropdown() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade400, width: 1.0),
         borderRadius: BorderRadius.circular(8.0),
@@ -976,7 +985,7 @@ class _DatePickerState extends ConsumerState<DatePicker> {
 
   Widget _buildDayDropdown() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade400, width: 1.0),
         borderRadius: BorderRadius.circular(8.0),

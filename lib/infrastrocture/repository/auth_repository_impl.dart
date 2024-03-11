@@ -7,9 +7,8 @@ import 'package:migu/infrastrocture/datasource/auth_datasource_impl.dart';
 class AuthRepositoryImpl extends AuthRepository {
   final AuthDatasource datasource;
 
-AuthRepositoryImpl({AuthDatasource? datasource})
+  AuthRepositoryImpl({AuthDatasource? datasource})
       : datasource = datasource ?? AuthDatasourceImpl();
-
 
   @override
   Future<UserApp> login(String email, String password, BuildContext context) {
@@ -20,5 +19,15 @@ AuthRepositoryImpl({AuthDatasource? datasource})
   Future<UserApp> register(
       String email, String password, String fullName, BuildContext context) {
     return datasource.register(email, password, fullName, context);
+  }
+
+  @override
+  Future<void> googleLogin() {
+    return datasource.googleLogin();
+  }
+
+  @override
+  Future<void> logout() {
+    return datasource.logout();
   }
 }

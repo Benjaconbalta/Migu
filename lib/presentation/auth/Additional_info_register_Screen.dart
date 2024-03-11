@@ -21,7 +21,7 @@ class AdditionalInfoRegisterScreen extends ConsumerWidget {
                  const SizedBox(
             height: 100,
           ),
-           Image.asset("assets/Migu.png",width: 90,height: 60,),
+           Image.asset("assets/Migu1.png",width: 90,height: 60,),
            const SizedBox(height: 90),
          Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -52,6 +52,7 @@ class AdditionalInfoRegisterScreen extends ConsumerWidget {
              ),
          const  SizedBox(height: 20),
           CustomTextFormField(
+            obscureText: true,
                hint: 'Contraseña',
                  onChanged: (value) =>
                  ref.read(registerformProvider.notifier).onPasswordChange(value),
@@ -76,7 +77,7 @@ class AdditionalInfoRegisterScreen extends ConsumerWidget {
                  }else{
                        ScaffoldMessenger.of(context).showSnackBar(
              const  SnackBar(
-                 content: Text('Rellena toda la informaciom'),
+                 content: Text('Por favor, Completa todos los Campos'),
                  duration: Duration(seconds: 3), // Duración del Snackbar
                ),
              );

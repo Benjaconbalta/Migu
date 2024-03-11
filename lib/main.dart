@@ -30,6 +30,7 @@ class _MainAppState extends ConsumerState<MainApp> {
   @override
   Widget build(BuildContext context) {
           final approuter = ref.watch(goRouterProvider);
+           FlutterNativeSplash.remove();
     return  MaterialApp.router( 
        routerConfig: approuter,
        debugShowCheckedModeBanner: false,
