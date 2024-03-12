@@ -62,7 +62,7 @@ class RegisterScreen extends ConsumerWidget {
                     ),
                     SizedBox(width: 10), // Espacio entre la imagen y el texto
                     Text(
-                      "Iniciar Sesión con Google",
+                      "Regístrate con Google",
                       style: TextStyle(
                         color: Colors.black,
                       ),
