@@ -66,13 +66,13 @@ class VaccineandAntiparasitesState {
       );
 }
 
-final vaccineFirebaseProvider = StreamProvider<List<Vaccine>>((ref) {
+final vaccineFirebaseProvider = StreamProvider.autoDispose<List<Vaccine>>((ref) {
   final vaccineF = ref.watch(vaccineandAntiparasitesRepositoryProvider).getVaccine();
 // print ()
   return vaccineF;
 });
-
-final antiparasitesFirebaseProvider = StreamProvider<List<Antiparasites>>((ref) {
+//poner al autodispose
+final antiparasitesFirebaseProvider = StreamProvider.autoDispose<List<Antiparasites>>((ref) {
   final antiparasites = ref.watch(vaccineandAntiparasitesRepositoryProvider).getAntiparasites();
 // print ()
   return antiparasites;

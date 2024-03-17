@@ -7,37 +7,39 @@ import 'package:migu/domain/entities/user.dart';
 class AuthDatasourceImpl extends AuthDatasource {
   @override
   Future<UserApp> login(
-      String email, String password, BuildContext context) async {
+      String email, String password, Function customshowSnackBar) async {
     try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      final user = credential.user;
-      if (user != null) {
-        // El usuario ha iniciado sesión correctamente.
-        final uid = user.uid; // Aquí obtienes el UID del usuario.
-
-        return UserApp(
-          uid: uid,
-          email: email,
-          fullName: "",
-        );
-      }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-          "Usuario No Encontrado❌",
-        )));
-      } else if (e.code == 'wrong-password') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Contraseña Icorrecta❌")),
-        );
+         print(e);
+      String errorMessage;
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage =
+              'Usuario no encontrado. Por favor, revisa tu correo electrónico.';
+          break;
+        case 'wrong-password':
+          errorMessage =
+              'Contraseña incorrecta. Por favor, intenta nuevamente.';
+          break;
+        case 'invalid-credential':
+          errorMessage = 'La cuenta no existe❌';
+          break;
+        default:
+          errorMessage =
+              'Ha ocurrido un error. Por favor, intenta nuevamente más tarde.';
       }
+      customshowSnackBar(errorMessage);
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Error del servidor$e")));
+      customshowSnackBar(
+          'Ha ocurrido un error. Por favor, intenta nuevamente más tarde.');
     }
-    throw Exception('Error inesperado: ');
+    return UserApp(
+      uid: "",
+      email: "email@gmail.com",
+      fullName: "asd",
+    );
   }
 
   @override
@@ -67,9 +69,9 @@ class AuthDatasourceImpl extends AuthDatasource {
     }
     throw Exception('Error inesperado: ');
   }
-  
+
   @override
-  Future<void> googleLogin() async{
+  Future<UserCredential> googleLogin() async {
     GoogleSignInAccount? googleuser = await GoogleSignIn().signIn();
 
     GoogleSignInAuthentication? googleauth = await googleuser?.authentication;
@@ -77,13 +79,14 @@ class AuthDatasourceImpl extends AuthDatasource {
       accessToken: googleauth?.accessToken,
       idToken: googleauth?.idToken,
     );
-    UserCredential userCretendial =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-  
+    // UserCredential userCretendial =
+    //     await FirebaseAuth.instance.signInWithCredential(credential);
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
-  
+
   @override
-  Future<void> logout()async {
-        await FirebaseAuth.instance.signOut();
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
   }
 }

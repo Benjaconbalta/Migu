@@ -1,4 +1,4 @@
-package com.example.migu
+package com.benjamin.migu
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -191,7 +191,7 @@ class IntoVaccine extends ConsumerWidget {
           ),
         ),
 
-      const  Spacer(),
+    SizedBox(height: 30,),
 
         ElevatedButton(
           onPressed: () {

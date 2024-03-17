@@ -11,7 +11,52 @@ import 'package:migu/presentation/home/into_vaccine.dart';
 import 'package:migu/presentation/providers/Vaccineandantiparasites/Vaccineandantiparasites_repository_provider.dart';
 import 'package:migu/presentation/providers/Vaccineandantiparasites/vaccineandAntiparasites_provider.dart';
 import 'package:migu/presentation/views/home_view.dart';
+int _getMonthNumber(String month) {
+  switch (month) {
+    case 'Ene':
+      return 1;
+    case 'Feb':
+      return 2;
+    case 'Mar':
+      return 3;
+    case 'Abr':
+      return 4;
+    case 'May':
+      return 5;
+    case 'Jun':
+      return 6;
+    case 'Jul':
+      return 7;
+    case 'Ago':
+      return 8;
+    case 'Sep':
+      return 9;
+    case 'Oct':
+      return 10;
+    case 'Nov':
+      return 11;
+    case 'Dic':
+      return 12;
+    default:
+      return 1;
+  }
+}
 
+// Método para verificar si la fecha es válida
+bool _isValidDate(int day, int month, int year) {
+  if (month < 1 || month > 12) {
+    return false;
+  }
+  if (day < 1 || day > _daysInMonth(month, year)) {
+    return false;
+  }
+  return true;
+}
+
+// Método para obtener el número de días en un mes
+int _daysInMonth(int month, int year) {
+  return DateTime(year, month + 1, 0).day;
+}
 String imagerUrl = "";
 
 final imagerProvider = StateProvider<String>((ref) {
@@ -105,6 +150,36 @@ class AddVaccineScreen extends ConsumerWidget {
     // final trueorfalse = ref.watch(isurlrFinishProvider);
     // final trueor2false = ref.watch(isurlrFinish2Provider);
     final infoedit = ref.watch(infoeditvaccineProvider);
+    String obtenerMesEnPalabras(int numeroMes) {
+      switch (numeroMes) {
+        case 1:
+          return 'Ene';
+        case 2:
+          return 'Feb';
+        case 3:
+          return 'Mar';
+        case 4:
+          return 'Abr';
+        case 5:
+          return 'May';
+        case 6:
+          return 'Jun';
+        case 7:
+          return 'Jul';
+        case 8:
+          return 'Ago';
+        case 9:
+          return 'Sep';
+        case 10:
+          return 'Oct';
+        case 11:
+          return 'Nov';
+        case 12:
+          return 'Dic';
+        default:
+          return ''; // En caso de que el número de mes no esté en el rango válido
+      }
+    }
 
     return Scaffold(
         appBar: AppBar(
@@ -213,38 +288,62 @@ class AddVaccineScreen extends ConsumerWidget {
                               'Otra',
                         ],
                       ),
- const Align(
+                const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Fecha de vacunación",
                       style: TextStyle(fontSize: 18, color: Colors.black),
                     )),
                 editrueorfalse
-                    ?
-                    
-                     DatePicker(
-                        deaydefault: nn.date.day,
-                        monthdefault: nn.date.month,
-                        yeardefault: nn.date.year,
-                        onDateChanged: (year, month, day) {
-                          final date = DateTime(year, month, day);
+                    ? DateSelectionWidget(
+                        deaydefault: infoedit.date.day.toString(),
+                        monthdefault: obtenerMesEnPalabras(infoedit.date.month),
+                        yeardefault: infoedit.date.year.toString(),
+                             onChanged: (day, month, year) {
+    // Convertir los valores de cadena a enteros
+    int dayInt = int.tryParse(day) ?? 1;
+    int monthInt = _getMonthNumber(month);
+    int yearInt = int.tryParse(year) ?? DateTime.now().year;
 
-                          ref
-                              .read(datevaccineProvider.notifier)
-                              .update((state) => date);
-                        },
+    // Verificar si los valores son válidos
+    if (_isValidDate(dayInt, monthInt, yearInt)) {
+      // Crear un objeto DateTime
+      final date = DateTime(yearInt, monthInt, dayInt);
+      
+      // Actualizar el estado con la fecha seleccionada
+      ref.read(datevaccineProvider.notifier).update((state) => date);
+    } else {
+      // Manejar el caso de fecha inválida aquí
+      print("Fecha inválida");
+    }
+  },
                       )
-                    : DatePicker(
-                        deaydefault: DateTime.now().day,
-                        monthdefault: DateTime.now().month,
-                        yeardefault: DateTime.now().year,
-                        onDateChanged: (year, month, day) {
-                          final date = DateTime(year, month, day);
+                    : Column(
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          DateSelectionWidget(
+                          onChanged: (day, month, year) {
+    // Convertir los valores de cadena a enteros
+    int dayInt = int.tryParse(day) ?? 1;
+    int monthInt = _getMonthNumber(month);
+    int yearInt = int.tryParse(year) ?? DateTime.now().year;
 
-                          ref
-                              .read(datevaccineProvider.notifier)
-                              .update((state) => date);
-                        },
+    // Verificar si los valores son válidos
+    if (_isValidDate(dayInt, monthInt, yearInt)) {
+      // Crear un objeto DateTime
+      final date = DateTime(yearInt, monthInt, dayInt);
+      
+      // Actualizar el estado con la fecha seleccionada
+      ref.read(datevaccineProvider.notifier).update((state) => date);
+    } else {
+      // Manejar el caso de fecha inválida aquí
+      print("Fecha inválida");
+    }
+  },
+                          ),
+                        ],
                       ),
                 const SizedBox(
                   height: 20,
@@ -257,6 +356,8 @@ class AddVaccineScreen extends ConsumerWidget {
                           "Proxima dosis ",
                           style: TextStyle(fontSize: 18, color: Colors.black),
                         ),
+
+                        // DateSelectionWidget(),
                         GestureDetector(
                             onTap: () {
                               showDialog(
@@ -265,8 +366,7 @@ class AddVaccineScreen extends ConsumerWidget {
                                   return AlertDialog(
                                     content: const Wrap(
                                       children: [
-                                       
-                                          Text(
+                                        Text(
                                             'Siempre consulta con un veterinario antes de vacunar'),
                                       ],
                                     ),
@@ -285,15 +385,57 @@ class AddVaccineScreen extends ConsumerWidget {
                             child: const Icon(Icons.help))
                       ],
                     )),
-                DatePicker(
-                    deaydefault: nn.nextdose.day,
-                    monthdefault: nn.nextdose.month,
-                    yeardefault: nn.nextdose.year,
-                    onDateChanged: (year, month, day) {
-                      final date = DateTime(year, month, day);
-                      ref.read(nextDosis.notifier).update((state) => date);
-                    }),
-                const SizedBox(
+              
+                SizedBox(
+                  height: 10,
+                ),
+                       editrueorfalse?
+                DateSelectionWidget(
+                     deaydefault: infoedit.nextdose.day.toString(),
+                         monthdefault: obtenerMesEnPalabras(infoedit.nextdose.month),
+                         yeardefault: infoedit.nextdose.year.toString(),
+                               onChanged: (day, month, year) {
+    // Convertir los valores de cadena a enteros
+    int dayInt = int.tryParse(day) ?? 1;
+    int monthInt = _getMonthNumber(month);
+    int yearInt = int.tryParse(year) ?? DateTime.now().year;
+
+    // Verificar si los valores son válidos
+    if (_isValidDate(dayInt, monthInt, yearInt)) {
+      // Crear un objeto DateTime
+      final date = DateTime(yearInt, monthInt, dayInt);
+      
+      // Actualizar el estado con la fecha seleccionada
+      ref.read(nextDosis.notifier).update((state) => date);
+    } else {
+      // Manejar el caso de fecha inválida aquí
+      print("Fecha inválida");
+    }
+  },
+     
+                ):     DateSelectionWidget(
+                   
+                               onChanged: (day, month, year) {
+    // Convertir los valores de cadena a enteros
+    int dayInt = int.tryParse(day) ?? 1;
+    int monthInt = _getMonthNumber(month);
+    int yearInt = int.tryParse(year) ?? DateTime.now().year;
+
+    // Verificar si los valores son válidos
+    if (_isValidDate(dayInt, monthInt, yearInt)) {
+      // Crear un objeto DateTime
+      final date = DateTime(yearInt, monthInt, dayInt);
+      
+      // Actualizar el estado con la fecha seleccionada
+      ref.read(nextDosis.notifier).update((state) => date);
+    } else {
+      // Manejar el caso de fecha inválida aquí
+      print("Fecha inválida");
+    }
+  },
+     
+                ) ,
+                SizedBox(
                   height: 30,
                 ),
                 Container(
@@ -313,12 +455,10 @@ class AddVaccineScreen extends ConsumerWidget {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: const Text("Etiqueta Vacuna  "),
-                                  content:const  Wrap(
+                                  content: const Wrap(
                                     children: [
-
-                                     const Text(
+                                      Text(
                                           'Cada vacuna viene con una etiqueta que sirve para certificar el número de Lote.'),
-                                        
                                     ],
                                   ),
                                   actions: <Widget>[
@@ -349,12 +489,15 @@ class AddVaccineScreen extends ConsumerWidget {
                                       takePhoto1();
                                     },
                                   )
-                                : Image.file(File(image1Temp)),
+                                : image1firebase == ""
+                                    ? const Center(
+                                        child: CircularProgressIndicator())
+                                    : Image.file(File(image1Temp)),
                       )
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Container(
@@ -371,7 +514,7 @@ class AddVaccineScreen extends ConsumerWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                     title: const Text("Certificado  "),
+                                  title: const Text("Certificado  "),
                                   content: const Wrap(
                                     children: [
                                       Text(
@@ -406,7 +549,10 @@ class AddVaccineScreen extends ConsumerWidget {
                                       takePhoto2();
                                     },
                                   )
-                                : Image.file(File(image2Temp)),
+                                : imagen2firebase == ""
+                                    ? const Center(
+                                        child: CircularProgressIndicator())
+                                    : Image.file(File(image2Temp)),
                       )
                     ],
                   ),
@@ -429,10 +575,9 @@ class AddVaccineScreen extends ConsumerWidget {
 
                       if (editrueorfalse) {
                         if (nn.type.isEmpty ||
-                          nn.brand .isEmpty ||
+                            nn.brand.isEmpty ||
                             nn.photovaccinelabel.isEmpty ||
                             nn.photocertificate.isEmpty) {
-              
                           final snackBar = SnackBar(
                             content: const Text(
                                 '¡porfavor rellenar todos los campos'),
@@ -449,6 +594,12 @@ class AddVaccineScreen extends ConsumerWidget {
                           // Mostrar el Snackbar en el contexto actual
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         } else {
+//                           String _dosDigitos(int numero) {
+//   return numero.toString().padLeft(2, '0');
+// }
+// final dateSeleccionada = ref.watch(datevaccineProvider); // Obtener la fecha seleccionada por el usuario
+// final dateFormateada = '${dateSeleccionada.year}-${_dosDigitos(dateSeleccionada.month)}-${_dosDigitos(dateSeleccionada.day)}'; // Formatear la fecha
+
                           FirebaseFirestore.instance
                               .collection("users")
                               .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -458,12 +609,8 @@ class AddVaccineScreen extends ConsumerWidget {
                                 "type": tipo == "" ? nn.type : tipo,
                                 "brand": marca == "" ? nn.brand : marca,
                                 "vaccination": "",
-                                "date": datevacine == DateTime.now()
-                                    ? nn.date
-                                    : datevacine,
-                                "nextdose": nestdosis == DateTime.now()
-                                    ? nn.nextdose
-                                    : nestdosis,
+                                "date": datevacine,
+                                "nextdose": nestdosis,
                                 "photovaccinelabel": image1firebase == ""
                                     ? nn.photovaccinelabel
                                     : image1firebase,
@@ -484,6 +631,7 @@ class AddVaccineScreen extends ConsumerWidget {
                               .then((value) => {context.go("/home/0")});
                         }
                       } else {
+                        //TODO:     //aca poner algo como si el image1firebase imagen se esta cargando
                         if (tipo.isEmpty ||
                             marca.isEmpty ||
                             image1firebase.isEmpty ||
@@ -531,7 +679,7 @@ class AddVaccineScreen extends ConsumerWidget {
                       padding: const EdgeInsets.all(18),
                       child: editrueorfalse
                           ? const Text(
-                              "Editar",
+                              "Guardar",
                               style: TextStyle(color: Colors.white),
                             )
                           : const Text(
@@ -874,179 +1022,353 @@ class _MyDropdownState extends State<MyDropdown> {
   }
 }
 
-class DatePicker extends ConsumerStatefulWidget {
-  final void Function(int year, int month, int day)? onDateChanged;
-  final int deaydefault;
-  final int monthdefault;
-  final int yeardefault;
-
-  const DatePicker(
+class DateSelectionWidget extends StatefulWidget {
+  final void Function(String day, String month, String year)? onChanged;
+  final String deaydefault;
+  final String monthdefault;
+  final String yeardefault;
+  DateSelectionWidget(
       {Key? key,
-      this.onDateChanged,
-      this.deaydefault = 0,
-      this.monthdefault = 0,
-      this.yeardefault = 0})
+      this.onChanged,
+      this.deaydefault = "",
+      this.monthdefault = "",
+      this.yeardefault = ""})
       : super(key: key);
 
   @override
-  _DatePickerState createState() => _DatePickerState();
+  _DateSelectionWidgetState createState() => _DateSelectionWidgetState();
 }
 
-class _DatePickerState extends ConsumerState<DatePicker> {
-  late int _selectedYear;
-  late int _selectedMonth;
-  late int _selectedDay;
-//aca pasar
+class _DateSelectionWidgetState extends State<DateSelectionWidget> {
+  late String selectedDay;
+  late String selectedMonth;
+  late String selectedYear;
 
   @override
   void initState() {
     super.initState();
-    _selectedYear = widget.yeardefault;
-    _selectedMonth = widget.monthdefault;
-    _selectedDay = widget.deaydefault;
-    // _selectedDay = now.day
+    selectedDay = widget.deaydefault.toString().isEmpty
+        ? 'Dia'
+        : widget.deaydefault.toString();
+    selectedMonth = widget.monthdefault.toString().isEmpty
+        ? 'Mes'
+        : widget.monthdefault.toString();
+    selectedYear = widget.yeardefault.toString().isEmpty
+        ? DateTime.now().year.toString()
+        : widget.yeardefault.toString();
   }
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      mainAxisSize: MainAxisSize.min,
       children: [
-      
-        _buildDatePicker("", _buildDayDropdown()),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade400, width: 1.0),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            width: 100, // Puedes ajustar este valor según tus necesidades
+
+            child: DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                  border: UnderlineInputBorder(borderSide: BorderSide.none)),
+              value: selectedDay.isNotEmpty ? selectedDay : null,
+              onChanged: (String? value) {
+                setState(() {
+                  selectedDay = value!;
+                  _notifyParent();
+                });
+              },
+              items: [
+                DropdownMenuItem<String>(
+                  value: 'Dia',
+                  child: Text(
+                    'Día',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                ...List.generate(31, (index) {
+                  return DropdownMenuItem<String>(
+                    value: (index + 1).toString(),
+                    child: Text((index + 1).toString(),
+                        style: TextStyle(fontSize: 18)),
+                  );
+                }).toList(),
+              ],
+            ),
+          ),
+        ),
         SizedBox(width: 10),
-        _buildDatePicker("", _buildMonthDropdown()),
-        SizedBox(width: 10),
-        _buildDatePicker("", _buildYearDropdown()),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade400, width: 1.0),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            width: 100, // Puedes ajustar este valor según tus necesidades
+
+            child: DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                  border: UnderlineInputBorder(borderSide: BorderSide.none)),
+              value: selectedMonth,
+              onChanged: (String? value) {
+                setState(() {
+                  selectedMonth = value!;
+                  _notifyParent();
+                });
+              },
+              items: [
+                DropdownMenuItem<String>(
+                  value: 'Mes',
+                  child: Text(
+                    'Mes',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                ...[
+                  
+                  'Ene',
+                  'Feb',
+                  'Mar',
+                  'Abr',
+                  'May',
+                  'Jun',
+                  'Jul',
+                  'Ago',
+                  'Sep',
+                  'Oct',
+                  'Nov',
+                  'Dic',
+                ].map((String month) {
+                  return DropdownMenuItem<String>(
+                    value: month,
+                    child: Text(month, style: TextStyle(fontSize: 18)),
+                  );
+                }).toList(),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade400, width: 1.0),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            width: 100, // Puedes ajustar este valor según tus necesidades
+
+            child: DropdownButtonFormField<String>(
+              decoration: const InputDecoration(
+                  border: UnderlineInputBorder(borderSide: BorderSide.none)),
+              value: selectedYear,
+              onChanged: (String? value) {
+                setState(() {
+                  selectedYear = value!;
+                  _notifyParent();
+                });
+              },
+              items: List.generate(50, (index) {
+                int year = DateTime.now().year + index;
+                return DropdownMenuItem<String>(
+                  value: year.toString(),
+                  child: Text(year.toString(),
+                      style: const TextStyle(fontSize: 18)),
+                );
+              }),
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildDatePicker(String labelText, Widget dropdown) {
-    return Column(
-   
-      children: [
-        Text(
-          labelText,
-          style: TextStyle(fontSize: 18, color: Colors.black),
-        ),
-     
-        dropdown,
-      ],
-    );
-  }
-
-  Widget _buildYearDropdown() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade400, width: 1.0),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: DropdownButton<int>(
-        value: _selectedYear,
-        items: _buildYearItems(),
-        onChanged: (value) {
-          setState(() {
-            _selectedYear = value!;
-            widget.onDateChanged
-                ?.call(_selectedYear, _selectedMonth, _selectedDay);
-          });
-        },
-        icon: null,
-        hint: Text('Año'),
-      ),
-    );
-  }
-
-  Widget _buildMonthDropdown() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade400, width: 1.0),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: DropdownButton<int>(
-        value: _selectedMonth,
-        items: _buildMonthItems(),
-        onChanged: (value) {
-          setState(() {
-            _selectedMonth = value!;
-            widget.onDateChanged
-                ?.call(_selectedYear, _selectedMonth, _selectedDay);
-          });
-        },
-        icon: null,
-        hint: Text('Mes'),
-      ),
-    );
-  }
-
-  Widget _buildDayDropdown() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade400, width: 1.0),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: DropdownButton<int>(
-        value: _selectedDay,
-        items: _buildDayItems(),
-        onChanged: (value) {
-          setState(() {
-            _selectedDay = value!;
-            widget.onDateChanged
-                ?.call(_selectedYear, _selectedMonth, _selectedDay);
-          });
-        },
-        icon: null,
-        hint: Text('Día'),
-      ),
-    );
-  }
-
-  List<DropdownMenuItem<int>> _buildYearItems() {
-    List<DropdownMenuItem<int>> items = [];
-    int currentYear = DateTime.now().year;
-    for (int year = currentYear; year <= currentYear + 100; year++) {
-      items.add(DropdownMenuItem<int>(
-        value: year,
-        child: Text(
-          year.toString(),
-          style: TextStyle(fontSize: 20),
-        ),
-      ));
+  void _notifyParent() {
+    if (widget.onChanged != null) {
+      widget.onChanged!(selectedDay, selectedMonth, selectedYear);
     }
-    return items;
-  }
-
-  List<DropdownMenuItem<int>> _buildMonthItems() {
-    List<DropdownMenuItem<int>> items = [];
-    for (int month = 1; month <= 12; month++) {
-      items.add(DropdownMenuItem<int>(
-        value: month,
-        child: Text(
-          month.toString(),
-          style: TextStyle(fontSize: 20),
-        ),
-      ));
-    }
-    return items;
-  }
-
-  List<DropdownMenuItem<int>> _buildDayItems() {
-    List<DropdownMenuItem<int>> items = [];
-    int daysInMonth = DateTime(_selectedYear, _selectedMonth + 1, 0).day;
-    for (int day = 1; day <= daysInMonth; day++) {
-      items.add(DropdownMenuItem<int>(
-        value: day,
-        child: Text(
-          day.toString(),
-          style: TextStyle(fontSize: 20),
-        ),
-      ));
-    }
-    return items;
   }
 }
+
+// class DatePicker extends ConsumerStatefulWidget {
+//   final void Function(int year, int month, int day)? onDateChanged;
+//   final int deaydefault;
+//   final int monthdefault;
+//   final int yeardefault;
+
+//   const DatePicker(
+//       {Key? key,
+//       this.onDateChanged,
+//       this.deaydefault = 0,
+//       this.monthdefault = 0,
+//       this.yeardefault = 0})
+//       : super(key: key);
+
+//   @override
+//   _DatePickerState createState() => _DatePickerState();
+// }
+
+// class _DatePickerState extends ConsumerState<DatePicker> {
+//   late int _selectedYear;
+//   late int _selectedMonth;
+//   late int _selectedDay;
+// //aca pasar
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _selectedYear = widget.yeardefault;
+//     _selectedMonth = widget.monthdefault;
+//     _selectedDay = widget.deaydefault;
+//     // _selectedDay = now.day
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//       mainAxisSize: MainAxisSize.min,
+//       children: [
+//         _buildDatePicker("", _buildDayDropdown()),
+//         SizedBox(width: 10),
+//         _buildDatePicker("", _buildMonthDropdown()),
+//         SizedBox(width: 10),
+//         _buildDatePicker("", _buildYearDropdown()),
+//       ],
+//     );
+//   }
+
+//   Widget _buildDatePicker(String labelText, Widget dropdown) {
+//     return Column(
+//       children: [
+//         Text(
+//           labelText,
+//           style: TextStyle(fontSize: 18, color: Colors.black),
+//         ),
+//         dropdown,
+//       ],
+//     );
+//   }
+
+//   Widget _buildYearDropdown() {
+//     return Container(
+//       padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+//       decoration: BoxDecoration(
+//         border: Border.all(color: Colors.grey.shade400, width: 1.0),
+//         borderRadius: BorderRadius.circular(8.0),
+//       ),
+//       child: DropdownButton<int>(
+//         value: _selectedYear,
+//         items: _buildYearItems(),
+//         onChanged: (value) {
+//           setState(() {
+//             _selectedYear = value!;
+//             widget.onDateChanged
+//                 ?.call(_selectedYear, _selectedMonth, _selectedDay);
+//           });
+//         },
+//         icon: null,
+//         hint: Text('Año'),
+//       ),
+//     );
+//   }
+
+//   Widget _buildMonthDropdown() {
+//     return Container(
+//       padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+//       decoration: BoxDecoration(
+//         border: Border.all(color: Colors.grey.shade400, width: 1.0),
+//         borderRadius: BorderRadius.circular(8.0),
+//       ),
+//       child: DropdownButton<int>(
+//         value: _selectedMonth,
+//         items: _buildMonthItems(),
+//         onChanged: (value) {
+//           setState(() {
+//             _selectedMonth = value!;
+//             widget.onDateChanged
+//                 ?.call(_selectedYear, _selectedMonth, _selectedDay);
+//           });
+//         },
+//         icon: null,
+//         hint: Text('Mes'),
+//       ),
+//     );
+//   }
+
+//   Widget _buildDayDropdown() {
+//     return Container(
+//       padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+//       decoration: BoxDecoration(
+//         border: Border.all(color: Colors.grey.shade400, width: 1.0),
+//         borderRadius: BorderRadius.circular(8.0),
+//       ),
+//       child: DropdownButton<int>(
+//         value: _selectedDay,
+//         items: _buildDayItems(),
+//         onChanged: (value) {
+//           setState(() {
+//             _selectedDay = value!;
+//             widget.onDateChanged
+//                 ?.call(_selectedYear, _selectedMonth, _selectedDay);
+//           });
+//         },
+//         icon: null,
+//         hint: Text('Día'),
+//       ),
+//     );
+//   }
+
+//   List<DropdownMenuItem<int>> _buildYearItems() {
+//     List<DropdownMenuItem<int>> items = [];
+//     int currentYear = DateTime.now().year;
+//     for (int year = currentYear; year <= currentYear + 100; year++) {
+//       items.add(DropdownMenuItem<int>(
+//         value: year,
+//         child: Text(
+//           year.toString(),
+//           style: TextStyle(fontSize: 20),
+//         ),
+//       ));
+//     }
+//     return items;
+//   }
+
+//   List<DropdownMenuItem<int>> _buildMonthItems() {
+//     List<DropdownMenuItem<int>> items = [];
+//     for (int month = 1; month <= 12; month++) {
+//       items.add(DropdownMenuItem<int>(
+//         value: month,
+//         child: Text(
+//           month.toString(),
+//           style: TextStyle(fontSize: 20),
+//         ),
+//       ));
+//     }
+//     return items;
+//   }
+
+//   List<DropdownMenuItem<int>> _buildDayItems() {
+//     List<DropdownMenuItem<int>> items = [];
+//     int daysInMonth = DateTime(_selectedYear, _selectedMonth + 1, 0).day;
+//     for (int day = 1; day <= daysInMonth; day++) {
+//       items.add(DropdownMenuItem<int>(
+//         value: day,
+//         child: Text(
+//           day.toString(),
+//           style: TextStyle(fontSize: 20),
+//         ),
+//       ));
+//     }
+//     return items;
+//   }
+// }

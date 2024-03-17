@@ -19,180 +19,196 @@ class LoginScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 100,
-            ),
-            Image.asset(
-              "assets/Migu1.png",
-              width: 90,
-              height: 60,
-            ),
-            const SizedBox(height: 80),
-            Container(
-                constraints: const BoxConstraints(maxWidth: 300),
-                child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 15,
-                    horizontal: 30,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: const BorderSide(
-                      color: Color(0xff3D9A51),
-                      width: 1,
+              const SizedBox(
+                height: 100,
+              ),
+              Image.asset(
+                "assets/Migu1.png",
+                width: 90,
+                height: 60,
+              ),
+              const SizedBox(height: 80),
+              Container(
+                  constraints: const BoxConstraints(maxWidth: 300),
+                  child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15,
+                      horizontal: 30,
                     ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: const BorderSide(
+                        color: Color(0xff3D9A51),
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                        ref.read(authProvider.notifier).googleLogin();
+                    // Acción al presionar el botón de inicio de sesión con Google
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/google.png', // Reemplaza con la ruta de la imagen de Google
+                        width: 24,
+                        height: 24,
+                      ),
+                      SizedBox(width: 10), // Espacio entre la imagen y el texto
+                      Text(
+                        "Iniciar Sesión con Google",
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                onPressed: () {
-                      ref.read(authProvider.notifier).googleLogin();
-                  // Acción al presionar el botón de inicio de sesión con Google
-                },
+              ],
+            ),
+          
+                      ),
+          
+              const SizedBox(height: 10),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      'assets/google.png', // Reemplaza con la ruta de la imagen de Google
-                      width: 24,
-                      height: 24,
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 1,
+                      ),
                     ),
-                    SizedBox(width: 10), // Espacio entre la imagen y el texto
-                    Text(
-                      "Iniciar Sesión con Google",
-                      style: TextStyle(
-                        color: Colors.black,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        "o",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 1,
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        
-                    ),
-
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 1,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      "o",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  Expanded(
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 1,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-            // const Padding(
-            //     padding: EdgeInsets.only(right: 300),
-            //     child: Text("Correo", style: TextStyle(fontSize: 17))),
-
-            SizedBox(
-              width: 360,
-              child: CustomTextFormField(
-                hint: "ejemplo@gmail.com",
-                onChanged: (value) =>
-                    ref.read(loginFormProvider.notifier).onEmailChange(value),
-                //esto es para que solo te diga el error cuando se haga el posteo y no cuando se este escribiendo
-                errorMessage: loginForm.isFormPosted
-                    ? loginForm.email.errorMessage
-                    : null,
-              ),
-            ),
-            const SizedBox(height: 20),
-            // const Padding(
-            //     padding: EdgeInsets.only(right: 300),
-            //     child: Text(" password", style: TextStyle(fontSize: 17))),
-
-            SizedBox(
-              width: 360,
-              child: CustomTextFormField(
-                obscureText: true,
-                hint: "*******",
-                onChanged: (value) => ref
-                    .read(loginFormProvider.notifier)
-                    .onPasswordChange(value),
-                errorMessage: loginForm.isFormPosted
-                    ? loginForm.password.errorMessage
-                    : null,
-              ),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: 300,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Bordes cuadrados
-                    ),
-                    backgroundColor: const Color(0xFF3D9A51),
-                    padding: const EdgeInsets.symmetric(vertical: 20)),
-                onPressed: () {
-                  // context.push("/additionalInfo");
-
-                  ref.read(loginFormProvider.notifier).onFormSubmit(context);
-
-                  // Aquí puedes manejar la acción de continuar
-                },
-                child: const Text(
-                  "Continuar",
-                  style: TextStyle(color: Colors.white),
+          
+              const SizedBox(height: 20),
+              // const Padding(
+              //     padding: EdgeInsets.only(right: 300),
+              //     child: Text("Correo", style: TextStyle(fontSize: 17))),
+          
+              SizedBox(
+                width: 360,
+                child: CustomTextFormField(
+                  hint: "ejemplo@gmail.com",
+                  onChanged: (value) =>
+                      ref.read(loginFormProvider.notifier).onEmailChange(value),
+                  //esto es para que solo te diga el error cuando se haga el posteo y no cuando se este escribiendo
+                  errorMessage: loginForm.isFormPosted
+                      ? loginForm.email.errorMessage
+                      : null,
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-            const Padding(
-              padding:  EdgeInsets.all(30.0),
-            ),
-            const SizedBox(height: 20),
-            // Spacer(), // Spacer para llenar el espacio restante
-
-            RichText(
-              text: TextSpan(
-                style: const TextStyle(color: Colors.black),
-                children: [
-                  const TextSpan(
-                    text: '¿No tienes cuenta? ',
-                  ),
-                  TextSpan(
-                    text: ' Regístrate',
-                    style: const TextStyle(color: Colors.green), // Color verde
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        // Navigator.push(
-                        context.push("/register");
-                      },
-                  ),
-                ],
+              const SizedBox(height: 20),
+              // const Padding(
+              //     padding: EdgeInsets.only(right: 300),
+              //     child: Text(" password", style: TextStyle(fontSize: 17))),
+          
+              SizedBox(
+                width: 360,
+                child: CustomTextFormField(
+                  obscureText: true,
+                  hint: "*******",
+                  onChanged: (value) => ref
+                      .read(loginFormProvider.notifier)
+                      .onPasswordChange(value),
+                  
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 20),
+              SizedBox(
+                width: 300,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(10), // Bordes cuadrados
+                      ),
+                      backgroundColor: const Color(0xFF3D9A51),
+                      padding: const EdgeInsets.symmetric(vertical: 20)),
+                  onPressed: () {
+                    // context.push("/additionalInfo");
+          // Dentro de tu widget
+          void showSnackBar(String message) {
+            final snackBar = SnackBar(
+              content: Text(message),
+              action: SnackBarAction(
+                label: 'Cerrar',
+                onPressed: () {
+          // Aquí puedes agregar cualquier acción que desees realizar
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+            );
+          
+            // Mostrar el SnackBar en el contexto actual
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+                    ref.read(loginFormProvider.notifier).onFormSubmit(showSnackBar);
+          
+                    // Aquí puedes manejar la acción de continuar
+                  },
+                  child: const Text(
+                    "Continuar",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Padding(
+                padding:  EdgeInsets.all(30.0),
+              ),
+              const SizedBox(height: 20),
+              // Spacer(), // Spacer para llenar el espacio restante
+          
+              RichText(
+                text: TextSpan(
+                  style: const TextStyle(color: Colors.black),
+                  children: [
+                    const TextSpan(
+                      text: '¿No tienes cuenta? ',
+                    ),
+                    TextSpan(
+                      text: ' Regístrate',
+                      style: const TextStyle(color: Colors.green), // Color verde
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          // Navigator.push(
+                          context.push("/register");
+                        },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );

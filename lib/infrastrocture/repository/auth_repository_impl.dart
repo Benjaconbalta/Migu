@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:migu/domain/datasource/auth_datasource.dart';
 import 'package:migu/domain/entities/user.dart';
@@ -11,8 +12,8 @@ class AuthRepositoryImpl extends AuthRepository {
       : datasource = datasource ?? AuthDatasourceImpl();
 
   @override
-  Future<UserApp> login(String email, String password, BuildContext context) {
-    return datasource.login(email, password, context);
+  Future<UserApp> login(String email, String password,Function customshowSnackBar) {
+    return datasource.login(email, password, customshowSnackBar);
   }
 
   @override
@@ -22,7 +23,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<void> googleLogin() {
+  Future<UserCredential> googleLogin() {
     return datasource.googleLogin();
   }
 

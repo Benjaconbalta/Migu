@@ -80,7 +80,7 @@ class _AddPetState extends ConsumerState<AddPet> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: 20,),
+              const  SizedBox(height: 20,),
                 const Text(
                   'Agrega tu mascota',
                   textAlign: TextAlign.center,
@@ -94,7 +94,12 @@ class _AddPetState extends ConsumerState<AddPet> {
                   height: 50,
                 ),
                 imageCaptureTemp != ""
-                    ? Container(
+                
+   
+                
+                    ?
+                               
+                    urlFirebaseDowload=="" ? const Center(child: CircularProgressIndicator(),):   Container(
                         width: 100,
                         height: 100,
                         decoration: BoxDecoration(
@@ -178,12 +183,8 @@ class _AddPetState extends ConsumerState<AddPet> {
                               Duration(seconds: 3), // Duración del Snackbar
                         ));
                       }
-                      else if (urlFirebaseDowload.isEmpty) {
-                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                     content: Text('Espere mientras la imagen se sube'),
-                     duration: Duration(seconds: 3),
-                    ));
-} 
+                    
+
                       
                        else {
                         ref

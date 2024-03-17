@@ -1,12 +1,9 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 import 'package:migu/infrastrocture/inputs/email.dart';
 import 'package:migu/infrastrocture/inputs/inputs.dart';
 import 'package:migu/presentation/providers/auth/auth_provider.dart';
-
 
 class LoginFormState {
   final bool isPosting;
@@ -40,10 +37,8 @@ class LoginFormState {
 
 //como implementamos el notifier
 class LoginFormNotifier extends StateNotifier<LoginFormState> {
-  
-  final Function(String, String,BuildContext) loginUserCallback;
+  final Function(String, String, Function) loginUserCallback;
   LoginFormNotifier({required this.loginUserCallback})
-  
       : super(LoginFormState());
 
   onEmailChange(String value) {
@@ -55,14 +50,15 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
   onPasswordChange(String value) {
     final newPassword = Password.dirty(value);
     state = state.copywith(
-        password: newPassword,
-        isValid: Formz.validate([newPassword, state.email]));
+      password: newPassword,
+      // isValid: Formz.validate([newPassword, state.email]
+    );
   }
 
-  onFormSubmit( BuildContext context) async {
+  onFormSubmit(Function customshowSnackBar) async {
     _touchEveryField();
     if (!state.isValid) return;
-    await loginUserCallback(state.email.value,state.password.value,context);
+    await loginUserCallback(state.email.value, state.password.value, customshowSnackBar);
   }
 
   _touchEveryField() {

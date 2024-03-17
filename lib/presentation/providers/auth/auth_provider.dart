@@ -16,11 +16,11 @@ class AuthNotifier extends StateNotifier<UserApp> {
       : super(UserApp(email: "", fullName: "", uid: ""));
 
   Future<void> loginUser(
-      String email, String password, BuildContext context) async {
+      String email, String password, Function customshowSnackBar) async {
     try {
-      await authRepository.login(email, password, context);
+      await authRepository.login(email, password, customshowSnackBar);
     } catch (e) {
-      return;
+      print("ee$e");
     }
   }
 

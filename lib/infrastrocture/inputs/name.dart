@@ -27,7 +27,7 @@ class Name extends FormzInput<String, NameError> {
   @override
   NameError? validator(String value) {
     
-    if ( value.isEmpty || value.trim().isEmpty ||value.length<6) return NameError.length;
+    if ( value.isEmpty || value.trim().isEmpty ||value.length<2) return NameError.length;
   
     return null;
   }

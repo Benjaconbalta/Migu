@@ -46,6 +46,7 @@ class VaccineandantiparasitesDatasourceImpl extends Vaccineandantiparasites {
 
   @override
   Stream<List<Antiparasites>> getAntiparasites() {
+    
     return FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
