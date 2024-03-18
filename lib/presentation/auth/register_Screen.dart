@@ -78,84 +78,84 @@ class RegisterScreen extends ConsumerWidget {
                 height: 60,
               ),
               const SizedBox(height: 100),
-              Container(
-                constraints: const BoxConstraints(maxWidth: 300),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 255, 255),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 30,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: const BorderSide(
-                            color: Color(0xff3D9A51),
-                            width: 1,
-                          ),
-                        ),
-                      ),
-                      onPressed: () {
-                        // ref.read(authProvider.notifier).googleLogin();
-                        signInWithGoogle();
+              // Container(
+              //   constraints: const BoxConstraints(maxWidth: 300),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       ElevatedButton(
+              //         style: ElevatedButton.styleFrom(
+              //           backgroundColor: Color.fromARGB(255, 255, 255, 255),
+              //           padding: const EdgeInsets.symmetric(
+              //             vertical: 15,
+              //             horizontal: 30,
+              //           ),
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(10),
+              //             side: const BorderSide(
+              //               color: Color(0xff3D9A51),
+              //               width: 1,
+              //             ),
+              //           ),
+              //         ),
+              //         onPressed: () {
+              //           // ref.read(authProvider.notifier).googleLogin();
+              //           signInWithGoogle();
 
-                        // Acción al presionar el botón de inicio de sesión con Google
-                      },
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/google.png', // Reemplaza con la ruta de la imagen de Google
-                            width: 24,
-                            height: 24,
-                          ),
-                          SizedBox(
-                              width: 10), // Espacio entre la imagen y el texto
-                          const Text(
-                            "Regístrate con Google",
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              //           // Acción al presionar el botón de inicio de sesión con Google
+              //         },
+              //         child: Row(
+              //           children: [
+              //             Image.asset(
+              //               'assets/google.png', // Reemplaza con la ruta de la imagen de Google
+              //               width: 24,
+              //               height: 24,
+              //             ),
+              //             SizedBox(
+              //                 width: 10), // Espacio entre la imagen y el texto
+              //             const Text(
+              //               "Regístrate con Google",
+              //               style: TextStyle(
+              //                 color: Colors.black,
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
-              const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        "o",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // const SizedBox(height: 20),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 20),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       Expanded(
+              //         child: Divider(
+              //           color: Colors.grey,
+              //           thickness: 1,
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: EdgeInsets.symmetric(horizontal: 8),
+              //         child: Text(
+              //           "o",
+              //           style: TextStyle(fontSize: 18),
+              //         ),
+              //       ),
+              //       Expanded(
+              //         child: Divider(
+              //           color: Colors.grey,
+              //           thickness: 1,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               // const  Padding(
               //       padding: EdgeInsets.only(right: 300),
               //       child: Text("Correo", style: TextStyle(fontSize: 17))),
@@ -235,27 +235,29 @@ class RegisterScreen extends ConsumerWidget {
                       ]),
                 ),
               ),
-              const SizedBox(height: 80),
+              const SizedBox(height: 140),
               // Spacer(), // Spacer para llenar el espacio restante
 
-              RichText(
-                text: TextSpan(
-                  style: const TextStyle(color: Colors.black),
-                  children: [
-                    const TextSpan(
-                      text: '¿Ya tienes una cuenta? ',
-                    ),
-                    TextSpan(
-                      text: 'Inicia sesión',
-                      style:
-                          const TextStyle(color: Colors.green), // Color verde
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          // Navigator.push(
-                          context.push("/login");
-                        },
-                    ),
-                  ],
+              GestureDetector(
+                onTap: () {
+                  // Navegar a la pantalla de inicio de sesión
+                  context.push("/login");
+                },
+                child: RichText(
+                  text: TextSpan(
+                    style: const TextStyle(color: Colors.black),
+                    children: [
+                      const TextSpan(
+                        text: '¿Ya tienes una cuenta? ',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      TextSpan(
+                        text: 'Inicia sesión',
+                        style: const TextStyle(
+                            color: Colors.green, fontSize: 15), // Color verde
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 20),

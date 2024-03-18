@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String? label;
@@ -8,6 +9,8 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
+    final bool filterNumbers; // Nuevo parámetro para filtrar números
+
 
   const CustomTextFormField({
     super.key,
@@ -18,6 +21,7 @@ class CustomTextFormField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.onChanged,
     this.validator,
+    this.filterNumbers=false
   });
 
   @override
@@ -46,7 +50,10 @@ class CustomTextFormField extends StatelessWidget {
                 offset: const Offset(0, 5))
           ]),
       child: TextFormField(
-        
+        inputFormatters: [
+          if (filterNumbers) // Solo si se debe filtrar números
+            FilteringTextInputFormatter.deny(RegExp(r'\d')), // Filtra los números
+        ],
         onChanged: onChanged,
         validator: validator,
         obscureText: obscureText,

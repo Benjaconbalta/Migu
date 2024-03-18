@@ -223,7 +223,7 @@ Container(
 }
 
 class SquareButton extends StatelessWidget {
-  final IconData icon;
+  final String icon;
   final String text;
   final VoidCallback onPressed;
   final bool selected;
@@ -253,11 +253,12 @@ class SquareButton extends StatelessWidget {
          const SizedBox(
             height: 30,
           ),
-          FaIcon(
-            icon,
-            size: 40,
-            color: Colors.black, // Color del icono
-          ),
+          Image.asset(icon,width: 45, ),
+          // FaIcon(
+          //   icon,
+          //   size: 40,
+          //   color: Colors.black, // Color del icono
+          // ),
 
         const  SizedBox(height: 10), // Espaciado entre el icono y el texto
           Text(
@@ -357,7 +358,7 @@ final  List<bool> _dogSelections = [false];
                 padding: const EdgeInsets.all(5),
                 height: 140,
                 child: SquareButton(
-                  icon: FontAwesomeIcons.dog,
+                  icon: "assets/perro.png",
                   text: 'Perro',
                   onPressed: () {
                     setState(() {
@@ -382,7 +383,7 @@ final  List<bool> _dogSelections = [false];
                 color: Colors.white,
                 padding: const EdgeInsets.all(5),
                 child: SquareButton(
-                  icon: FontAwesomeIcons.cat,
+                  icon: "assets/gato.png",
                   text: 'Gato',
                   onPressed: () {
                     setState(() {
@@ -407,7 +408,7 @@ final  List<bool> _dogSelections = [false];
                 color: Colors.white,
                 padding: const EdgeInsets.all(5),
                 child: SquareButton(
-                  icon: Icons.navigate_next_sharp,
+                  icon: "assets/conejo.png",
                   text: 'Otro',
                   onPressed: () {
                     setState(() {

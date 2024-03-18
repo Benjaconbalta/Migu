@@ -33,80 +33,80 @@ class LoginScreen extends ConsumerWidget {
                 height: 60,
               ),
               const SizedBox(height: 80),
-              Container(
-                  constraints: const BoxConstraints(maxWidth: 300),
-                  child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 30,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(
-                        color: Color(0xff3D9A51),
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                        ref.read(authProvider.notifier).googleLogin();
-                    // Acción al presionar el botón de inicio de sesión con Google
-                  },
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        'assets/google.png', // Reemplaza con la ruta de la imagen de Google
-                        width: 24,
-                        height: 24,
-                      ),
-                      SizedBox(width: 10), // Espacio entre la imagen y el texto
-                      Text(
-                        "Iniciar Sesión con Google",
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            //   Container(
+            //       constraints: const BoxConstraints(maxWidth: 300),
+            //       child: Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     ElevatedButton(
+            //       style: ElevatedButton.styleFrom(
+            //         backgroundColor: Colors.white,
+            //         padding: const EdgeInsets.symmetric(
+            //           vertical: 15,
+            //           horizontal: 30,
+            //         ),
+            //         shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(10),
+            //           side: const BorderSide(
+            //             color: Color(0xff3D9A51),
+            //             width: 1,
+            //           ),
+            //         ),
+            //       ),
+            //       onPressed: () {
+            //             ref.read(authProvider.notifier).googleLogin();
+            //         // Acción al presionar el botón de inicio de sesión con Google
+            //       },
+            //       child: Row(
+            //         children: [
+            //           Image.asset(
+            //             'assets/google.png', // Reemplaza con la ruta de la imagen de Google
+            //             width: 24,
+            //             height: 24,
+            //           ),
+            //        const   SizedBox(width: 10), // Espacio entre la imagen y el texto
+            //        const   Text(
+            //             "Iniciar Sesión con Google",
+            //             style: TextStyle(
+            //               color: Colors.black,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // ),
           
-                      ),
+            //           ),
           
               const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        "o",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 20),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       Expanded(
+              //         child: Divider(
+              //           color: Colors.grey,
+              //           thickness: 1,
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: EdgeInsets.symmetric(horizontal: 8),
+              //         child: Text(
+              //           "o",
+              //           style: TextStyle(fontSize: 18),
+              //         ),
+              //       ),
+              //       Expanded(
+              //         child: Divider(
+              //           color: Colors.grey,
+              //           thickness: 1,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
           
               const SizedBox(height: 20),
               // const Padding(
@@ -184,26 +184,29 @@ class LoginScreen extends ConsumerWidget {
               const Padding(
                 padding:  EdgeInsets.all(30.0),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 120),
               // Spacer(), // Spacer para llenar el espacio restante
           
-              RichText(
-                text: TextSpan(
-                  style: const TextStyle(color: Colors.black),
-                  children: [
-                    const TextSpan(
-                      text: '¿No tienes cuenta? ',
-                    ),
-                    TextSpan(
-                      text: ' Regístrate',
-                      style: const TextStyle(color: Colors.green), // Color verde
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          // Navigator.push(
-                          context.push("/register");
-                        },
-                    ),
-                  ],
+            GestureDetector(
+                onTap: () {
+                  // Navegar a la pantalla de inicio de sesión
+                  context.push("/register");
+                },
+                child: RichText(
+                  text: const TextSpan(
+                    style: const TextStyle(color: Colors.black),
+                    children: [
+                      const TextSpan(
+                        text: '¿No tienes cuenta? ',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      TextSpan(
+                        text: 'Regístrate',
+                        style: const TextStyle(
+                            color: Colors.green, fontSize: 15), // Color verde
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 20),

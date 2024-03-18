@@ -397,6 +397,13 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
                             ref
                                 .read(editantiparasitesProvider.notifier)
                                 .update((state) => false)
+                          }).
+                          then((value) => {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('¡Antiparasitario Editado!'),
+                            
+                            ))
                           })
                       .then((value) => {
                             ref

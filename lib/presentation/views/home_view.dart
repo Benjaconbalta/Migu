@@ -45,7 +45,7 @@ class HomeView extends ConsumerWidget {
 return photoUrl == ""
     ? type == "Perro"
         ? ClipOval( child: Image.asset("assets/perro.png",width: 40,)) // Si no hay foto y es un perro, muestra una imagen de gato
-        : type == "Otro"
+        : type == "otro"
             ? ClipOval(child: Image.asset("assets/conejo.png",width: 40)) // Si no hay foto y es otro, muestra una imagen específica
             : ClipOval(child: Image.asset("assets/gato.png",width: 40)) // Si no hay foto y no es un perro ni otro, muestra una imagen de perro
     : CircleAvatar(
@@ -321,7 +321,7 @@ class AntiparasitesView extends ConsumerWidget {
                     if (antiparasitee.brand == "Bravecto") {
                       leadingWidget = Image.asset("assets/Frame1000004651.png");
                     } else {
-                      leadingWidget = Icon(Icons.image);
+                      leadingWidget =const Icon(Icons.image);
                     }
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,

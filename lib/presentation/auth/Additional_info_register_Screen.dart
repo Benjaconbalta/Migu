@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:migu/presentation/providers/auth/register_form_provider.dart';
 import 'package:migu/widgets/shared/custom_text_form_field.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AdditionalInfoRegisterScreen extends ConsumerWidget {
   const AdditionalInfoRegisterScreen({super.key});
@@ -11,6 +12,20 @@ class AdditionalInfoRegisterScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context,WidgetRef ref) {
     final registerForm = ref.watch(registerformProvider);
+      final Uri _urlTerm = Uri.parse('https://migupets.com/tc.html');
+    final Uri privacypolicy = Uri.parse('https://migupets.com/privacy.html');
+
+     Future<void> termsandConditions() async {
+      if (!await launchUrl(_urlTerm)) {
+        throw Exception('Could not launch $_urlTerm');
+      }
+    }
+
+    Future<void> _launchUrl() async {
+      if (!await launchUrl(privacypolicy)) {
+        throw Exception('Could not launch $privacypolicy');
+      }
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -28,6 +43,8 @@ class AdditionalInfoRegisterScreen extends ConsumerWidget {
           children: [
             Flexible(
                    child: CustomTextFormField(
+                    filterNumbers: true,
+                       keyboardType: TextInputType.name,
                      hint: 'Nombre',
                       onChanged: (value) =>
                  ref.read(registerformProvider.notifier).onNameChange(value),
@@ -39,6 +56,8 @@ class AdditionalInfoRegisterScreen extends ConsumerWidget {
          const  SizedBox(width: 10),
                   Flexible(
                    child: CustomTextFormField(
+                       filterNumbers: true,
+                       keyboardType: TextInputType.text,
                      hint: 'Apellido',
                       onChanged: (value) =>
                  ref.read(registerformProvider.notifier).onNameChange(value),
@@ -52,6 +71,7 @@ class AdditionalInfoRegisterScreen extends ConsumerWidget {
              ),
          const  SizedBox(height: 20),
           CustomTextFormField(
+            keyboardType: TextInputType.text,
             obscureText: true,
                hint: 'Contraseña',
                  onChanged: (value) =>
@@ -91,19 +111,36 @@ class AdditionalInfoRegisterScreen extends ConsumerWidget {
            ),
 
              const SizedBox(height: 20),
-              Padding(
-               padding: const EdgeInsets.all(30.0),
-               child: RichText(          
-               textAlign: TextAlign.center,             
-               text:const TextSpan(                 
-                   style: TextStyle(color: Colors.black),
-                   children: 
-            [
-              TextSpan(text: "Al registrarte, aceptas nuestros"),       
-              TextSpan(text: " Términos y Condiciones,  Política de privacidad",style: TextStyle(color: Colors.green)), 
-            ]
-                 )),
-          ),
+                     Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                      style: TextStyle(color: Colors.black),
+                      children: [
+                        TextSpan(text: "Al registrarte, aceptas nuestros"),
+                        TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                // Aquí puedes agregar la lógica para abrir los términos y condiciones
+                                // por ejemplo, puedes usar Navigator para navegar a otra página
+                                termsandConditions();
+                              },
+                            text: " Términos y Condiciones",
+                            style: const TextStyle(color: Colors.green)),
+                        TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                // Aquí puedes agregar la lógica para abrir los términos y condiciones
+                                // por ejemplo, puedes usar Navigator para navegar a otra página
+                                _launchUrl();
+                              },
+                            text: " Política de privacidad",
+                            style: const TextStyle(color: Colors.green))
+                      ]),
+                ),
+              ),
+       
           const SizedBox(height: 100,),
            RichText(
              text: TextSpan(
