@@ -618,6 +618,11 @@ class AddVaccineScreen extends ConsumerWidget {
                                     ? nn.photocertificate
                                     : imagen2firebase,
                               }))
+                               .then((value) => ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text('¡Vacuna Editada!'),
+                                  )))
+                                   .then((value) => {context.go("/home/0")})
                               .then((value) => {
                                     ref
                                         .read(editvaccineProvider.notifier)
@@ -627,8 +632,8 @@ class AddVaccineScreen extends ConsumerWidget {
                                     ref
                                         .read(pressVaccineIntoProvider.notifier)
                                         .update((state) => false)
-                                  })
-                              .then((value) => {context.go("/home/0")});
+                                  });
+                             
                         }
                       } else {
                         //TODO:     //aca poner algo como si el image1firebase imagen se esta cargando

@@ -99,17 +99,23 @@ class _AddPetState extends ConsumerState<AddPet> {
                 
                     ?
                                
-                    urlFirebaseDowload=="" ? const Center(child: CircularProgressIndicator(),):   Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.contain,
-                            image: FileImage(File(imageCaptureTemp)),
-                          ),
-                        ),
-                      )
+                    urlFirebaseDowload=="" ? const Center(child: CircularProgressIndicator(),):
+Container(
+  width: 80, // Ancho del contenedor
+  height: 80, // Altura del contenedor
+  decoration: BoxDecoration(
+    shape: BoxShape.circle, // Hace que el contenedor tenga forma de círculo
+  ),
+  child: ClipOval(
+    child: Image.file(
+      File( imageCaptureTemp),
+      fit: BoxFit.cover, // Ajustar la imagen dentro del contenedor
+      width: 80, // Ancho de la imagen dentro del ClipOval
+      height: 80, // Altura de la imagen dentro del ClipOval
+    ),
+  ),
+)
+
                     : GestureDetector(
                         onTap: () async {
                           final photoPath = await takePhoto();

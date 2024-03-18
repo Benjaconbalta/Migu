@@ -98,7 +98,7 @@ class IntoAntiparasites extends ConsumerWidget {
             text: TextSpan(
               children: [
                 TextSpan(text: "Ultima dosis: ", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500)),
-                TextSpan(text: "${nn.date.day} ${getShortMonthName(nn.nextdose.month)} ${nn.nextdose.year}", style: TextStyle(color: Colors.black)),
+                TextSpan(text: "${nn.date.day} ${getShortMonthName(nn.date.month)} ${nn.date.year}", style: TextStyle(color: Colors.black)),
               ],
             ),
           ),

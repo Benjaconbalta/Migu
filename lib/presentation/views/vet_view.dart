@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 class VetView extends StatelessWidget {
   const VetView({super.key});
 
@@ -10,7 +11,7 @@ class VetView extends StatelessWidget {
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar:   AppBar(
+        appBar: AppBar(
           actions: [
             StreamBuilder<DocumentSnapshot>(
               stream: FirebaseFirestore.instance
@@ -22,11 +23,30 @@ class VetView extends StatelessWidget {
                   var photoUrl = snapshot.data!.get('urlImage');
                   var name = snapshot.data!.get('name');
                   // ref.read(namepetProvider.notifier).update((state) => name);
-                  return photoUrl==""? CircleAvatar(backgroundColor: Colors.white,): CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(photoUrl), // Imagen del perfil del usuario
-                    radius: 18.0, // Radio para hacerlo redondo
-                  );
+                  var type = snapshot.data!.get('type');
+                  Color.fromARGB(255, 109, 72, 72);
+                  // ref.read(namepetProvider.notifier).update((state) => name);
+                  return photoUrl == ""
+                      ? type == "Perro"
+                          ? ClipOval(
+                              child: Image.asset(
+                              "assets/perro.png",
+                              width: 40,
+                            )) // Si no hay foto y es un perro, muestra una imagen de gato
+                          : type == "Otro"
+                              ? ClipOval(
+                                  child: Image.asset("assets/conejo.png",
+                                      width:
+                                          40)) // Si no hay foto y es otro, muestra una imagen específica
+                              : ClipOval(
+                                  child: Image.asset("assets/gato.png",
+                                      width:
+                                          40)) // Si no hay foto y no es un perro ni otro, muestra una imagen de perro
+                      : CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              photoUrl), // Si hay una foto, muestra el avatar del usuario
+                          radius: 18.0, // Radio para hacerlo redondo
+                        );
                 } else {
                   return SizedBox.shrink();
                 }
@@ -42,6 +62,7 @@ class VetView extends StatelessWidget {
                 if (snapshot.hasData && snapshot.data!.exists) {
                   var photoUrl = snapshot.data!.get('urlImage');
                   var name = snapshot.data!.get('name');
+                  var type = snapshot.data!.get('type');
                   // ref.read(namepetProvider.notifier).update((state) => name);
                   return PopupMenuButton<String>(
                     icon:
@@ -59,8 +80,18 @@ class VetView extends StatelessWidget {
                             value: choice,
                             child: Row(
                               children: [
-                                Text("🐶"),
-                                SizedBox(
+                       photoUrl == ""
+    ? type == "Perro"
+        ? ClipOval( child: Image.asset("assets/perro.png",width: 40,)) // Si no hay foto y es un perro, muestra una imagen de gato
+        : type == "Otro"
+            ? ClipOval(child: Image.asset("assets/conejo.png",width: 40)) // Si no hay foto y es otro, muestra una imagen específica
+            : ClipOval(child: Image.asset("assets/gato.png",width: 40)) // Si no hay foto y no es un perro ni otro, muestra una imagen de perro
+    : CircleAvatar(
+        backgroundImage: NetworkImage(
+            photoUrl), // Si hay una foto, muestra el avatar del usuario
+        radius: 18.0, // Radio para hacerlo redondo
+    ),
+                              const  SizedBox(
                                     width:
                                         8), // Espacio entre la imagen y el texto
                                 Text(choice),
@@ -110,7 +141,7 @@ class VetView extends StatelessWidget {
             ],
           ),
         ),
-         body: const Column(
+        body: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
@@ -122,4 +153,3 @@ class VetView extends StatelessWidget {
     );
   }
 }
-

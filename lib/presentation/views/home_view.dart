@@ -40,16 +40,19 @@ class HomeView extends ConsumerWidget {
                   var photoUrl = snapshot.data!.get('urlImage');
                   var name = snapshot.data!.get('name');
                   var type = snapshot.data!.get('type');
+                  print("type$photoUrl");
                   // ref.read(namepetProvider.notifier).update((state) => name);
-                  return photoUrl == ""
-                      ? type == "Gato"
-                          ? Image.asset("assets/gato.png")
-                          : CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  photoUrl), // Imagen del perfil del usuario
-                              radius: 18.0, // Radio para hacerlo redondo
-                            )
-                      : Image.asset(width: 40,  "assets/perro.png");
+return photoUrl == ""
+    ? type == "Perro"
+        ? ClipOval( child: Image.asset("assets/perro.png",width: 40,)) // Si no hay foto y es un perro, muestra una imagen de gato
+        : type == "Otro"
+            ? ClipOval(child: Image.asset("assets/conejo.png",width: 40)) // Si no hay foto y es otro, muestra una imagen específica
+            : ClipOval(child: Image.asset("assets/gato.png",width: 40)) // Si no hay foto y no es un perro ni otro, muestra una imagen de perro
+    : CircleAvatar(
+        backgroundImage: NetworkImage(
+            photoUrl), // Si hay una foto, muestra el avatar del usuario
+        radius: 18.0, // Radio para hacerlo redondo
+      );
                 } else {
                   return SizedBox.shrink();
                 }
@@ -65,6 +68,7 @@ class HomeView extends ConsumerWidget {
                 if (snapshot.hasData && snapshot.data!.exists) {
                   var photoUrl = snapshot.data!.get('urlImage');
                   var name = snapshot.data!.get('name');
+                         var type = snapshot.data!.get('type');
                   // ref.read(namepetProvider.notifier).update((state) => name);
                   return PopupMenuButton<String>(
                     icon:
@@ -82,7 +86,18 @@ class HomeView extends ConsumerWidget {
                             value: choice,
                             child: Row(
                               children: [
-                                Text("🐶"),
+                                              photoUrl == ""
+    ? type == "Perro"
+        ? ClipOval( child: Image.asset("assets/perro.png",width: 40,)) // Si no hay foto y es un perro, muestra una imagen de gato
+        : type == "Otro"
+            ? ClipOval(child: Image.asset("assets/conejo.png",width: 40)) // Si no hay foto y es otro, muestra una imagen específica
+            : ClipOval(child: Image.asset("assets/gato.png",width: 40)) // Si no hay foto y no es un perro ni otro, muestra una imagen de perro
+    : CircleAvatar(
+        backgroundImage: NetworkImage(
+            photoUrl), // Si hay una foto, muestra el avatar del usuario
+        radius: 18.0, // Radio para hacerlo redondo
+    ),
+                           
                                 SizedBox(
                                     width:
                                         8), // Espacio entre la imagen y el texto
@@ -191,6 +206,7 @@ class AntiparasitesView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
+
       child: Column(
         children: [
           const SizedBox(
@@ -372,7 +388,8 @@ class AntiparasitesView extends ConsumerWidget {
                 child: CircularProgressIndicator(),
               );
             },
-          )
+          ),
+          SizedBox(height: 140,)
         ],
       ),
     ); // Contenido de la pestaña 2
@@ -562,7 +579,8 @@ class VaccineView extends ConsumerWidget {
             loading: () {
               return const Center(child: CircularProgressIndicator());
             },
-          )
+          ),
+                SizedBox(height: 140,)
         ],
       ),
     );
@@ -799,15 +817,15 @@ class GetAntiparasitesfilter extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4), // Espacio entre los textos
-              isDelayed
-                  ? Text(
-                      'La fecha está atrasada por $differenceInDays días.',
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.red,
-                      ),
-                    )
-                  : const Text("")
+              // isDelayed
+              //     ? Text(
+              //         'La fecha está atrasada por $differenceInDays días.',
+              //         style: const TextStyle(
+              //           fontSize: 16.0,
+              //           color: Colors.red,
+              //         ),
+              //       )
+              //     : const Text("")
             ],
           ),
         ],
@@ -933,15 +951,15 @@ class GetVaccinefilter extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4), // Espacio entre los textos
-              isDelayed
-                  ? Text(
-                      '$differenceInDays días de atraso.',
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.red,
-                      ),
-                    )
-                  : const Text("")
+              // isDelayed
+              //     ? Text(
+              //         '$differenceInDays días de atraso.',
+              //         style: const TextStyle(
+              //           fontSize: 16.0,
+              //           color: Colors.red,
+              //         ),
+              //       )
+              //     : const Text("")
             ],
           ),
         ],

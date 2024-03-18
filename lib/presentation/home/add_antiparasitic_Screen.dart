@@ -375,7 +375,7 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
                   ),
                   backgroundColor: const Color(0xFF3D9A51),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 130, vertical: 20)),
+                      horizontal: 110, vertical: 20)),
               onPressed: () {
                 if (editrueorfalse) {
                   FirebaseFirestore.instance

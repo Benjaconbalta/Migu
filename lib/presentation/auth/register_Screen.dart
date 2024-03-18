@@ -14,8 +14,6 @@ import 'package:migu/widgets/shared/custom_text_form_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 signInWithGoogle() async {
-
-
   final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
   print(gUser);
   final GoogleSignInAuthentication? gAuth = await gUser?.authentication;
@@ -50,6 +48,19 @@ class RegisterScreen extends ConsumerWidget {
       }
     }
 
+    GoogleSignIn _googleSignIn = GoogleSignIn();
+    handleSignIn() async {
+      try {
+        GoogleSignInAccount? account = await _googleSignIn.signIn();
+        if (account != null) {
+          print("account.displayName${account.displayName}");
+          // Resto del código aquí
+        }
+      } catch (error) {
+        print(error);
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -72,9 +83,6 @@ class RegisterScreen extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(onPressed: (){
-  signInWithGoogle();
-                    }, child: Icon(Icons.abc)),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -90,10 +98,10 @@ class RegisterScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      onPressed: ()  {
+                      onPressed: () {
                         // ref.read(authProvider.notifier).googleLogin();
+                        signInWithGoogle();
 
-                       
                         // Acción al presionar el botón de inicio de sesión con Google
                       },
                       child: Row(

@@ -151,47 +151,58 @@ class IntoVaccine extends ConsumerWidget {
         ),
         SizedBox(height: screenHeight * 0.03),
 
-        Container(
-          height: screenHeight * 0.1,
-          width: screenWidth * 0.7,
-          padding: EdgeInsets.all(screenWidth * 0.03),
-          color: Colors.grey[200],
-          child: Row(
-            children: [
-             const Text("Etiqueta Vacuna"),
-             const Icon(Icons.help),
-              SizedBox(width: screenWidth * 0.1),
-              Container(
-                width: screenWidth * 0.2,
-                height: screenWidth * 0.2,
-                child: nn.photovaccinelabel == "" ? Text("no-image") : Image.network("${nn.photovaccinelabel}"),
+          Container(
+  height: screenHeight * 0.1,
+  width: screenWidth * 0.7,
+  padding: EdgeInsets.all(screenWidth * 0.03),
+  color: Colors.grey[200],
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      const Text("Etiqueta Vacuna"),
+      const Icon(Icons.help),
+      nn.photocertificate == ""
+          ? Text("no-Image")
+          : Container(
+              width: screenWidth * 0.2,
+              height: screenWidth * 0.2,
+              child: Image.network(
+                nn.photovaccinelabel,
+                width: 20,
               ),
-            ],
-          ),
-        ),
-
+            ),
+    ],
+  ),
+),
         SizedBox(height: screenHeight * 0.03),
 
-        Container(
-          height: screenHeight * 0.1,
-          width: screenWidth * 0.7,
-          padding: EdgeInsets.all(screenWidth * 0.03),
-          color: Colors.grey[200],
-          child: Row(
-            children: [
-            const  Text("Certificado"),
-            const  Icon(Icons.help),
-              SizedBox(width: screenWidth * 0.1),
-              Container(
-                width: screenWidth * 0.2,
-                height: screenWidth * 0.2,
-                child: nn.photocertificate == "" ? Text("no-Image") : Image.network("${nn.photocertificate}"),
+Container(
+  height: screenHeight * 0.1,
+  width: screenWidth * 0.7,
+  padding: EdgeInsets.all(screenWidth * 0.03),
+  color: Colors.grey[200],
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      const Text("Certificado"),
+      const Icon(Icons.help),
+      nn.photocertificate == ""
+          ? Text("no-Image")
+          : Container(
+              width: screenWidth * 0.2,
+              height: screenWidth * 0.2,
+              child: Image.network(
+                nn.photocertificate,
+                width: 20,
               ),
-            ],
-          ),
-        ),
+            ),
+    ],
+  ),
+),
 
-    SizedBox(height: 30,),
+
+
+       const  SizedBox(height: 30,),
 
         ElevatedButton(
           onPressed: () {
@@ -200,7 +211,7 @@ class IntoVaccine extends ConsumerWidget {
             ref.read(infoeditvaccineProvider.notifier).update((state) => nn);
           },
           style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.4, vertical: screenHeight * 0.03),
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.4, vertical: screenHeight * 0.02),
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(screenWidth * 0.05),
@@ -226,8 +237,10 @@ class IntoVaccine extends ConsumerWidget {
                     )))
                 .then((value) => ref.read(pressVaccineIntoProvider.notifier).update((state) => false));
           },
-          child: Text("Eliminar", style: TextStyle(color: Colors.red)),
+          child: const Text("Eliminar", style: TextStyle(color: Colors.red)),
+          
         ),
+      
       ],
     );
   }
