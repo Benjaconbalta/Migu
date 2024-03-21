@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:migu/domain/entities/vaccine.dart';
 import 'package:migu/presentation/home/into_vaccine.dart';
 import 'package:migu/presentation/providers/Vaccineandantiparasites/Vaccineandantiparasites_repository_provider.dart';
 import 'package:migu/presentation/providers/Vaccineandantiparasites/vaccineandAntiparasites_provider.dart';
 import 'package:migu/presentation/views/home_view.dart';
+
 int _getMonthNumber(String month) {
   switch (month) {
     case 'Ene':
@@ -57,6 +59,7 @@ bool _isValidDate(int day, int month, int year) {
 int _daysInMonth(int month, int year) {
   return DateTime(year, month + 1, 0).day;
 }
+
 String imagerUrl = "";
 
 final imagerProvider = StateProvider<String>((ref) {
@@ -183,6 +186,14 @@ class AddVaccineScreen extends ConsumerWidget {
 
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              ref.read(editvaccineProvider.notifier).update((state) => false);
+              Navigator.of(context)
+                  .pop(); // Esta línea hace que la AppBar regrese a la pantalla anterior
+            },
+          ),
           title: editrueorfalse
               ? const Text(("Editar Vacuna"))
               : const Text("Agregar Vacuna"),
@@ -299,24 +310,27 @@ class AddVaccineScreen extends ConsumerWidget {
                         deaydefault: infoedit.date.day.toString(),
                         monthdefault: obtenerMesEnPalabras(infoedit.date.month),
                         yeardefault: infoedit.date.year.toString(),
-                             onChanged: (day, month, year) {
-    // Convertir los valores de cadena a enteros
-    int dayInt = int.tryParse(day) ?? 1;
-    int monthInt = _getMonthNumber(month);
-    int yearInt = int.tryParse(year) ?? DateTime.now().year;
+                        onChanged: (day, month, year) {
+                          // Convertir los valores de cadena a enteros
+                          int dayInt = int.tryParse(day) ?? 1;
+                          int monthInt = _getMonthNumber(month);
+                          int yearInt =
+                              int.tryParse(year) ?? DateTime.now().year;
 
-    // Verificar si los valores son válidos
-    if (_isValidDate(dayInt, monthInt, yearInt)) {
-      // Crear un objeto DateTime
-      final date = DateTime(yearInt, monthInt, dayInt);
-      
-      // Actualizar el estado con la fecha seleccionada
-      ref.read(datevaccineProvider.notifier).update((state) => date);
-    } else {
-      // Manejar el caso de fecha inválida aquí
-      print("Fecha inválida");
-    }
-  },
+                          // Verificar si los valores son válidos
+                          if (_isValidDate(dayInt, monthInt, yearInt)) {
+                            // Crear un objeto DateTime
+                            final date = DateTime(yearInt, monthInt, dayInt);
+
+                            // Actualizar el estado con la fecha seleccionada
+                            ref
+                                .read(datevaccineProvider.notifier)
+                                .update((state) => date);
+                          } else {
+                            // Manejar el caso de fecha inválida aquí
+                            print("Fecha inválida");
+                          }
+                        },
                       )
                     : Column(
                         children: [
@@ -324,24 +338,28 @@ class AddVaccineScreen extends ConsumerWidget {
                             height: 10,
                           ),
                           DateSelectionWidget(
-                          onChanged: (day, month, year) {
-    // Convertir los valores de cadena a enteros
-    int dayInt = int.tryParse(day) ?? 1;
-    int monthInt = _getMonthNumber(month);
-    int yearInt = int.tryParse(year) ?? DateTime.now().year;
+                            onChanged: (day, month, year) {
+                              // Convertir los valores de cadena a enteros
+                              int dayInt = int.tryParse(day) ?? 1;
+                              int monthInt = _getMonthNumber(month);
+                              int yearInt =
+                                  int.tryParse(year) ?? DateTime.now().year;
 
-    // Verificar si los valores son válidos
-    if (_isValidDate(dayInt, monthInt, yearInt)) {
-      // Crear un objeto DateTime
-      final date = DateTime(yearInt, monthInt, dayInt);
-      
-      // Actualizar el estado con la fecha seleccionada
-      ref.read(datevaccineProvider.notifier).update((state) => date);
-    } else {
-      // Manejar el caso de fecha inválida aquí
-      print("Fecha inválida");
-    }
-  },
+                              // Verificar si los valores son válidos
+                              if (_isValidDate(dayInt, monthInt, yearInt)) {
+                                // Crear un objeto DateTime
+                                final date =
+                                    DateTime(yearInt, monthInt, dayInt);
+
+                                // Actualizar el estado con la fecha seleccionada
+                                ref
+                                    .read(datevaccineProvider.notifier)
+                                    .update((state) => date);
+                              } else {
+                                // Manejar el caso de fecha inválida aquí
+                                print("Fecha inválida");
+                              }
+                            },
                           ),
                         ],
                       ),
@@ -385,56 +403,60 @@ class AddVaccineScreen extends ConsumerWidget {
                             child: const Icon(Icons.help))
                       ],
                     )),
-              
                 SizedBox(
                   height: 10,
                 ),
-                       editrueorfalse?
-                DateSelectionWidget(
-                     deaydefault: infoedit.nextdose.day.toString(),
-                         monthdefault: obtenerMesEnPalabras(infoedit.nextdose.month),
-                         yeardefault: infoedit.nextdose.year.toString(),
-                               onChanged: (day, month, year) {
-    // Convertir los valores de cadena a enteros
-    int dayInt = int.tryParse(day) ?? 1;
-    int monthInt = _getMonthNumber(month);
-    int yearInt = int.tryParse(year) ?? DateTime.now().year;
+                editrueorfalse
+                    ? DateSelectionWidget(
+                        deaydefault: infoedit.nextdose.day.toString(),
+                        monthdefault:
+                            obtenerMesEnPalabras(infoedit.nextdose.month),
+                        yeardefault: infoedit.nextdose.year.toString(),
+                        onChanged: (day, month, year) {
+                          // Convertir los valores de cadena a enteros
+                          int dayInt = int.tryParse(day) ?? 1;
+                          int monthInt = _getMonthNumber(month);
+                          int yearInt =
+                              int.tryParse(year) ?? DateTime.now().year;
 
-    // Verificar si los valores son válidos
-    if (_isValidDate(dayInt, monthInt, yearInt)) {
-      // Crear un objeto DateTime
-      final date = DateTime(yearInt, monthInt, dayInt);
-      
-      // Actualizar el estado con la fecha seleccionada
-      ref.read(nextDosis.notifier).update((state) => date);
-    } else {
-      // Manejar el caso de fecha inválida aquí
-      print("Fecha inválida");
-    }
-  },
-     
-                ):     DateSelectionWidget(
-                   
-                               onChanged: (day, month, year) {
-    // Convertir los valores de cadena a enteros
-    int dayInt = int.tryParse(day) ?? 1;
-    int monthInt = _getMonthNumber(month);
-    int yearInt = int.tryParse(year) ?? DateTime.now().year;
+                          // Verificar si los valores son válidos
+                          if (_isValidDate(dayInt, monthInt, yearInt)) {
+                            // Crear un objeto DateTime
+                            final date = DateTime(yearInt, monthInt, dayInt);
 
-    // Verificar si los valores son válidos
-    if (_isValidDate(dayInt, monthInt, yearInt)) {
-      // Crear un objeto DateTime
-      final date = DateTime(yearInt, monthInt, dayInt);
-      
-      // Actualizar el estado con la fecha seleccionada
-      ref.read(nextDosis.notifier).update((state) => date);
-    } else {
-      // Manejar el caso de fecha inválida aquí
-      print("Fecha inválida");
-    }
-  },
-     
-                ) ,
+                            // Actualizar el estado con la fecha seleccionada
+                            ref
+                                .read(nextDosis.notifier)
+                                .update((state) => date);
+                          } else {
+                            // Manejar el caso de fecha inválida aquí
+                            print("Fecha inválida");
+                          }
+                        },
+                      )
+                    : DateSelectionWidget(
+                        onChanged: (day, month, year) {
+                          // Convertir los valores de cadena a enteros
+                          int dayInt = int.tryParse(day) ?? 1;
+                          int monthInt = _getMonthNumber(month);
+                          int yearInt =
+                              int.tryParse(year) ?? DateTime.now().year;
+
+                          // Verificar si los valores son válidos
+                          if (_isValidDate(dayInt, monthInt, yearInt)) {
+                            // Crear un objeto DateTime
+                            final date = DateTime(yearInt, monthInt, dayInt);
+
+                            // Actualizar el estado con la fecha seleccionada
+                            ref
+                                .read(nextDosis.notifier)
+                                .update((state) => date);
+                          } else {
+                            // Manejar el caso de fecha inválida aquí
+                            print("Fecha inválida");
+                          }
+                        },
+                      ),
                 SizedBox(
                   height: 30,
                 ),
@@ -481,7 +503,9 @@ class AddVaccineScreen extends ConsumerWidget {
                         width: 60,
                         height: 40,
                         child: editrueorfalse
-                            ? Image.network(nn.photovaccinelabel)
+                            ? nn.photocertificate.isEmpty
+                                ? const Text("No-Image")
+                                : Image.network(nn.photovaccinelabel)
                             : image1Temp == ""
                                 ? TextButton(
                                     child: const Text("Foto"),
@@ -541,7 +565,9 @@ class AddVaccineScreen extends ConsumerWidget {
                         width: 60,
                         height: 40,
                         child: editrueorfalse
-                            ? Image.network(nn.photocertificate)
+                            ? nn.photocertificate.isEmpty
+                                ? const Text("No-Image")
+                                : Image.network(nn.photocertificate)
                             : image2Temp == ""
                                 ? TextButton(
                                     child: const Text("Foto"),
@@ -575,9 +601,8 @@ class AddVaccineScreen extends ConsumerWidget {
 
                       if (editrueorfalse) {
                         if (nn.type.isEmpty ||
-                            nn.brand.isEmpty ||
-                            nn.photovaccinelabel.isEmpty ||
-                            nn.photocertificate.isEmpty) {
+                            nn.brand.isEmpty 
+                         ) {
                           final snackBar = SnackBar(
                             content: const Text(
                                 '¡porfavor rellenar todos los campos'),
@@ -618,11 +643,11 @@ class AddVaccineScreen extends ConsumerWidget {
                                     ? nn.photocertificate
                                     : imagen2firebase,
                               }))
-                               .then((value) => ScaffoldMessenger.of(context)
+                              .then((value) => ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
                                     content: Text('¡Vacuna Editada!'),
                                   )))
-                                   .then((value) => {context.go("/home/0")})
+                              .then((value) => {context.go("/home/0")})
                               .then((value) => {
                                     ref
                                         .read(editvaccineProvider.notifier)
@@ -632,18 +657,24 @@ class AddVaccineScreen extends ConsumerWidget {
                                     ref
                                         .read(pressVaccineIntoProvider.notifier)
                                         .update((state) => false)
+                                  })
+                              .then((value) => {
+                                    ref
+                                        .read(imagerProvider.notifier)
+                                        .update((state) => ""),
+                                    ref
+                                        .read(imager2Provider.notifier)
+                                        .update((state) => "")
                                   });
-                             
                         }
                       } else {
+                        // image1firebase.isEmpty ||
+                        //  imagen2firebase.isEmpty
                         //TODO:     //aca poner algo como si el image1firebase imagen se esta cargando
-                        if (tipo.isEmpty ||
-                            marca.isEmpty ||
-                            image1firebase.isEmpty ||
-                            imagen2firebase.isEmpty) {
+                        if (tipo.isEmpty || marca.isEmpty) {
                           final snackBar = SnackBar(
                             content: const Text(
-                                '¡porfavor rellenar todos los campos'),
+                                '¡porfavor rellenar todos los campos!'),
                             action: SnackBarAction(
                               label: 'Cerrar',
                               onPressed: () {
@@ -668,10 +699,37 @@ class AddVaccineScreen extends ConsumerWidget {
                               .then((value) => {context.pop()})
                               .then((value) => {
                                     ref
+                                        .read(typeProvider.notifier)
+                                        .update((state) => "")
+                                  })
+                              .then((value) => {
+                                    ref.read(sightinProvider.notifier).update(
+                                        (state) => Vaccine(
+                                            type: "",
+                                            brand: "",
+                                            vaccination: "",
+                                            date: DateTime.now(),
+                                            nextdose: DateTime.now(),
+                                            photovaccinelabel: "",
+                                            photocertificate: "",
+                                            id: ""))
+                                  })
+                              .then((value) => {
+                                    ref
                                         .read(imagerProvider.notifier)
                                         .update((state) => ""),
                                     ref
                                         .read(imager2Provider.notifier)
+                                        .update((state) => "")
+                                  })
+                              .then((value) => {
+                                    ref
+                                        .read(urlr2Provider.notifier)
+                                        .update((state) => "")
+                                  })
+                              .then((value) => {
+                                    ref
+                                        .read(urlr2Provider.notifier)
                                         .update((state) => "")
                                   });
                         }
@@ -1065,136 +1123,142 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Flexible(
-          fit: FlexFit.loose,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.shade400, width: 1.0),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            width: 100, // Puedes ajustar este valor según tus necesidades
+    return Row(children: [
+      Flexible(
+        fit: FlexFit.loose,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade400, width: 1.0),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          width: 100, // Puedes ajustar este valor según tus necesidades
 
-            child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                  border: UnderlineInputBorder(borderSide: BorderSide.none)),
-              value: selectedDay.isNotEmpty ? selectedDay : null,
-              onChanged: (String? value) {
-                setState(() {
-                  selectedDay = value!;
-                  _notifyParent();
-                });
-              },
-              items: [
-                DropdownMenuItem<String>(
-                  value: 'Dia',
-                  child: Text(
-                    'Día',
-                    style: TextStyle(fontSize: 18),
-                  ),
+          child: DropdownButtonFormField<String>(
+            decoration: InputDecoration(
+                border: UnderlineInputBorder(borderSide: BorderSide.none)),
+            value: selectedDay.isNotEmpty ? selectedDay : null,
+            onChanged: (String? value) {
+              setState(() {
+                selectedDay = value!;
+                _notifyParent();
+              });
+            },
+            items: [
+              DropdownMenuItem<String>(
+                value: 'Dia',
+                child: Text(
+                  'Día',
+                  style: TextStyle(fontSize: 18),
                 ),
-                ...List.generate(31, (index) {
-                  return DropdownMenuItem<String>(
-                    value: (index + 1).toString(),
-                    child: Text((index + 1).toString(),
-                        style: TextStyle(fontSize: 18)),
-                  );
-                }).toList(),
-              ],
-            ),
+              ),
+              ...List.generate(31, (index) {
+                return DropdownMenuItem<String>(
+                  value: (index + 1).toString(),
+                  child: Text((index + 1).toString(),
+                      style: TextStyle(fontSize: 18)),
+                );
+              }).toList(),
+            ],
           ),
         ),
-        SizedBox(width: 10),
-        Flexible(
-          fit: FlexFit.loose,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.shade400, width: 1.0),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            width: 100, // Puedes ajustar este valor según tus necesidades
+      ),
+      SizedBox(width: 10),
+      Flexible(
+        fit: FlexFit.loose,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade400, width: 1.0),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          width: 100, // Puedes ajustar este valor según tus necesidades
 
-            child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                  border: UnderlineInputBorder(borderSide: BorderSide.none)),
-              value: selectedMonth,
-              onChanged: (String? value) {
-                setState(() {
-                  selectedMonth = value!;
-                  _notifyParent();
-                });
-              },
-              items: [
-                DropdownMenuItem<String>(
-                  value: 'Mes',
-                  child: Text(
-                    'Mes',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+          child: DropdownButtonFormField<String>(
+            decoration: InputDecoration(
+                border: UnderlineInputBorder(borderSide: BorderSide.none)),
+            value: selectedMonth,
+            onChanged: (String? value) {
+              setState(() {
+                selectedMonth = value!;
+                _notifyParent();
+              });
+            },
+            items: [
+              DropdownMenuItem<String>(
+                value: 'Mes',
+                child: Text(
+                  'Mes',
+                  style: TextStyle(
+                    fontSize: 18,
                   ),
                 ),
-                ...[
-                  
-                  'Ene',
-                  'Feb',
-                  'Mar',
-                  'Abr',
-                  'May',
-                  'Jun',
-                  'Jul',
-                  'Ago',
-                  'Sep',
-                  'Oct',
-                  'Nov',
-                  'Dic',
-                ].map((String month) {
-                  return DropdownMenuItem<String>(
-                    value: month,
-                    child: Text(month, style: TextStyle(fontSize: 18)),
-                  );
-                }).toList(),
-              ],
-            ),
+              ),
+              ...[
+                'Ene',
+                'Feb',
+                'Mar',
+                'Abr',
+                'May',
+                'Jun',
+                'Jul',
+                'Ago',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dic',
+              ].map((String month) {
+                return DropdownMenuItem<String>(
+                  value: month,
+                  child: Text(month, style: TextStyle(fontSize: 18)),
+                );
+              }).toList(),
+            ],
           ),
         ),
-        const SizedBox(width: 10),
-        Flexible(
-          fit: FlexFit.loose,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.shade400, width: 1.0),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            width: 100, // Puedes ajustar este valor según tus necesidades
+      ),
+      const SizedBox(width: 10),
+      Flexible(
+        fit: FlexFit.loose,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade400, width: 1.0),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          width: 100, // Puedes ajustar este valor según tus necesidades
 
-            child: DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
-                  border: UnderlineInputBorder(borderSide: BorderSide.none)),
-              value: selectedYear,
-              onChanged: (String? value) {
-                setState(() {
-                  selectedYear = value!;
-                  _notifyParent();
-                });
-              },
-              items: List.generate(50, (index) {
-                int year = DateTime.now().year + index;
+          child: DropdownButtonFormField<String>(
+            decoration: const InputDecoration(
+                border: UnderlineInputBorder(borderSide: BorderSide.none)),
+            value: selectedYear,
+            onChanged: (String? value) {
+              setState(() {
+                selectedYear = value!;
+                _notifyParent();
+              });
+            },
+            items: List.generate(50, (index) {
+              int year = DateTime.now().year - 1 + index;
+              if (year >= 2023) {
                 return DropdownMenuItem<String>(
                   value: year.toString(),
                   child: Text(year.toString(),
                       style: const TextStyle(fontSize: 18)),
                 );
-              }),
-            ),
+              } else {
+                // Si el año es menor a 2023, retorna un elemento nulo para ocultarlo en la lista
+                return null;
+              }
+            })
+                .where(
+                    (element) => element != null) // Filtra los elementos nulos
+                .cast<DropdownMenuItem<String>>()
+                .toList(), // Convierte la lista de elementos a una lista de DropdownMenuItem<String>
           ),
         ),
-      ],
-    );
+      ),
+    ]);
   }
 
   void _notifyParent() {

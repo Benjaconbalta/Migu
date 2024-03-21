@@ -89,7 +89,7 @@ return photoUrl == ""
                                               photoUrl == ""
     ? type == "Perro"
         ? ClipOval( child: Image.asset("assets/perro.png",width: 40,)) // Si no hay foto y es un perro, muestra una imagen de gato
-        : type == "Otro"
+        : type == "otro"
             ? ClipOval(child: Image.asset("assets/conejo.png",width: 40)) // Si no hay foto y es otro, muestra una imagen específica
             : ClipOval(child: Image.asset("assets/gato.png",width: 40)) // Si no hay foto y no es un perro ni otro, muestra una imagen de perro
     : CircleAvatar(
@@ -875,7 +875,7 @@ class GetVaccinefilter extends StatelessWidget {
                           Column(
                             children: [
                               _buildVaccineContainer(vaccineList[i]),
-                              SizedBox(
+                            const  SizedBox(
                                 height: 10,
                               ),
                               Row(
@@ -935,7 +935,7 @@ class GetVaccinefilter extends StatelessWidget {
               ),
               const SizedBox(height: 4), // Espacio entre los textos
               Text(
-                vaccine.brand,
+                vaccine.type,
                 style: const TextStyle(fontSize: 16.0),
               ),
             ],

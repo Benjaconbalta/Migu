@@ -12,7 +12,7 @@ class AuthDatasourceImpl extends AuthDatasource {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-         print(e);
+       
       String errorMessage;
       switch (e.code) {
         case 'user-not-found':

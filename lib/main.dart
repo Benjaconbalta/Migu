@@ -34,7 +34,7 @@ class _MainAppState extends ConsumerState<MainApp> {
     return  MaterialApp.router( 
        routerConfig: approuter,
        debugShowCheckedModeBanner: false,
-        theme: AppTheme().getTheme(),
+        theme: AppTheme().getTheme(), 
      
     );
   }

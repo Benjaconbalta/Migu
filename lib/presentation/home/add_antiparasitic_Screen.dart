@@ -11,6 +11,7 @@ import 'package:migu/presentation/home/into_antiparasitic.dart';
 import 'package:migu/presentation/providers/Vaccineandantiparasites/Vaccineandantiparasites_repository_provider.dart';
 import 'package:migu/presentation/providers/Vaccineandantiparasites/vaccineandAntiparasites_provider.dart';
 import 'package:migu/presentation/views/home_view.dart';
+
 int _getMonthNumber(String month) {
   switch (month) {
     case 'Ene':
@@ -41,6 +42,7 @@ int _getMonthNumber(String month) {
       return 1;
   }
 }
+
 bool _isValidDate(int day, int month, int year) {
   if (month < 1 || month > 12) {
     return false;
@@ -99,7 +101,7 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
         ? 0
         : 1; // Índice de la opción predeterminada
     List<String> options = ["Interna", "Externa"];
-  String obtenerMesEnPalabras(int numeroMes) {
+    String obtenerMesEnPalabras(int numeroMes) {
       switch (numeroMes) {
         case 1:
           return 'Ene';
@@ -132,6 +134,13 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
 
     return Scaffold(
       appBar: AppBar(
+           leading: IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+          ref.read(editantiparasitesProvider.notifier).update((state) => false);
+        Navigator.of(context).pop(); // Esta línea hace que la AppBar regrese a la pantalla anterior
+      },
+    ),
         title: editrueorfalse
             ? const Text("Editar Antiparasitario")
             : const Text("Agregar Antiparasitario  "),
@@ -221,7 +230,6 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
                       "veterquimica",
                       "virbac",
                       "Otro",
-                      
                     ],
                     onChanged: (marc) {
                       ref
@@ -254,7 +262,6 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
                         "veterquimica",
                         "virbac",
                         "Otro",
-                  
                       ]),
             const SizedBox(
               height: 30,
@@ -265,55 +272,54 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
                   "Fecha de desparasitación*",
                   style: TextStyle(fontSize: 18, color: Colors.black),
                 )),
+            editrueorfalse
+                ? DateSelectionWidget(
+                    deaydefault: nn.date.day.toString(),
+                    monthdefault: obtenerMesEnPalabras(nn.date.month),
+                    yeardefault: nn.date.year.toString(),
+                    onChanged: (day, month, year) {
+                      // Convertir los valores de cadena a enteros
+                      int dayInt = int.tryParse(day) ?? 1;
+                      int monthInt = _getMonthNumber(month);
+                      int yearInt = int.tryParse(year) ?? DateTime.now().year;
 
-                editrueorfalse?
-             DateSelectionWidget(
-                     deaydefault: nn.date.day.toString(),
-                         monthdefault: obtenerMesEnPalabras(nn.date.month),
-                         yeardefault: nn.date.year.toString(),
-                               onChanged: (day, month, year) {
-    // Convertir los valores de cadena a enteros
-    int dayInt = int.tryParse(day) ?? 1;
-    int monthInt = _getMonthNumber(month);
-    int yearInt = int.tryParse(year) ?? DateTime.now().year;
+                      // Verificar si los valores son válidos
+                      if (_isValidDate(dayInt, monthInt, yearInt)) {
+                        // Crear un objeto DateTime
+                        final date = DateTime(yearInt, monthInt, dayInt);
 
-    // Verificar si los valores son válidos
-    if (_isValidDate(dayInt, monthInt, yearInt)) {
-      // Crear un objeto DateTime
-      final date = DateTime(yearInt, monthInt, dayInt);
-      
-      // Actualizar el estado con la fecha seleccionada
-      ref.read(dataAntiparasitesProvider.notifier).update((state) => date);
-    } else {
-      // Manejar el caso de fecha inválida aquí
-      print("Fecha inválida");
-    }
-  },
-             ):
+                        // Actualizar el estado con la fecha seleccionada
+                        ref
+                            .read(dataAntiparasitesProvider.notifier)
+                            .update((state) => date);
+                      } else {
+                        // Manejar el caso de fecha inválida aquí
+                        print("Fecha inválida");
+                      }
+                    },
+                  )
+                : DateSelectionWidget(
+                    onChanged: (day, month, year) {
+                      // Convertir los valores de cadena a enteros
+                      int dayInt = int.tryParse(day) ?? 1;
+                      int monthInt = _getMonthNumber(month);
+                      int yearInt = int.tryParse(year) ?? DateTime.now().year;
 
-               DateSelectionWidget(
+                      // Verificar si los valores son válidos
+                      if (_isValidDate(dayInt, monthInt, yearInt)) {
+                        // Crear un objeto DateTime
+                        final date = DateTime(yearInt, monthInt, dayInt);
+
+                        // Actualizar el estado con la fecha seleccionada
+                        ref
+                            .read(dataAntiparasitesProvider.notifier)
+                            .update((state) => date);
+                      } else {
+                        // Manejar el caso de fecha inválida aquí
                   
-                               onChanged: (day, month, year) {
-    // Convertir los valores de cadena a enteros
-    int dayInt = int.tryParse(day) ?? 1;
-    int monthInt = _getMonthNumber(month);
-    int yearInt = int.tryParse(year) ?? DateTime.now().year;
-
-    // Verificar si los valores son válidos
-    if (_isValidDate(dayInt, monthInt, yearInt)) {
-      // Crear un objeto DateTime
-      final date = DateTime(yearInt, monthInt, dayInt);
-      
-      // Actualizar el estado con la fecha seleccionada
-      ref.read(dataAntiparasitesProvider.notifier).update((state) => date);
-    } else {
-      // Manejar el caso de fecha inválida aquí
-      print("Fecha inválida");
-    }
-  },
-             )
-             
-             ,
+                      }
+                    },
+                  ),
             const SizedBox(
               height: 20,
             ),
@@ -323,50 +329,54 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
                   "Proxima dosis",
                   style: TextStyle(fontSize: 18, color: Colors.black),
                 )),
-                editrueorfalse?
-              DateSelectionWidget(
-                     deaydefault: nn.nextdose.day.toString(),
-                         monthdefault: obtenerMesEnPalabras(nn.nextdose.month),
-                         yeardefault: nn.nextdose.year.toString(),
-                               onChanged: (day, month, year) {
-    // Convertir los valores de cadena a enteros
-    int dayInt = int.tryParse(day) ?? 1;
-    int monthInt = _getMonthNumber(month);  
-    int yearInt = int.tryParse(year) ?? DateTime.now().year;
+            editrueorfalse
+                ? DateSelectionWidget(
+                    deaydefault: nn.nextdose.day.toString(),
+                    monthdefault: obtenerMesEnPalabras(nn.nextdose.month),
+                    yeardefault: nn.nextdose.year.toString(),
+                    onChanged: (day, month, year) {
+                      // Convertir los valores de cadena a enteros
+                      int dayInt = int.tryParse(day) ?? 1;
+                      int monthInt = _getMonthNumber(month);
+                      int yearInt = int.tryParse(year) ?? DateTime.now().year;
 
-    // Verificar si los valores son válidos
-    if (_isValidDate(dayInt, monthInt, yearInt)) {
-      // Crear un objeto DateTime
-      final date = DateTime(yearInt, monthInt, dayInt);
-      
-      // Actualizar el estado con la fecha seleccionada
-      ref.read(nextAntiparasitesProvider.notifier).update((state) => date);
-    } else {
-      // Manejar el caso de fecha inválida aquí
-      print("Fecha inválida");
-    }
-  },
-             ): DateSelectionWidget(
-                  
-                               onChanged: (day, month, year) {
-    // Convertir los valores de cadena a enteros
-    int dayInt = int.tryParse(day) ?? 1;
-    int monthInt = _getMonthNumber(month);
-    int yearInt = int.tryParse(year) ?? DateTime.now().year;
+                      // Verificar si los valores son válidos
+                      if (_isValidDate(dayInt, monthInt, yearInt)) {
+                        // Crear un objeto DateTime
+                        final date = DateTime(yearInt, monthInt, dayInt);
 
-    // Verificar si los valores son válidos
-    if (_isValidDate(dayInt, monthInt, yearInt)) {
-      // Crear un objeto DateTime
-      final date = DateTime(yearInt, monthInt, dayInt);
-      
-      // Actualizar el estado con la fecha seleccionada
-      ref.read(nextAntiparasitesProvider.notifier).update((state) => date);
-    } else {
-      // Manejar el caso de fecha inválida aquí
-      print("Fecha inválida");
-    }
-  },
-             ),
+                        // Actualizar el estado con la fecha seleccionada
+                        ref
+                            .read(nextAntiparasitesProvider.notifier)
+                            .update((state) => date);
+                      } else {
+                        // Manejar el caso de fecha inválida aquí
+                 
+                      }
+                    },
+                  )
+                : DateSelectionWidget(
+                    onChanged: (day, month, year) {
+                      // Convertir los valores de cadena a enteros
+                      int dayInt = int.tryParse(day) ?? 1;
+                      int monthInt = _getMonthNumber(month);
+                      int yearInt = int.tryParse(year) ?? DateTime.now().year;
+
+                      // Verificar si los valores son válidos
+                      if (_isValidDate(dayInt, monthInt, yearInt)) {
+                        // Crear un objeto DateTime
+                        final date = DateTime(yearInt, monthInt, dayInt);
+
+                        // Actualizar el estado con la fecha seleccionada
+                        ref
+                            .read(nextAntiparasitesProvider.notifier)
+                            .update((state) => date);
+                      } else {
+                        // Manejar el caso de fecha inválida aquí
+                        print("Fecha inválida");
+                      }
+                    },
+                  ),
             const Spacer(),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -390,19 +400,18 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
                         "brand": marcaAntiparasites == ""
                             ? nn.brand
                             : marcaAntiparasites,
-                        "date":date,
+                        "date": date,
                         "nextdose": nextAntiparasites
                       }))
                       .then((value) => {
                             ref
                                 .read(editantiparasitesProvider.notifier)
                                 .update((state) => false)
-                          }).
-                          then((value) => {
+                          })
+                      .then((value) => {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text('¡Antiparasitario Editado!'),
-                            
                             ))
                           })
                       .then((value) => {
@@ -412,9 +421,7 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
                           })
                       .then((value) => {context.go("/home/0")});
                 } else {
-                  if (typeAntiparasites.isEmpty ||
-                      marcaAntiparasites.isEmpty 
-                     ) {
+                  if (typeAntiparasites.isEmpty || marcaAntiparasites.isEmpty) {
                     final snackBar = SnackBar(
                       content:
                           const Text('¡porfavor rellenar todos los campos'),
@@ -429,31 +436,33 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
 
                     // Mostrar el Snackbar en el contexto actual
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }else{
-   ref
-                      .read(vaccineandAntiparasitesRepositoryProvider)
-                      .addAntiparasites(
-                          typeAntiparasites,
-                            
-                          marcaAntiparasites,
-                          date,
-                          nextAntiparasites)
-                      .then((value) => {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text('¡subido con exito!'),
-                              // action: SnackBarAction(
-                              //   label: 'Cerrar',
-                              //   onPressed: () =>
-                              //       ScaffoldMessenger.of(context).hideCurrentSnackBar(),
-                              // ),
-                            ))
-                          })
-                      .then((value) => {context.pop()})
-                      .then((value) => {});
-                }
+                  } else {
+                    ref
+                        .read(vaccineandAntiparasitesRepositoryProvider)
+                        .addAntiparasites(typeAntiparasites, marcaAntiparasites,
+                            date, nextAntiparasites)
+                        .then((value) => {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('¡subido con exito!'),
+                                // action: SnackBarAction(
+                                //   label: 'Cerrar',
+                                //   onPressed: () =>
+                                //       ScaffoldMessenger.of(context).hideCurrentSnackBar(),
+                                // ),
+                              ))
+                            })
+                        .then((value) => {context.pop()})
+                        .then((value) => {
+                              ref
+                                  .read(typeAntiparasitesProvider.notifier)
+                                  .update((state) => "")
+                            })
+                        .then((value) => {
+                          ref.read(marcaAntiparasitesProvider.notifier).update((state) => "")
+                        });
                   }
-               
+                }
               },
 
               // context.go("/home/0");

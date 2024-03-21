@@ -33,7 +33,7 @@ class VetView extends StatelessWidget {
                               "assets/perro.png",
                               width: 40,
                             )) // Si no hay foto y es un perro, muestra una imagen de gato
-                          : type == "Otro"
+                          : type == "otro"
                               ? ClipOval(
                                   child: Image.asset("assets/conejo.png",
                                       width:
@@ -83,7 +83,7 @@ class VetView extends StatelessWidget {
                        photoUrl == ""
     ? type == "Perro"
         ? ClipOval( child: Image.asset("assets/perro.png",width: 40,)) // Si no hay foto y es un perro, muestra una imagen de gato
-        : type == "Otro"
+        : type == "otro"
             ? ClipOval(child: Image.asset("assets/conejo.png",width: 40)) // Si no hay foto y es otro, muestra una imagen específica
             : ClipOval(child: Image.asset("assets/gato.png",width: 40)) // Si no hay foto y no es un perro ni otro, muestra una imagen de perro
     : CircleAvatar(
