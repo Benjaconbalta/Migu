@@ -36,10 +36,13 @@ flutter_launcher_icons:
   min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter_native_splash:
+  android: true
+  ios: true
   color: "#FFFFFF" # Set white background color (assuming you want this)
-  branding: assets/icon/Migu.png # Path to your app icon (assuming this is correct)
-  android_gravity: center # Center the image on Android (assuming you want this)
-  ios_content_mode: center
+  # branding: assets/icon/Migu.png # Path to your app icon (assuming this is correct)
+  # android_gravity: center # Center the image on Android (assuming you want this)
+  # ios_content_mode: center
+  image: "assets/icon/Splash.png"
 
 flutter:
   uses-material-design: true

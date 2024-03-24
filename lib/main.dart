@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:migu/config/router/app_router.dart';
 import 'package:migu/config/theme/app_theme.dart';
 import 'package:migu/firebase_options.dart';
-
 void main() async{
    WidgetsFlutterBinding.ensureInitialized();
    
@@ -13,7 +12,8 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+     await Future.delayed(const Duration(seconds: 3));
+         FlutterNativeSplash.remove();
      runApp(const ProviderScope(
       child: MainApp(),
     ));
@@ -30,7 +30,7 @@ class _MainAppState extends ConsumerState<MainApp> {
   @override
   Widget build(BuildContext context) {
           final approuter = ref.watch(goRouterProvider);
-           FlutterNativeSplash.remove();
+
     return  MaterialApp.router( 
        routerConfig: approuter,
        debugShowCheckedModeBanner: false,

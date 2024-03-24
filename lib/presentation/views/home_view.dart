@@ -12,6 +12,8 @@ import 'package:migu/presentation/home/into_antiparasitic.dart';
 import 'package:migu/presentation/home/into_vaccine.dart';
 import 'package:migu/presentation/providers/Vaccineandantiparasites/vaccineandAntiparasites_provider.dart';
 
+
+
 class HomeView extends ConsumerWidget {
   const HomeView({
     super.key,
