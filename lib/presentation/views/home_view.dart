@@ -12,7 +12,9 @@ import 'package:migu/presentation/home/into_antiparasitic.dart';
 import 'package:migu/presentation/home/into_vaccine.dart';
 import 'package:migu/presentation/providers/Vaccineandantiparasites/vaccineandAntiparasites_provider.dart';
 
-
+final isEditPerProvider = StateProvider<bool>((ref) {
+  return false;
+});
 
 class HomeView extends ConsumerWidget {
   const HomeView({
@@ -25,6 +27,34 @@ class HomeView extends ConsumerWidget {
     final pressFalseorTrue = ref.watch(pressVaccineIntoProvider);
     final pressAntiparasites = ref.watch(pressAntiparasitesIntoProvider);
     final antiparasites = ref.watch(antiparasitesFirebaseProvider);
+
+    void _mostrarModal(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Contactar Soporte'),
+            content: const SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('hola@migupets.com'),
+                  // Puedes agregar mpás widgets según sea necesario
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FilledButton(
+                child: Text('Cerrar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              // Puedes agregar más botones de acción si lo necesitas
+            ],
+          );
+        },
+      );
+    }
 
     return DefaultTabController(
       length: 2,
@@ -44,17 +74,27 @@ class HomeView extends ConsumerWidget {
                   var type = snapshot.data!.get('type');
                   print("type$photoUrl");
                   // ref.read(namepetProvider.notifier).update((state) => name);
-return photoUrl == ""
-    ? type == "Perro"
-        ? ClipOval( child: Image.asset("assets/perro.png",width: 40,)) // Si no hay foto y es un perro, muestra una imagen de gato
-        : type == "otro"
-            ? ClipOval(child: Image.asset("assets/conejo.png",width: 40)) // Si no hay foto y es otro, muestra una imagen específica
-            : ClipOval(child: Image.asset("assets/gato.png",width: 40)) // Si no hay foto y no es un perro ni otro, muestra una imagen de perro
-    : CircleAvatar(
-        backgroundImage: NetworkImage(
-            photoUrl), // Si hay una foto, muestra el avatar del usuario
-        radius: 18.0, // Radio para hacerlo redondo
-      );
+                  return photoUrl == ""
+                      ? type == "Perro"
+                          ? ClipOval(
+                              child: Image.asset(
+                              "assets/perro.png",
+                              width: 40,
+                            )) // Si no hay foto y es un perro, muestra una imagen de gato
+                          : type == "otro"
+                              ? ClipOval(
+                                  child: Image.asset("assets/conejo.png",
+                                      width:
+                                          40)) // Si no hay foto y es otro, muestra una imagen específica
+                              : ClipOval(
+                                  child: Image.asset("assets/gato.png",
+                                      width:
+                                          40)) // Si no hay foto y no es un perro ni otro, muestra una imagen de perro
+                      : CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              photoUrl), // Si hay una foto, muestra el avatar del usuario
+                          radius: 18.0, // Radio para hacerlo redondo
+                        );
                 } else {
                   return SizedBox.shrink();
                 }
@@ -70,9 +110,12 @@ return photoUrl == ""
                 if (snapshot.hasData && snapshot.data!.exists) {
                   var photoUrl = snapshot.data!.get('urlImage');
                   var name = snapshot.data!.get('name');
-                         var type = snapshot.data!.get('type');
+                  var type = snapshot.data!.get('type');
                   // ref.read(namepetProvider.notifier).update((state) => name);
                   return PopupMenuButton<String>(
+                    color: Colors.white,
+                    shadowColor: Colors.white,
+                    surfaceTintColor: Colors.white,
                     icon:
                         const Icon(Icons.arrow_drop_down, color: Colors.white),
                     itemBuilder: (BuildContext context) {
@@ -80,7 +123,6 @@ return photoUrl == ""
                         '$name',
                         'Editar Mascota',
                         'Contactar Soporte',
-                        "Patreon",
                         "Cerrar sesión"
                       ].map((String choice) {
                         if (choice == '$name') {
@@ -88,18 +130,31 @@ return photoUrl == ""
                             value: choice,
                             child: Row(
                               children: [
-                                              photoUrl == ""
-    ? type == "Perro"
-        ? ClipOval( child: Image.asset("assets/perro.png",width: 40,)) // Si no hay foto y es un perro, muestra una imagen de gato
-        : type == "otro"
-            ? ClipOval(child: Image.asset("assets/conejo.png",width: 40)) // Si no hay foto y es otro, muestra una imagen específica
-            : ClipOval(child: Image.asset("assets/gato.png",width: 40)) // Si no hay foto y no es un perro ni otro, muestra una imagen de perro
-    : CircleAvatar(
-        backgroundImage: NetworkImage(
-            photoUrl), // Si hay una foto, muestra el avatar del usuario
-        radius: 18.0, // Radio para hacerlo redondo
-    ),
-                           
+                                photoUrl == ""
+                                    ? type == "Perro"
+                                        ? ClipOval(
+                                            child: Image.asset(
+                                            "assets/perro.png",
+                                            width: 40,
+                                          )) // Si no hay foto y es un perro, muestra una imagen de gato
+                                        : type == "otro"
+                                            ? ClipOval(
+                                                child: Image.asset(
+                                                    "assets/conejo.png",
+                                                    width:
+                                                        40)) // Si no hay foto y es otro, muestra una imagen específica
+                                            : ClipOval(
+                                                child: Image.asset(
+                                                    "assets/gato.png",
+                                                    width:
+                                                        40)) // Si no hay foto y no es un perro ni otro, muestra una imagen de perro
+                                    : CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                            photoUrl), // Si hay una foto, muestra el avatar del usuario
+                                        radius:
+                                            18.0, // Radio para hacerlo redondo
+                                      ),
+
                                 SizedBox(
                                     width:
                                         8), // Espacio entre la imagen y el texto
@@ -118,6 +173,13 @@ return photoUrl == ""
                     onSelected: (String choice) async {
                       if (choice == "Cerrar sesión") {
                         await FirebaseAuth.instance.signOut();
+                      } else if (choice == "Contactar Soporte") {
+                        _mostrarModal(context);
+                      } else if (choice == "Editar Mascota") {
+                        ref
+                            .read(isEditPerProvider.notifier)
+                            .update((state) => true);
+                        context.push("/addpet");
                       }
                       // Aquí puedes definir las acciones que quieras realizar
                       // context.push("/Addantiparasitic");
@@ -208,7 +270,6 @@ class AntiparasitesView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
-
       child: Column(
         children: [
           const SizedBox(
@@ -323,7 +384,7 @@ class AntiparasitesView extends ConsumerWidget {
                     if (antiparasitee.brand == "Bravecto") {
                       leadingWidget = Image.asset("assets/Frame1000004651.png");
                     } else {
-                      leadingWidget =const Icon(Icons.image);
+                      leadingWidget = const Icon(Icons.image);
                     }
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -391,7 +452,9 @@ class AntiparasitesView extends ConsumerWidget {
               );
             },
           ),
-          SizedBox(height: 140,)
+          SizedBox(
+            height: 140,
+          )
         ],
       ),
     ); // Contenido de la pestaña 2
@@ -582,7 +645,9 @@ class VaccineView extends ConsumerWidget {
               return const Center(child: CircularProgressIndicator());
             },
           ),
-                SizedBox(height: 140,)
+          SizedBox(
+            height: 140,
+          )
         ],
       ),
     );
@@ -877,7 +942,7 @@ class GetVaccinefilter extends StatelessWidget {
                           Column(
                             children: [
                               _buildVaccineContainer(vaccineList[i]),
-                            const  SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Row(

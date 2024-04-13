@@ -202,7 +202,7 @@ class RegisterScreen extends ConsumerWidget {
                   child: const Text(
                     "Continuar",
                     style: TextStyle(color: Colors.white),
-                  ),
+                  ),  
                 ),
               ),
               const SizedBox(height: 10),
@@ -244,10 +244,10 @@ class RegisterScreen extends ConsumerWidget {
                   context.push("/login");
                 },
                 child: RichText(
-                  text: TextSpan(
+                  text: const TextSpan(
                     style: const TextStyle(color: Colors.black),
                     children: [
-                      const TextSpan(
+                       TextSpan(
                         text: '¿Ya tienes una cuenta? ',
                         style: TextStyle(fontSize: 15),
                       ),

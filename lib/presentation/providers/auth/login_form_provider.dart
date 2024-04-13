@@ -75,7 +75,7 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
 }
 
 //consume afuera
-//el autodispose es para cuandp el usuario entre a la app y depues cierre seccion no le aparesca el login con los datos reyenados en elos input
+//el autodispoxsse es para cuandp el usuario entre a la app y depues cierre seccion no le aparesca el login con los datos reyenados en elos input
 final loginFormProvider =
     StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
   final loginUserCallback = ref.watch(authProvider.notifier).loginUser;

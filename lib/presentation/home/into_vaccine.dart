@@ -41,7 +41,9 @@ class IntoVaccine extends ConsumerWidget {
             children: [
               TextButton.icon(
                 onPressed: () {
-                  ref.read(editvaccineProvider.notifier).update((state) => false);
+                  ref
+                      .read(editvaccineProvider.notifier)
+                      .update((state) => false);
                   ref
                       .read(pressVaccineIntoProvider.notifier)
                       .update((state) => false);
@@ -174,68 +176,221 @@ class IntoVaccine extends ConsumerWidget {
                 const Icon(Icons.help),
                 nn.photocertificate == ""
                     ? const Text("no-Image")
-                    : Container(
-                        width: screenWidth * 0.2,
-                        height: screenWidth * 0.2,
-                        child: Image.network(
-                          loadingBuilder: (context, child, loadingProgress) {
-                                   if (loadingProgress == null) {
-        // Si la imagen ya se ha cargado, simplemente muestra la imagen
-        return child;
-      } else {
-        // Si la imagen aún se está cargando, muestra un indicador de progreso
-        return const Center(
-          child: CircularProgressIndicator(
-            color: Colors.black,
-          ),
-        );
-      }
+                    : GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text("Etiqueta Vacuna"),
+                                content: Image.network(
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      // Si la imagen ya se ha cargado, simplemente muestra la imagen
+                                      return child;
+                                    } else {
+                                      // Si la imagen aún se está cargando, muestra un indicador de progreso
+                                      return const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.black,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  nn.photovaccinelabel,
+                                  width: 20,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Etiqueta Vacuna"),
+                                  content: Image.network(
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        // Si la imagen ya se ha cargado, simplemente muestra la imagen
+                                        return child;
+                                      } else {
+                                        // Si la imagen aún se está cargando, muestra un indicador de progreso
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.black,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    nn.photovaccinelabel,
+                                    width: 20,
+                                  ),
+                                );
+                              },
+                            );
                           },
-                          nn.photovaccinelabel,
-                          width: 20,
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Certificado"),
+                                    content: Image.network(
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          // Si la imagen ya se ha cargado, simplemente muestra la imagen
+                                          return child;
+                                        } else {
+                                          // Si la imagen aún se está cargando, muestra un indicador de progreso
+                                          return const Center(
+                                            child: CircularProgressIndicator(
+                                              color: Colors.black,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      nn.photovaccinelabel,
+                                      width: 20,
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: GestureDetector(
+                              
+                              onTap: () {
+                                showDialog(
+                                  
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("Etiqueta Vacuna:") ,
+                                      content: Image.network(
+                                        loadingBuilder: (context, child,
+                                            loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            // Si la imagen ya se ha cargado, simplemente muestra la imagen
+                                            return child;
+                                          } else {
+                                            // Si la imagen aún se está cargando, muestra un indicador de progreso
+                                            return const Center(
+                                              child:
+                                                  CircularProgressIndicator(
+                                                color: Colors.black,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        nn.photovaccinelabel,
+                                        width: 20,
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                              child: Container(
+                                width: screenWidth * 0.2,
+                                height: screenWidth * 0.2,
+                                child: Image.network(
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      // Si la imagen ya se ha cargado, simplemente muestra la imagen
+                                      return child;
+                                    } else {
+                                      // Si la imagen aún se está cargando, muestra un indicador de progreso
+                                      return const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.black,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  nn.photovaccinelabel,
+                                  width: 20,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
               ],
             ),
           ),
           SizedBox(height: screenHeight * 0.03),
-          Container(
-            height: screenHeight * 0.1,
-            width: screenWidth * 0.7,
-            padding: EdgeInsets.all(screenWidth * 0.03),
-            color: Colors.grey[200],
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text("Certificado"),
-                const Icon(Icons.help),
-                nn.photocertificate == ""
-                    ? const Text("no-Image")
-                    :  Container(
-                        width: screenWidth * 0.2,
-                        height: screenWidth * 0.2,
-                        child: Image.network(
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                     if (loadingProgress == null) {
-        // Si la imagen ya se ha cargado, simplemente muestra la imagen
-        return child;
-      } else {
-        // Si la imagen aún se está cargando, muestra un indicador de progreso
-        return  const Center(
-          child: CircularProgressIndicator(
-            color: Colors.black,
-            
-          ),
-        );
-      }
-      
-                                },
-                                nn.photocertificate,
-                                width: 20,
-                              ),
-                      ),
-              ],
+          GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                 return AlertDialog(
+                  title: const Text("Certificado:"),
+                                        content: Image.network(
+                                          loadingBuilder: (context, child,
+                                              loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              // Si la imagen ya se ha cargado, simplemente muestra la imagen
+                                              return child;
+                                            } else {
+                                              // Si la imagen aún se está cargando, muestra un indicador de progreso
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: Colors.black,
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          nn.photocertificate,
+                                          width: 20,
+                                        ),
+                                      );
+                },
+              );
+            },
+            child: Container(
+              
+              height: screenHeight * 0.1,
+              width: screenWidth * 0.7,
+              padding: EdgeInsets.all(screenWidth * 0.03),
+              color: Colors.grey[200],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Certificado"),
+                  const Icon(Icons.help),
+                  nn.photocertificate == ""
+                      ? const Text("no-Image")
+                      : Container(
+                          width: screenWidth * 0.2,
+                          height: screenWidth * 0.2,
+                          child: Image.network(
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                // Si la imagen ya se ha cargado, simplemente muestra la imagen
+                                return child;
+                              } else {
+                                // Si la imagen aún se está cargando, muestra un indicador de progreso
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  ),
+                                );
+                              }
+                            },
+                            nn.photocertificate,
+                            width: 20,
+                          ),
+                        ),
+                ],
+              ),
             ),
           ),
           const SizedBox(

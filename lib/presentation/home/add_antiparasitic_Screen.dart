@@ -59,7 +59,7 @@ int _daysInMonth(int month, int year) {
 }
 
 final typeAntiparasitesProvider = StateProvider<String>((ref) {
-  return "";
+  return "Externa";
 });
 final marcaAntiparasitesProvider = StateProvider<String>((ref) {
   return "";
@@ -421,7 +421,7 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
                           })
                       .then((value) => {context.go("/home/0")});
                 } else {
-                  if (typeAntiparasites.isEmpty || marcaAntiparasites.isEmpty) {
+                  if ( marcaAntiparasites.isEmpty) {
                     final snackBar = SnackBar(
                       content:
                           const Text('¡porfavor rellenar todos los campos'),

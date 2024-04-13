@@ -31,7 +31,7 @@ class _MainAppState extends ConsumerState<MainApp> {
   Widget build(BuildContext context) {
           final approuter = ref.watch(goRouterProvider);
 
-    return  MaterialApp.router( 
+    return  MaterialApp .router( 
        routerConfig: approuter,
        debugShowCheckedModeBanner: false,
         theme: AppTheme().getTheme(), 

@@ -118,7 +118,7 @@ class AdditionalInfoRegisterScreen extends ConsumerWidget {
                   text: TextSpan(
                       style: TextStyle(color: Colors.black),
                       children: [
-                        TextSpan(text: "Al registrarte, aceptas nuestros"),
+                     const   TextSpan(text: "Al registrarte, Aceptas nuestros"),
                         TextSpan(
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
