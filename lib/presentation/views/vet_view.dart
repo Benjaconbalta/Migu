@@ -1,12 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:migu/presentation/views/home_view.dart';
 
-class VetView extends StatelessWidget {
+class VetView extends ConsumerWidget {
   const VetView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+      void _mostrarModal(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Contactar Soporte'),
+            content: const SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('hola@migupets.com'),
+                  // Puedes agregar mpás widgets según sea necesario
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FilledButton(
+                child: Text('Cerrar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              // Puedes agregar más botones de acción si lo necesitas
+            ],
+          );
+        },
+      );
+    }
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -65,6 +96,9 @@ class VetView extends StatelessWidget {
                   var type = snapshot.data!.get('type');
                   // ref.read(namepetProvider.notifier).update((state) => name);
                   return PopupMenuButton<String>(
+                       color: Colors.white,
+                    shadowColor: Colors.white,
+                    surfaceTintColor: Colors.white,
                     icon:
                         const Icon(Icons.arrow_drop_down, color: Colors.white),
                     itemBuilder: (BuildContext context) {
@@ -72,7 +106,6 @@ class VetView extends StatelessWidget {
                         '$name',
                         'Editar Mascota',
                         'Contactar Soporte',
-                        "Patreon",
                         "Cerrar sesión"
                       ].map((String choice) {
                         if (choice == '$name') {
@@ -106,14 +139,19 @@ class VetView extends StatelessWidget {
                         }
                       }).toList();
                     },
-                    onSelected: (String choice) async {
+                   onSelected: (String choice) async {
                       if (choice == "Cerrar sesión") {
                         await FirebaseAuth.instance.signOut();
+                      } else if (choice == "Contactar Soporte") {
+                        _mostrarModal(context);
+                      } else if (choice == "Editar Mascota") {
+                        ref
+                            .read(isEditPerProvider.notifier)
+                            .update((state) => true);
+                        context.push("/addpet");
                       }
-                      // Aquí puedes definir las acciones que quieras realizar
-                      // context.push("/Addantiparasitic");
-                    },
-                  );
+                   });
+              
                 } else {
                   return SizedBox.shrink();
                 }
