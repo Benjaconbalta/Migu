@@ -1,12 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:migu/presentation/home/addvaccine_Screen.dart';
 import 'package:migu/widgets/shared/custom_text_form_field.dart';
 
-class EditProfileScreen extends StatelessWidget {
+final atentionSwitchProvider = StateProvider<bool>((ref) {
+  return false;
+});
+final atention2SwitchProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
+final typeSwitchProvider = StateProvider<bool>((ref) {
+  return false;
+});
+final typ1SwitchProvider = StateProvider<bool>((ref) {
+  return false;
+});
+final type2atention2SwitchProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
+class EditProfileScreen extends ConsumerWidget {
   const EditProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final atentionswitch = ref.watch(atentionSwitchProvider);
+    final atention2switch = ref.watch(atention2SwitchProvider);
+final typevalueSwitchProvider=ref.watch(typeSwitchProvider);
+final typegatoSwitchProvider=ref.watch(typ1SwitchProvider);
+final typeExoticos=ref.watch(type2atention2SwitchProvider);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -21,14 +45,14 @@ class EditProfileScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Editar Perfil",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w600,
                         fontSize: 20),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
@@ -130,32 +154,23 @@ class EditProfileScreen extends StatelessWidget {
                           width: 340,
                           height: 50,
                           child: CustomTextFormField(
+                            keyboardType: TextInputType.number,
+                            onChanged: (p0) {
+                              //validacion debe emepzar con un nueve y debe ser nueve digitos
+                              //de lo contrario de numero invalido
+                            },
                             label: "Beatriz",
                             hint: "+56",
                           ))
                     ],
                   ),
                   MyDropdown(
-                    defaultValue: "Bravecto",
+                    defaultValue: "seleccionar",
                     label: "que servicios ofreces",
-                    options: [
-                      "Bravecto",
-                      "NEXGARD",
-                      "ADVOCATE",
-                      "CEVA",
-                      "FRONTLINE SPRAY",
-                      "Ehlinger",
-                      "Zoetis",
-                      "NEXGARD SPECTRA",
-                      "Skouts Honor",
-                      "TICKELESS",
-                      "cleanvet",
-                      "frontline plus",
-                      "Bayer/Elanco",
-                      "drag pharma",
-                      "veterquimica",
-                      "virbac",
-                      "Otro",
+                    options: const [
+                      "seleccionar",
+                      "Atencion Domicilio",
+                      "veterinaria",
                     ],
                     onChanged: (marc) {
                       // ref
@@ -164,26 +179,15 @@ class EditProfileScreen extends StatelessWidget {
                     },
                   ),
                   MyDropdown(
-                    defaultValue: "Bravecto",
+                    defaultValue: "seleccionar",
                     label: "Cuantos años de experiencia",
-                    options: [
-                      "Bravecto",
-                      "NEXGARD",
-                      "ADVOCATE",
-                      "CEVA",
-                      "FRONTLINE SPRAY",
-                      "Ehlinger",
-                      "Zoetis",
-                      "NEXGARD SPECTRA",
-                      "Skouts Honor",
-                      "TICKELESS",
-                      "cleanvet",
-                      "frontline plus",
-                      "Bayer/Elanco",
-                      "drag pharma",
-                      "veterquimica",
-                      "virbac",
-                      "Otro",
+                    options: const [
+                      "seleccionar",
+                      "1 año",
+                      "2 años",
+                      "3 años",
+                      "4 años",
+                      "5 años"
                     ],
                     onChanged: (marc) {
                       // ref
@@ -192,25 +196,24 @@ class EditProfileScreen extends StatelessWidget {
                     },
                   ),
                   MyDropdown(
-                    defaultValue: "Bravecto",
+                    defaultValue: "Seleccionar",
                     label: "que Expecialidad",
                     options: const [
-                      "Bravecto",
-                      "NEXGARD",
-                      "ADVOCATE",
-                      "CEVA",
-                      "FRONTLINE SPRAY",
-                      "Ehlinger",
-                      "Zoetis",
-                      "NEXGARD SPECTRA",
-                      "Skouts Honor",
-                      "TICKELESS",
-                      "cleanvet",
-                      "frontline plus",
-                      "Bayer/Elanco",
-                      "drag pharma",
-                      "veterquimica",
-                      "virbac",
+                      "Seleccionar",
+                      "Cardiologia",
+                      "Dermatología",
+                      "Cirugía Dental",
+                      "Ecografía",
+                      "Endocrinología",
+                      "Fisiatría",
+                      "Gastroenterología",
+                      "Medicina Felina",
+                      "Veterinaria Exótica",
+                      "Medicina Respiratoria",
+                      "Nefro-urología",
+                      "Neurología",
+                      "Oncología",
+                      "Radiología",
                       "Otro",
                     ],
                     onChanged: (marc) {
@@ -241,38 +244,47 @@ class EditProfileScreen extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              SwitchDemo(text: "Online",),
-              SwitchDemo(text: "A domicilio",),
-               Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Direccion",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 15),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      SizedBox(
-                          width: 340,
-                          height: 50,
-                          child: CustomTextFormField(
-                            label: "Beatriz",
-                            hint: "+56",
-                          ))
-                    ],
+              SwitchDemo(
+                atentionswitch: atentionswitch,
+                provideratentionSwitchProvider: atentionSwitchProvider,
+                text: "Online",
+              ),
+              SwitchDemo(
+                atentionswitch: atention2switch,
+                provideratentionSwitchProvider: atention2SwitchProvider,
+                text: "A domicilio",
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Direccion",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                   ),
-                  SizedBox(height: 20,),
-                const Text(
+                  SizedBox(
+                    height: 4,
+                  ),
+                  SizedBox(
+                      width: 340,
+                      height: 50,
+                      child: CustomTextFormField(
+                        label: "Beatriz",
+                        hint: "+56",
+                      ))
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              const Text(
                 "Especies*",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
               ),
-               Container(
+              Container(
                 height: 30,
                 color: Colors.grey[200],
                 child: const Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
                     children: [
                       Icon(Icons.help),
@@ -281,19 +293,33 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-                SwitchDemo(text: "perros",),
-              SwitchDemo(text: "Gatos",),
-              SwitchDemo(text: "Exoticos",),
-                   SizedBox(height: 20,),
+               SwitchDemo(
+                  atentionswitch: typevalueSwitchProvider,
+                  provideratentionSwitchProvider:typeSwitchProvider ,
+                 text: "perros",
+               ),
+               SwitchDemo(
+                  atentionswitch:typegatoSwitchProvider ,
+                  provideratentionSwitchProvider: typ1SwitchProvider,
+                  text: "Gatos",
+               ),
+               SwitchDemo(
+                 atentionswitch:typeExoticos ,
+                  provideratentionSwitchProvider:type2atention2SwitchProvider ,
+                 text: "Exoticos",
+               ),
+              SizedBox(
+                height: 20,
+              ),
               const Text(
                 "Ofrece*",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
               ),
-               Container(
+              Container(
                 height: 30,
                 color: Colors.grey[200],
                 child: const Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
                     children: [
                       Icon(Icons.help),
@@ -302,41 +328,57 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 10,),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "¿Que servicios ofreces?",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 15),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      SizedBox(
-                          width: 340,
-                          height: 50,
-                          child: CustomTextFormField(
-                            label: "Beatriz",
-                            hint: "+56",
-                          )),
-                          Text("10 máx. Usa una coma (,) para separar")
-                    ],
+              SizedBox(
+                height: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "¿Que servicios ofreces?",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                   ),
-                   Container(
-            width: 400,
-            height: 100,
-            color: Colors.grey[200],
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FilledButton.tonal( style: FilledButton.styleFrom(backgroundColor: Colors.white), onPressed: (){}, child: Text("Cancelar",style: TextStyle(color: Colors.red),)),
-                SizedBox(width: 30,),
-                 FilledButton.tonal( style: FilledButton.styleFrom(backgroundColor: Color(0xff3D9A51)), onPressed: (){}, child: Text("Guardar",style: TextStyle(color: Colors.white),))
-              ],
-            )
-          )
+                  SizedBox(
+                    height: 4,
+                  ),
+                  SizedBox(
+                      width: 340,
+                      height: 50,
+                      child: CustomTextFormField(
+                        label: "Beatriz",
+                        hint: "+56",
+                      )),
+                  Text("10 máx. Usa una coma (,) para separar")
+                ],
+              ),
+              Container(
+                  width: 400,
+                  height: 100,
+                  color: Colors.grey[200],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FilledButton.tonal(
+                          style: FilledButton.styleFrom(
+                              backgroundColor: Colors.white),
+                          onPressed: () {},
+                          child: Text(
+                            "Cancelar",
+                            style: TextStyle(color: Colors.red),
+                          )),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      FilledButton.tonal(
+                          style: FilledButton.styleFrom(
+                              backgroundColor: Color(0xff3D9A51)),
+                          onPressed: () {},
+                          child: Text(
+                            "Guardar",
+                            style: TextStyle(color: Colors.white),
+                          ))
+                    ],
+                  ))
             ],
           ),
         ),
@@ -345,15 +387,21 @@ class EditProfileScreen extends StatelessWidget {
   }
 }
 
-class SwitchDemo extends StatefulWidget {
+class SwitchDemo extends ConsumerStatefulWidget {
   final String text;
+  final bool atentionswitch;
+  StateProvider<bool> provideratentionSwitchProvider;
 
-  const SwitchDemo({super.key, required this.text});
+  SwitchDemo(
+      {super.key,
+      required this.text,
+      required this.atentionswitch,
+      required this.provideratentionSwitchProvider});
   @override
-  _SwitchDemoState createState() => _SwitchDemoState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SwitchDemoState();
 }
 
-class _SwitchDemoState extends State<SwitchDemo> {
+class _SwitchDemoState extends ConsumerState<SwitchDemo> {
   bool _switchValue = false;
 
   @override
@@ -361,15 +409,30 @@ class _SwitchDemoState extends State<SwitchDemo> {
     return Row(
       children: [
         Switch(
-          value: _switchValue,
+          value: widget.atentionswitch,
           onChanged: (value) {
-            setState(() {
-              _switchValue = value;
-            });
+            ref
+                .read(widget.provideratentionSwitchProvider.notifier)
+                .update((state) => !widget.atentionswitch);
           },
         ),
-        Text(widget.text,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
+        Text(
+          widget.text,
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+        ),
       ],
     );
   }
 }
+
+//nombre
+//apellido
+//correo
+//telefono
+//que servicio ofreces
+//cuantos años de experiencia
+//que expecialidad
+//atencion
+//direcion
+//especies
+//servicio que ofreces

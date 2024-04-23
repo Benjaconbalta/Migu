@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-  return Scaffold(
+    return Scaffold(
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("users")
@@ -31,10 +31,16 @@ class HomeScreen extends StatelessWidget {
             // );
           }
           final showBottomNav = snapshot.hasData && snapshot.data!.exists;
+
+          // final bool isVet = snapshot.data?.get('role') ?? false;
+          // final String isPetComplete = snapshot.data?.get('isPetComplete') ?? '';
+
           return Stack(
             children: [
+              //arriba nomrla abajo vet
               IndexedStack(
-                index: showBottomNav ? 1 : 0,
+                 index: showBottomNav ? 1 : 0,
+                //  index: (isVet && isPetComplete == 'completado') ? 0 : 1,
                 children: [
                   const AddPet(),
                   IndexedStack(
@@ -45,6 +51,7 @@ class HomeScreen extends StatelessWidget {
               ),
               Visibility(
                 visible: showBottomNav,
+                // visible: isVet&&isPetComplete=="" ,
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: CustomBottomNavigation(currentIndex: pageIndex),
@@ -55,5 +62,6 @@ class HomeScreen extends StatelessWidget {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    ); }
+    );
+  }
 }

@@ -46,7 +46,7 @@ class ProfileView extends ConsumerWidget {
               ],
             ),
           ),
-          SizedBox(
+         const SizedBox(
             height: 20,
           ),
           ElevatedButton(
@@ -62,7 +62,7 @@ class ProfileView extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(10), // Bordes redondeados
               ),
             ),
-            child: Padding(
+            child: const Padding(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 80),
               child: Text(
                 'Editar Perfil',

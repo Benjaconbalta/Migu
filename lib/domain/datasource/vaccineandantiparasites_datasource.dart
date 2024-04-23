@@ -3,15 +3,14 @@ import 'package:migu/domain/entities/vaccine.dart';
 
 abstract class Vaccineandantiparasites {
   Future<void> addVaccine(
-      String type,
-      String brand,
-      String vaccination,
-      DateTime date,
-      DateTime nextdose,
-      String photovaccinelabel,
-      String photocertificate,
-      
-      );
+    String type,
+    String brand,
+    String vaccination,
+    DateTime date,
+    DateTime nextdose,
+    String photovaccinelabel,
+    String photocertificate,
+  );
 
   Future<void> addAntiparasites(
     String type,
@@ -19,10 +18,9 @@ abstract class Vaccineandantiparasites {
     DateTime date,
     DateTime nextdose,
   );
-
+  // Stream<List> getAllvet();
+    
   Stream<List<Vaccine>> getVaccine();
   Stream<List<Antiparasites>> getAntiparasites();
-  Future<void> getInfopet(
-
-  );
+  Future<void> getInfopet();
 }

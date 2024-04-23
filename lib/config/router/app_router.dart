@@ -13,8 +13,11 @@ import 'package:migu/presentation/home/add_antiparasitic_Screen.dart';
 import 'package:migu/presentation/home/addvaccine_Screen.dart';
 import 'package:migu/presentation/home/home_Screen.dart';
 import 'package:migu/presentation/home/into_vaccine.dart';
+import 'package:migu/presentation/home/vet/clinical_record_Screen.dart';
+import 'package:migu/presentation/home/vet/editClinicalRecordScreen.dart';
 import 'package:migu/presentation/home/vet/editvet_profile_Screen.dart';
 import 'package:migu/presentation/home/vet/home_vet_Screen.dart';
+import 'package:migu/presentation/home/vet/intopatientScreen.dart';
 import 'package:migu/presentation/views/vet/patient_view.dart';
 
 // Obtén una instancia de Firebase Authentication
@@ -39,7 +42,8 @@ final goRouterProvider = Provider((ref) {
 
   return GoRouter(
     refreshListenable: goRouterNotifier,
-    initialLocation: "/home/0",
+    //ojo con el inicial para que no cambie pantallatan rapido
+    initialLocation: "/",
     routes: [
       GoRoute(
         path: "/home/:page",
@@ -82,6 +86,13 @@ final goRouterProvider = Provider((ref) {
         },
       ),
 
+    
+ GoRoute(
+        path: "/IntopatientScreen",
+        builder: (context, state) {
+          return const IntopatientScreen();
+        },
+      ),
       GoRoute(
         path: "/addvaccine",
         builder: (context, state) {
@@ -131,8 +142,19 @@ final goRouterProvider = Provider((ref) {
           return const EditProfileScreen();
         },
       ),
+         GoRoute(
+        path: "/ClinicalRecordScreen",
+        builder: (context, state) {
+          return const ClinicalRecordScreen();
+        },
+      ),
 
-
+  GoRoute(
+        path: "/EditClinicalRecordScreen",
+        builder: (context, state) {
+          return const EditClinicalRecordScreen();
+        },
+      ),
       GoRoute(
         path: "/IntoVaccine",
         builder: (context, state) {
@@ -150,9 +172,9 @@ final goRouterProvider = Provider((ref) {
     redirect: (context, state) {
       //tiene que estar no autenticado pero ser veterinario y cuando preicone veterinario pasarlo a true y el redirect lo llevara a el bottom home tab con las rutas 
       final isGoingTo = state.matchedLocation;
-      print("esvetis${goRouterNotifier.isVet}");
+      print("esvetis${goRouterNotifier.isAuthenticated}");
       if (goRouterNotifier.isAuthenticated) {
-        if (goRouterNotifier.isVet) {
+        if (true) {
           // Redirige a la pantalla para veterinarios
           if (isGoingTo == '/home/0' ||
               isGoingTo == '/home/1' ||
@@ -166,6 +188,9 @@ final goRouterProvider = Provider((ref) {
            if (isGoingTo == '/vet/0' ||
               isGoingTo == '/vet/1' ||
               isGoingTo=="/EditProfileScreen"
+              || isGoingTo=="/IntopatientScreen"||
+              isGoingTo=="/ClinicalRecordScreen"||
+               isGoingTo=="/EditClinicalRecordScreen"
             ) return null;
             return "/vet/0";
           // Redirige a la pantalla para usuarios no veterinarios
@@ -175,8 +200,9 @@ final goRouterProvider = Provider((ref) {
         // Si el usuario no está autenticado, redirige a la pantalla de registro
         if (isGoingTo == '/register' ||
             isGoingTo == '/login' ||
-            isGoingTo == '/additionalInfo' ||
-            isGoingTo == "/TutorVetSelectionScreen") return null;
+            isGoingTo == '/additionalInfo' 
+                  // isGoingTo == "/TutorVetSelectionScreen"
+       ) return null;
         return '/register';
       }
     },

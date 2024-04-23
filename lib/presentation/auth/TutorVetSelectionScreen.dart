@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -26,10 +28,9 @@ class TutorVetSelectionScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 40),
             GestureDetector(
-                onTap: () {
-                   ref
-                       .read(registerformProvider.notifier)
-                       .onFormSubmit(context);
+                onTap: () async{
+                    await registerUser(true,false);
+                  // ref.read(registerformProvider.notifier).onFormSubmit(context);
                 },
                 child: const ChoseSelection(
                     iconname: Icons.pets, text: "Tutor de Mascota")),
@@ -37,8 +38,22 @@ class TutorVetSelectionScreen extends ConsumerWidget {
               height: 20,
             ),
             GestureDetector(
-                onTap: () {
-                  context.go("/TutorVetSelectionScreen");
+                onTap: () async {
+                    await registerUser(false,true);
+            //       ref.read(registerformProvider.notifier).onFormSubmit(context);
+            //  await     FirebaseFirestore.instance
+            //           .collection("users")
+            //           .doc("ok7l2yAWkoyyLdSEgHXK")
+            //           .set({"role": true});
+                  // await FirebaseFirestore.instance
+                  //     .collection("vet")
+                  //     .doc("ids")
+                  //     .set({
+                  //       "role":true
+                  //     });
+                  // autenticar con los datos
+                  //y actualizar los datos con role a veterinario
+
                   //TODO: Aca deberia de actualizar el campo de isvet
                 },
                 child: const ChoseSelection(
@@ -64,6 +79,36 @@ class TutorVetSelectionScreen extends ConsumerWidget {
     );
   }
 }
+  Future<void> registerUser(bool isVet, bool isCompletePet) async {
+    try {
+      // Crear cuenta de usuario en Firebase Auth
+      final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: 'c3aaa11a1aaaa13oa1a10p1araa0011088lreo@example.com', // Correo electrónico ficticio, reemplaza con tu lógica de registro de correo electrónico
+        password: 'contraseña', // Contraseña ficticia, reemplaza con tu lógica de registro de contraseña
+      );
+      //abajo es nomrla , arriva veterinario 
+      // Obtener el ID del usuario recién creado
+      //si el rol es true quiere decir que le devo preguntar sobre su masctota
+      //sin embargo tener otro campo de si ya le pregunte 
+      final String userId = userCredential.user!.uid;
+//este no eres veterinario
+      // Crear un documento en Firestore con el ID del usuario
+      await FirebaseFirestore.instance.collection('users').doc(userId).set({
+        "isPetComplete":isCompletePet? "completado":"",  
+        'role': isVet,
+        "urlImage":"",
+        "name":"",
+        "type":"perro" // El rol será false si es veterinario y true si no lo es
+      });
+
+      // Mostrar un mensaje de éxito
+     
+    } catch (e) {
+      // Mostrar un mensaje de error si hay algún problema durante el registro
+    
+    }
+  }
+
 
 class ChoseSelection extends StatelessWidget {
   final String text;

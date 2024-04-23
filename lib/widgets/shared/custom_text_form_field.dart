@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 class CustomTextFormField extends StatelessWidget {
   final String? label;
   final String? hint;
@@ -9,11 +8,11 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
-    final bool filterNumbers; // Nuevo parámetro para filtrar números
-
+  final bool filterNumbers;
+  final TextEditingController? controller; // Paso 1
 
   const CustomTextFormField({
-    super.key,
+    Key? key,
     this.label,
     this.hint,
     this.errorMessage,
@@ -21,8 +20,9 @@ class CustomTextFormField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.onChanged,
     this.validator,
-    this.filterNumbers=false
-  });
+    this.filterNumbers = false,
+    this.controller, // Paso 1
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,25 +34,26 @@ class CustomTextFormField extends StatelessWidget {
     const borderRadius = Radius.circular(9);
 
     return Container(
-      // padding: const EdgeInsets.only(bottom: 0, top: 15),
       decoration: BoxDecoration(
-   
-          color: Colors.white,
-          borderRadius: const BorderRadius.only(
-
-              topLeft: borderRadius,
-              bottomLeft: borderRadius,
-              bottomRight: borderRadius),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.06),
-                blurRadius: 10,
-                offset: const Offset(0, 5))
-          ]),
+        color: Colors.white,
+        borderRadius: const BorderRadius.only(
+          topLeft: borderRadius,
+          bottomLeft: borderRadius,
+          bottomRight: borderRadius,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
       child: TextFormField(
+        controller: controller, // Paso 2
         inputFormatters: [
           if (filterNumbers) // Solo si se debe filtrar números
-            FilteringTextInputFormatter.deny(RegExp(r'\d')), // Filtra los números
+            FilteringTextInputFormatter.deny(RegExp(r'[0-9]')), // Filtra los números
         ],
         onChanged: onChanged,
         validator: validator,
@@ -61,21 +62,23 @@ class CustomTextFormField extends StatelessWidget {
         style: const TextStyle(fontSize: 20, color: Colors.black54),
         decoration: InputDecoration(
           floatingLabelStyle: const TextStyle(
-              color: Colors.black,fontWeight: FontWeight.bold, fontSize: 20),
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
           enabledBorder: border,
           focusedBorder: border,
           errorBorder: border.copyWith(
-              borderSide: const BorderSide(color: Colors.transparent)),
+            borderSide: const BorderSide(color: Colors.transparent),
+          ),
           focusedErrorBorder: border.copyWith(
-              borderSide: const BorderSide(color: Colors.transparent)),
+            borderSide: const BorderSide(color: Colors.transparent),
+          ),
           isDense: true,
           hintText: hint,
-            hintStyle: const TextStyle(fontSize: 16),
-          // label: label != null ? Text(label!) : null,
-    
+          hintStyle: const TextStyle(fontSize: 16),
           errorText: errorMessage,
           focusColor: colors.primary,
-          // icon: Icon( Icons.supervised_user_circle_outlined, color: colors.primary, )
         ),
       ),
     );

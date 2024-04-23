@@ -295,8 +295,9 @@ class AntiparasitesView extends ConsumerWidget {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                 ),
                 TextButton(
-                    onPressed: () {
-                      context.push("/Addantiparasitic");
+                    onPressed: () async{
+                    
+                       context.push("/Addantiparasitic");
                     },
                     child: const Icon(
                       Icons.add_circle_outline,

@@ -215,6 +215,8 @@ class _AddPetState extends ConsumerState<AddPet> {
                                   .collection("users")
                                   .doc(FirebaseAuth.instance.currentUser!.uid)
                                   .set({
+                                     "isPetComplete":"",
+                                 "role":true,
                                 "name": namePet,
                                 "urlImage": urlFirebaseDowload,
                                 "type": typepet
@@ -728,6 +730,7 @@ class EditPet extends ConsumerWidget {
                                           .doc(FirebaseAuth
                                               .instance.currentUser!.uid)
                                           .update({
+                                           'role':false,
                                         'name': namePet.isEmpty?name:namePet,
                                         'urlImage': updateimage.isEmpty?photoUrl:updateimage,
                                         'type': typePet.isEmpty?type:typePet,
