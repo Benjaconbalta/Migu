@@ -114,12 +114,9 @@ class _AddPetState extends ConsumerState<AddPet> {
                           // Implementa la lógica para subir la foto
                         },
                         child: imageCaptureTemp != ""
-                            ? urlFirebaseDowload == ""
-                                ? const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Colors.black,
-                                    ),
-                                  )
+                            ? 
+                            urlFirebaseDowload == ""
+                                ? Text("cargando...")
                                 : Container(
                                     width: 80, // Ancho del contenedor
                                     height: 80, // Altura del contenedor

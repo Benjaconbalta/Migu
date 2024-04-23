@@ -172,6 +172,9 @@ class HomeView extends ConsumerWidget {
                     },
                     onSelected: (String choice) async {
                       if (choice == "Cerrar sesión") {
+                        ref
+                            .read(isEditPerProvider.notifier)
+                            .update((state) => false);
                         await FirebaseAuth.instance.signOut();
                       } else if (choice == "Contactar Soporte") {
                         _mostrarModal(context);
@@ -295,9 +298,8 @@ class AntiparasitesView extends ConsumerWidget {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                 ),
                 TextButton(
-                    onPressed: () async{
-                    
-                       context.push("/Addantiparasitic");
+                    onPressed: () async {
+                      context.push("/Addantiparasitic");
                     },
                     child: const Icon(
                       Icons.add_circle_outline,
