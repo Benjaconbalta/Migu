@@ -1,4 +1,5 @@
 import 'package:migu/domain/datasource/vaccineandantiparasites_datasource.dart';
+import 'package:migu/domain/entities/Vet.dart';
 import 'package:migu/domain/entities/antiparasites.dart';
 import 'package:migu/domain/entities/vaccine.dart';
 import 'package:migu/domain/repository/Vaccineandantiparasites_repository.dart';
@@ -43,5 +44,10 @@ class Vaccineandantiparasitesrepositoryimpl
   Future<void> getInfopet() {
     // TODO: implement addInfopet
     return getInfopet();
+  }
+
+  @override
+  Stream<List<Vet>> getVets() {
+    return datasource.getVets();
   }
 }

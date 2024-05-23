@@ -13,7 +13,7 @@ import 'package:migu/presentation/providers/Vaccineandantiparasites/Vaccineandan
 import 'package:migu/presentation/providers/Vaccineandantiparasites/vaccineandAntiparasites_provider.dart';
 import 'package:migu/presentation/views/home_view.dart';
 
-int _getMonthNumber(String month) {
+int getMonthNumber(String month) {
   switch (month) {
     case 'Ene':
       return 1;
@@ -313,7 +313,7 @@ class AddVaccineScreen extends ConsumerWidget {
                         onChanged: (day, month, year) {
                           // Convertir los valores de cadena a enteros
                           int dayInt = int.tryParse(day) ?? 1;
-                          int monthInt = _getMonthNumber(month);
+                          int monthInt = getMonthNumber(month);
                           int yearInt =
                               int.tryParse(year) ?? DateTime.now().year;
 
@@ -341,7 +341,7 @@ class AddVaccineScreen extends ConsumerWidget {
                             onChanged: (day, month, year) {
                               // Convertir los valores de cadena a enteros
                               int dayInt = int.tryParse(day) ?? 1;
-                              int monthInt = _getMonthNumber(month);
+                              int monthInt = getMonthNumber(month);
                               int yearInt =
                                   int.tryParse(year) ?? DateTime.now().year;
 
@@ -415,7 +415,7 @@ class AddVaccineScreen extends ConsumerWidget {
                         onChanged: (day, month, year) {
                           // Convertir los valores de cadena a enteros
                           int dayInt = int.tryParse(day) ?? 1;
-                          int monthInt = _getMonthNumber(month);
+                          int monthInt = getMonthNumber(month);
                           int yearInt =
                               int.tryParse(year) ?? DateTime.now().year;
 
@@ -438,7 +438,7 @@ class AddVaccineScreen extends ConsumerWidget {
                         onChanged: (day, month, year) {
                           // Convertir los valores de cadena a enteros
                           int dayInt = int.tryParse(day) ?? 1;
-                          int monthInt = _getMonthNumber(month);
+                          int monthInt = getMonthNumber(month);
                           int yearInt =
                               int.tryParse(year) ?? DateTime.now().year;
 
@@ -1034,7 +1034,7 @@ class _MyDropdownState extends State<MyDropdown> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(0.0),
       child: Form(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

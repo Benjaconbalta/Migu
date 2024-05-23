@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:migu/domain/datasource/vaccineandantiparasites_datasource.dart';
+import 'package:migu/domain/entities/Vet.dart';
 import 'package:migu/domain/entities/antiparasites.dart';
 import 'package:migu/domain/entities/vaccine.dart';
 import 'package:migu/infrastrocture/mappers/Antiparasites_mapper.dart';
@@ -46,7 +47,6 @@ class VaccineandantiparasitesDatasourceImpl extends Vaccineandantiparasites {
 
   @override
   Stream<List<Antiparasites>> getAntiparasites() {
-    
     return FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -121,6 +121,28 @@ class VaccineandantiparasitesDatasourceImpl extends Vaccineandantiparasites {
   }
 
   @override
-  Future<void> getInfopet() async {
+  Future<void> getInfopet() async {}
+
+  @override
+  Stream<List<Vet>> getVets() {
+    final fbColecction = FirebaseFirestore.instance.collectionGroup("vets");
+
+    return fbColecction.snapshots().map((queySnapshot) {
+      return queySnapshot.docs.map((e) {
+        final data = e.data();
+        return Vet(
+            name: data["name"] ?? "",
+            lastname: data["lastname"] ?? "",
+            correo: data["correo"] ?? "",
+            phone: data["phone"] ?? 0,
+            service: data["service"] ?? "",
+            yearsofexperience: data["yearsofexperience"] ?? "",
+            speciality: data["speciality"] ?? "",
+            atentions: data["atentions"] ?? {},
+            addres: data["addres"] ?? "",
+            choosespecies: data["choosespecies"] ?? {},
+            offerparagraph: data["offerparagraph"] ?? []);
+      }).toList();
+    }).map((list) => list.cast<Vet>());
   }
 }

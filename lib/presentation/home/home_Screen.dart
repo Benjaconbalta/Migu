@@ -32,15 +32,15 @@ class HomeScreen extends StatelessWidget {
           }
           final showBottomNav = snapshot.hasData && snapshot.data!.exists;
 
-          // final bool isVet = snapshot.data?.get('role') ?? false;
-          // final String isPetComplete = snapshot.data?.get('isPetComplete') ?? '';
+           final bool isVet = snapshot.data?.get('role') ?? false;//lo cambie a true
+           final String isPetComplete = snapshot.data?.get('isPetComplete') ?? '';
 
           return Stack(
             children: [
               //arriba nomrla abajo vet
               IndexedStack(
-                 index: showBottomNav ? 1 : 0,
-                //  index: (isVet && isPetComplete == 'completado') ? 0 : 1,
+                //  index: showBottomNav ? 1 : 0,
+                 index: (isVet && isPetComplete != 'completado') ? 0 : 1,
                 children: [
                   const AddPet(),
                   IndexedStack(
@@ -50,8 +50,8 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               Visibility(
-                visible: showBottomNav,
-                // visible: isVet&&isPetComplete=="" ,
+                // visible: showBottomNav,
+                 visible: isVet&&isPetComplete=="completado" ,
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: CustomBottomNavigation(currentIndex: pageIndex),

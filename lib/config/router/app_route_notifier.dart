@@ -64,73 +64,73 @@ import 'package:migu/presentation/providers/auth/auth_provider.dart';
 //
 //   return goRouterNotifier;
 // });
-//  final goRouterNotifierProvider = Provider((ref) {
-//    final auth = ref.read(authProvider);
-//    final firestore = FirebaseFirestore.instance;
-//    final goRouterNotifier = GoRouterNotifier();
-//  //aca obtener id de forma anonima
-//    auth.authStateChanges().listen((user) async {
-
-//      if (user != null) {
-//        goRouterNotifier.setAuthStatus(true);
-//        final userData =
-//        //cambiar id a el de la forma anonima
-//            await firestore.collection('users').doc(user.uid).get();
-//        print(userData.data()!["role"]);
-//        final isVet = userData.data()!['role'] ??
-//            true; // assuming 'isvet' is a boolean field
-//        goRouterNotifier.setVetStatus(isVet);
-//      } else {
-//        goRouterNotifier.setAuthStatus(false);
-//        goRouterNotifier
-//            .setVetStatus(false); // Reset vet status when user logs out
-//      }
-//    });
-
-//    return goRouterNotifier;
-//  });
-
-// class GoRouterNotifier extends ChangeNotifier {
-//   bool _isAuthenticated = false;
-//   bool _isVet = true;
-
-//   bool get isAuthenticated => _isAuthenticated;
-//   bool get isVet => _isVet;
-
-//   void setAuthStatus(bool value) {
-//     _isAuthenticated = value;
-//     notifyListeners();
-//   }
-
-//   void setVetStatus(bool value) {
-//     _isVet = value;
-//     notifyListeners();
-//   }
-// }
-
-//  final authProvider = Provider((ref) => FirebaseAuth.instance);
  final goRouterNotifierProvider = Provider((ref) {
    final auth = ref.read(authProvider);
+   final firestore = FirebaseFirestore.instance;
    final goRouterNotifier = GoRouterNotifier();
+ //aca obtener id de forma anonima
+   auth.authStateChanges().listen((user) async {
 
-   auth.authStateChanges().listen((user) {
      if (user != null) {
        goRouterNotifier.setAuthStatus(true);
+       final userData =
+       //cambiar id a el de la forma anonima
+           await firestore.collection('users').doc(user.uid).get();
+       print(userData.data()!["role"]);
+       final isVet = userData.data()!['role'] ??
+           true; // assuming 'isvet' is a boolean field
+       goRouterNotifier.setVetStatus(isVet);
      } else {
        goRouterNotifier.setAuthStatus(false);
+       goRouterNotifier
+           .setVetStatus(false); // Reset vet status when user logs out
      }
    });
 
    return goRouterNotifier;
  });
 
- class GoRouterNotifier extends ChangeNotifier {
-   bool _isAuthenticated = false;
+class GoRouterNotifier extends ChangeNotifier {
+  bool _isAuthenticated = false;
+  bool _isVet = true;
 
-   bool get isAuthenticated => _isAuthenticated;
+  bool get isAuthenticated => _isAuthenticated;
+  bool get isVet => _isVet;
 
-   void setAuthStatus(bool value) {
-     _isAuthenticated = value;
-     notifyListeners();
-   }
- }
+  void setAuthStatus(bool value) {
+    _isAuthenticated = value;
+    notifyListeners();
+  }
+
+  void setVetStatus(bool value) {
+    _isVet = value;
+    notifyListeners();
+  }
+}
+
+// final authProvider = Provider((ref) => FirebaseAuth.instance);
+// final goRouterNotifierProvider = Provider((ref) {
+//   final auth = ref.read(authProvider);
+//   final goRouterNotifier = GoRouterNotifier();
+
+//   auth.authStateChanges().listen((user) {
+//     if (user != null) {
+//       goRouterNotifier.setAuthStatus(true);
+//     } else {
+//       goRouterNotifier.setAuthStatus(false);
+//     }
+//   });
+
+//   return goRouterNotifier;
+// });
+
+// class GoRouterNotifier extends ChangeNotifier {
+//   bool _isAuthenticated = false;
+
+//   bool get isAuthenticated => _isAuthenticated;
+
+//   void setAuthStatus(bool value) {
+//     _isAuthenticated = value;
+//     notifyListeners();
+//   }
+// }

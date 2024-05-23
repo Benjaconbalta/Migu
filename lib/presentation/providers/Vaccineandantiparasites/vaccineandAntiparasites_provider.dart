@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:migu/domain/entities/Vet.dart';
 import 'package:migu/domain/entities/antiparasites.dart';
 import 'package:migu/domain/entities/vaccine.dart';
 import 'package:migu/domain/repository/Vaccineandantiparasites_repository.dart';
@@ -56,6 +57,14 @@ class VaccineandAntiparasitesNotifier
   }
 }
 
+final getvetFirebaseProvider = StreamProvider.autoDispose<List<Vet>>((ref) {
+  final allvets =
+      ref.watch(vaccineandAntiparasitesRepositoryProvider).getVets();
+
+// print ()|
+  return allvets;
+});
+
 class VaccineandAntiparasitesState {
   final Vaccine? vaccine;
   VaccineandAntiparasitesState({this.vaccine});
@@ -66,27 +75,42 @@ class VaccineandAntiparasitesState {
       );
 }
 
-final vaccineFirebaseProvider = StreamProvider.autoDispose<List<Vaccine>>((ref) {
-  final vaccineF = ref.watch(vaccineandAntiparasitesRepositoryProvider).getVaccine();
+final vaccineFirebaseProvider =
+    StreamProvider.autoDispose<List<Vaccine>>((ref) {
+  final vaccineF =
+      ref.watch(vaccineandAntiparasitesRepositoryProvider).getVaccine();
 // print ()
   return vaccineF;
 });
 //poner al autodispose
-final antiparasitesFirebaseProvider = StreamProvider.autoDispose<List<Antiparasites>>((ref) {
-  final antiparasites = ref.watch(vaccineandAntiparasitesRepositoryProvider).getAntiparasites();
+final antiparasitesFirebaseProvider =
+    StreamProvider.autoDispose<List<Antiparasites>>((ref) {
+  final antiparasites =
+      ref.watch(vaccineandAntiparasitesRepositoryProvider).getAntiparasites();
 // print ()
   return antiparasites;
 });
 
-
-
 final antiparasitesProvider = StateProvider<Antiparasites>((ref) {
   return Antiparasites(
-     brand: "",
-     date: DateTime.now(),
-     nextdose:DateTime.now(),
-     type: "",
-     id:""
-      );
+      brand: "",
+      date: DateTime.now(),
+      nextdose: DateTime.now(),
+      type: "",
+      id: "");
 });
 
+final vetinfoProvider = StateProvider<Vet>((ref) {
+  return Vet(
+      name: "",
+      lastname: "",
+      correo: "",
+      phone: 0,
+      service: "",
+      yearsofexperience: "",
+      speciality: "",
+      atentions: {},
+      addres: "",
+      choosespecies: {},
+      offerparagraph: []);
+});

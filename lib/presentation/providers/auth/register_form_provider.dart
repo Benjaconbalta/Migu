@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 import 'package:migu/infrastrocture/inputs/email.dart';
 import 'package:migu/infrastrocture/inputs/inputs.dart';
+import 'package:migu/infrastrocture/inputs/lastname.dart';
 import 'package:migu/infrastrocture/inputs/name.dart';
 import 'package:migu/presentation/providers/auth/auth_provider.dart';
-
 
 class RegisterFormState {
   final bool isPosting;
@@ -15,15 +15,17 @@ class RegisterFormState {
   final bool isValid;
   final Name name;
   final Email email;
-  
+  final LastName lasname;
+
   final Password password;
 
   RegisterFormState(
-      {this.isPosting = false,
+      {
+      this.lasname=const LastName.pure(),
+      this.isPosting = false,
       this.isFormPosted = false,
       this.isValid = false,
       this.name = const Name.pure(),
-
       this.email = const Email.pure(),
       this.password = const Password.pure()});
 
@@ -34,6 +36,7 @@ class RegisterFormState {
     Name? name,
     Email? email,
     Password? password,
+    LastName? lasname
   }) =>
       RegisterFormState(
           isPosting: isPosting ?? this.isPosting,
@@ -41,11 +44,13 @@ class RegisterFormState {
           isValid: isValid ?? this.isValid,
           name: name ?? this.name,
           email: email ?? this.email,
-          password: password ?? this.password);
+          password: password ?? this.password,
+          lasname: lasname ?? this.lasname
+          );
 }
 
 class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
-  final Function(String, String,BuildContext context) registerUserCallback;
+  final Function(String, String, BuildContext context) registerUserCallback;
   RegisterFormNotifier({required this.registerUserCallback})
       : super(RegisterFormState());
 
@@ -54,6 +59,13 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
     state = state.copywith(
         name: newName,
         isValid: Formz.validate([newName, state.email, state.password]));
+  }
+
+    onlastNameChange(String value) {
+    final newLastName = LastName.dirty(value);
+    state = state.copywith(
+        lasname: newLastName,
+        isValid: Formz.validate([newLastName, state.email, state.password]));
   }
 
   onEmailChange(String value) {
@@ -70,12 +82,12 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
         isValid: Formz.validate([newPassword, state.email, state.name]));
   }
 
-  onFormSubmit(BuildContext context) async{
+  onFormSubmit(BuildContext context) async {
     _touchEveryField();
     if (!state.isValid) return;
 
-
-   await registerUserCallback(state.email.value, state.password.value,context);
+    await registerUserCallback(
+        state.email.value, state.password.value, context);
   }
 
   _touchEveryField() {
@@ -83,12 +95,15 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
     final email = Email.dirty(state.email.value);
     final password = Password.dirty(state.password.value);
     final name = Name.dirty(state.name.value);
+     final lastName = LastName.dirty(state.lasname.value);
     state = state.copywith(
         name: name,
         isFormPosted: true,
         email: email,
         password: password,
-        isValid: Formz.validate([email, password, name]));
+        lasname:lastName ,
+        isValid: Formz.validate([email, password, name])
+        );
   }
 }
 

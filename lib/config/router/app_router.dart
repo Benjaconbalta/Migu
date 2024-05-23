@@ -18,7 +18,9 @@ import 'package:migu/presentation/home/vet/editClinicalRecordScreen.dart';
 import 'package:migu/presentation/home/vet/editvet_profile_Screen.dart';
 import 'package:migu/presentation/home/vet/home_vet_Screen.dart';
 import 'package:migu/presentation/home/vet/intopatientScreen.dart';
+import 'package:migu/presentation/home/vet_profile_Screen.dart';
 import 'package:migu/presentation/views/vet/patient_view.dart';
+import 'package:migu/presentation/views/vet_view.dart';
 
 // Obtén una instancia de Firebase Authentication
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -76,7 +78,7 @@ final goRouterProvider = Provider((ref) {
           //    );
         },
       ),
-       GoRoute(
+      GoRoute(
         path: "/vet/:page",
         builder: (context, state) {
           final pageIndex = state.pathParameters["page"] ?? "0";
@@ -86,8 +88,7 @@ final goRouterProvider = Provider((ref) {
         },
       ),
 
-    
- GoRoute(
+      GoRoute(
         path: "/IntopatientScreen",
         builder: (context, state) {
           return const IntopatientScreen();
@@ -105,12 +106,12 @@ final goRouterProvider = Provider((ref) {
       //     return const PatientView();
       //   },
       // ),
-        GoRoute(
-             path: "/TutorVetSelectionScreen",
-             builder: (context, state) {
-               return const TutorVetSelectionScreen();
-             },
-           ),
+      GoRoute(
+        path: "/TutorVetSelectionScreen",
+        builder: (context, state) {
+          return const TutorVetSelectionScreen();
+        },
+      ),
 
       GoRoute(
         path: "/register",
@@ -142,7 +143,7 @@ final goRouterProvider = Provider((ref) {
           return const EditProfileScreen();
         },
       ),
-         GoRoute(
+      GoRoute(
         path: "/ClinicalRecordScreen",
         builder: (context, state) {
           return const ClinicalRecordScreen();
@@ -150,9 +151,22 @@ final goRouterProvider = Provider((ref) {
       ),
 
   GoRoute(
+        path: "/ClinicalRecordTutorScreen",
+        builder: (context, state) {
+          return const ClinicalRecordTutorScreen();
+        },
+      ),
+      GoRoute(
         path: "/EditClinicalRecordScreen",
         builder: (context, state) {
           return const EditClinicalRecordScreen();
+        },
+      ),
+
+      GoRoute(
+        path: "/VetProfileScreen",
+        builder: (context, state) {
+          return const VetProfileScreen();
         },
       ),
       GoRoute(
@@ -170,29 +184,27 @@ final goRouterProvider = Provider((ref) {
       )
     ],
     redirect: (context, state) {
-      //tiene que estar no autenticado pero ser veterinario y cuando preicone veterinario pasarlo a true y el redirect lo llevara a el bottom home tab con las rutas 
+      //tiene que estar no autenticado pero ser veterinario y cuando preicone veterinario pasarlo a true y el redirect lo llevara a el bottom home tab con las rutas
       final isGoingTo = state.matchedLocation;
       print("esvetis${goRouterNotifier.isAuthenticated}");
       if (goRouterNotifier.isAuthenticated) {
-        if (true) {
+        if (goRouterNotifier.isVet) {
           // Redirige a la pantalla para veterinarios
           if (isGoingTo == '/home/0' ||
               isGoingTo == '/home/1' ||
               isGoingTo == '/addvaccine' ||
               isGoingTo == '/addpet' ||
               isGoingTo == '/IntoVaccine' ||
-              isGoingTo == "/Addantiparasitic") return null;
+              isGoingTo == "/Addantiparasitic"||isGoingTo=="/VetProfileScreen"||isGoingTo=="/ClinicalRecordTutorScreen") return null;
           return "/home/0";
         } else {
-      
-           if (isGoingTo == '/vet/0' ||
+          if (isGoingTo == '/vet/0' ||
               isGoingTo == '/vet/1' ||
-              isGoingTo=="/EditProfileScreen"
-              || isGoingTo=="/IntopatientScreen"||
-              isGoingTo=="/ClinicalRecordScreen"||
-               isGoingTo=="/EditClinicalRecordScreen"
-            ) return null;
-            return "/vet/0";
+              isGoingTo == "/EditProfileScreen" ||
+              isGoingTo == "/IntopatientScreen" ||
+              isGoingTo == "/ClinicalRecordScreen" ||
+              isGoingTo == "/EditClinicalRecordScreen") return null;
+          return "/vet/0";
           // Redirige a la pantalla para usuarios no veterinarios
           // Aquí puedes manejar las rutas específicas para usuarios no veterinarios
         }
@@ -200,9 +212,8 @@ final goRouterProvider = Provider((ref) {
         // Si el usuario no está autenticado, redirige a la pantalla de registro
         if (isGoingTo == '/register' ||
             isGoingTo == '/login' ||
-            isGoingTo == '/additionalInfo' 
-                  // isGoingTo == "/TutorVetSelectionScreen"
-       ) return null;
+            isGoingTo == '/additionalInfo' ||
+            isGoingTo == "/TutorVetSelectionScreen") return null;
         return '/register';
       }
     },

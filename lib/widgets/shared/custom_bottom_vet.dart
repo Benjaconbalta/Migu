@@ -15,25 +15,31 @@ class CustomBottomVet extends StatelessWidget {
         break;
     }
   }
+@override
+Widget build(BuildContext context) {
+  return BottomNavigationBar(
+    currentIndex: currentIndex,
+    onTap: (value) {
+      onItemTapped(context, value);
+    },
+    elevation: 0,
+    selectedItemColor: Colors.black, // Establece el color del ícono seleccionado
+    unselectedItemColor: Colors.grey, // Establece el color del ícono no seleccionado
+    items: const [
+      BottomNavigationBarItem(
+        icon: Icon(
+          Icons.pets,
+        ),
+        label: "Pacientes",
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(
+          Icons.person_3,
+        ),
+        label: "perfil",
+      ),
+    ],
+  );
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: (value) {
-       
-        onItemTapped(context, value);
-      },
-      elevation: 0,
-      items: const [
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.pets,
-              color: Color(0xff3D9A51),
-            ),
-            label: "Pacientes"),
-        BottomNavigationBarItem(icon: Icon(Icons.person_3,  color: Colors.black), label: "perfil")
-      ],
-    );
-  }
 }

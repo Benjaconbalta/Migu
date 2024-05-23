@@ -8,7 +8,7 @@ import 'package:migu/firebase_options.dart';
 void main() async{
    WidgetsFlutterBinding.ensureInitialized();
    
-  FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
+   FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

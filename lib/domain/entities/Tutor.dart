@@ -1,8 +1,16 @@
 class Tutor {
-  final String namePet;
+  final String name;
+  final String othername;
   final String type;
   final String urlImage;
   final String uid;
+  final bool role;
 
-  Tutor({required this.namePet, required this.type, required this.urlImage,required this.uid});
+  Tutor(
+      {required this.name,
+      required this.othername,
+      required this.type,
+      required this.urlImage,
+      required this.uid,
+      required this.role});
 }

@@ -22,3 +22,13 @@ otro que me haga un set a la coleccion vets para subir el formulario completo
          subir los datos en la coleccion user con role true y poner los datos de los veterinarios dentro de la coleccion veterinario
 
         otra es crear una coleccion de veterinarios  la cual subas la info ahi , y en tutor debes obtener esa coleccion      
+
+      //agregar appellido 
+     // validar formulario , subir a la firebase firestore 
+
+
+     //obtener veterinarios 
+     // filtrar usuarios 
+     // 
+
+     //no me esta apareciendo que reyene los datos de mi mascota 

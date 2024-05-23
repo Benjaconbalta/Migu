@@ -1,3 +1,4 @@
+import 'package:migu/domain/entities/Vet.dart';
 import 'package:migu/domain/entities/antiparasites.dart';
 import 'package:migu/domain/entities/vaccine.dart';
 abstract class Vaccineandantiparasitesrepository {
@@ -23,5 +24,6 @@ abstract class Vaccineandantiparasitesrepository {
    Future<void> getInfopet(
    
   );
+    Stream<List<Vet>> getVets();
 
 }

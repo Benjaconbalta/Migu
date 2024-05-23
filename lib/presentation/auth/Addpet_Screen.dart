@@ -211,10 +211,9 @@ class _AddPetState extends ConsumerState<AddPet> {
                               FirebaseFirestore.instance
                                   .collection("users")
                                   .doc(FirebaseAuth.instance.currentUser!.uid)
-                                  .set({
-                                     "isPetComplete":"",
-                                 "role":true,
-                                "name": namePet,
+                                  .update({
+                                  "isPetComplete":"completado",
+                                 "namePet": namePet,
                                 "urlImage": urlFirebaseDowload,
                                 "type": typepet
                               });

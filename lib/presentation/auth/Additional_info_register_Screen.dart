@@ -66,7 +66,7 @@ class AdditionalInfoRegisterScreen extends ConsumerWidget {
                       hint: 'Apellido',
                       onChanged: (value) => ref
                           .read(registerformProvider.notifier)
-                          .onNameChange(value),
+                          .onlastNameChange(value),
                       errorMessage: registerForm.isFormPosted
                           ? registerForm.name.errorMessage
                           : null,
@@ -100,10 +100,10 @@ class AdditionalInfoRegisterScreen extends ConsumerWidget {
                   onPressed: () {
                     if (registerForm.name.isValid &&
                         registerForm.password.isValid) {
-                      //  context.push("/TutorVetSelectionScreen");
-                         ref
-                             .read(registerformProvider.notifier)
-                             .onFormSubmit(context);
+                        context.push("/TutorVetSelectionScreen");
+                        //  ref
+                        //      .read(registerformProvider.notifier)
+                        //      .onFormSubmit(context);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

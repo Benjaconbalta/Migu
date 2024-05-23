@@ -10,6 +10,7 @@ import 'package:migu/domain/entities/antiparasites.dart';
 import 'package:migu/domain/entities/vaccine.dart';
 import 'package:migu/presentation/home/into_antiparasitic.dart';
 import 'package:migu/presentation/home/into_vaccine.dart';
+import 'package:migu/presentation/home/vet/intopatientScreen.dart';
 import 'package:migu/presentation/providers/Vaccineandantiparasites/vaccineandAntiparasites_provider.dart';
 
 final isEditPerProvider = StateProvider<bool>((ref) {
@@ -196,26 +197,57 @@ class HomeView extends ConsumerWidget {
 
             // Resto del contenido de tu pantalla
           ],
-          toolbarHeight: 80,
+          toolbarHeight: 120,
           backgroundColor: const Color(0xFF272B4E), // Color azul marino
-          title: const Row(
+          title: Column(
             children: [
-              Expanded(
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Carnet Veterinario',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.white,
+              const Row(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Carnet Veterinario',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
+              ),
+
+              const SizedBox(
+                  height:
+                      40.0), // Añade un espacio de 20 píxeles entre los textos
+              Row(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: GestureDetector(
+                        onTap: () {
+                          context.push("/ClinicalRecordTutorScreen");
+                        },
+                        child: Text(
+                          'Ficha Clínica>',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 18.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(48.0), // Altura del TabBar
+            preferredSize: const Size.fromHeight(58.0), // Altura del TabBar
             child: Align(
               alignment: Alignment.centerLeft,
               child: TabBar(
@@ -251,14 +283,10 @@ class HomeView extends ConsumerWidget {
           children: [
             pressFalseorTrue
                 ? const IntoVaccine()
-                : VaccineView(
-                    vacinestream: vacinestream,
-                  ),
+                : VaccineView(vacinestream: vacinestream, false),
             pressAntiparasites
                 ? const IntoAntiparasites()
-                : AntiparasitesView(
-                    antiparasites: antiparasites,
-                  )
+                : AntiparasitesView(antiparasites: antiparasites, false)
           ],
         ),
       ),
@@ -268,7 +296,8 @@ class HomeView extends ConsumerWidget {
 
 class AntiparasitesView extends ConsumerWidget {
   final AsyncValue<List<Antiparasites>> antiparasites;
-  const AntiparasitesView({super.key, required this.antiparasites});
+  final bool isvet;
+  const AntiparasitesView(this.isvet, {super.key, required this.antiparasites});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -278,13 +307,15 @@ class AntiparasitesView extends ConsumerWidget {
           const SizedBox(
             height: 20,
           ),
-          CustomWidget1(
-            isEmpty: antiparasites.value?.isEmpty ?? true,
-            text: "Agregar Antiparasitario   ",
-            message: "Aun no hay antiparasitarios registrados",
-            type: "antiparasitic",
-            route: "/Addantiparasitic",
-          ),
+          isvet
+              ? SizedBox()
+              : CustomWidget1(
+                  isEmpty: antiparasites.value?.isEmpty ?? true,
+                  text: "Agregar Antiparasitario   ",
+                  message: "Aun no hay antiparasitarios registrados",
+                  type: "antiparasitic",
+                  route: "/Addantiparasitic",
+                ),
           const SizedBox(
             height: 20,
           ),
@@ -293,19 +324,21 @@ class AntiparasitesView extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Historial ",
+                 Text(
+                  "Historial${FirebaseAuth.instance.currentUser!.uid} ",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                 ),
-                TextButton(
-                    onPressed: () async {
-                      context.push("/Addantiparasitic");
-                    },
-                    child: const Icon(
-                      Icons.add_circle_outline,
-                      size: 30,
-                      color: Color(0xff3D9A51),
-                    ))
+                isvet
+                    ? SizedBox()
+                    : TextButton(
+                        onPressed: () async {
+                          context.push("/Addantiparasitic");
+                        },
+                        child: const Icon(
+                          Icons.add_circle_outline,
+                          size: 30,
+                          color: Color(0xff3D9A51),
+                        ))
               ],
             ),
           ),
@@ -400,6 +433,10 @@ class AntiparasitesView extends ConsumerWidget {
                         ),
                         ListTile(
                           onTap: () {
+                            //este es nuevo y solo se debe ejecutar si es
+                            ref
+                                .read(intoAntiparasitedfromVetProvider.notifier)
+                                .update((state) => true);
                             ref
                                 .read(antiparasitesProvider.notifier)
                                 .update((state) => antiparasitee);
@@ -466,7 +503,10 @@ class AntiparasitesView extends ConsumerWidget {
 
 class VaccineView extends ConsumerWidget {
   final AsyncValue<List<Vaccine>> vacinestream;
-  const VaccineView({
+  final bool isvet;
+
+  const VaccineView(
+    this.isvet, {
     Key? key,
     required this.vacinestream,
   }) : super(key: key);
@@ -479,12 +519,14 @@ class VaccineView extends ConsumerWidget {
           const SizedBox(
             height: 20,
           ),
-          CustomWidget1(
-              message: "Aún no hay vacunas registradas",
-              isEmpty: vacinestream.value?.isEmpty ?? true,
-              type: "vaccine",
-              route: "/addvaccine",
-              text: "  Agregar vacuna    "),
+          isvet
+              ? SizedBox()
+              : CustomWidget1(
+                  message: "Aún no hay vacunas registradas",
+                  isEmpty: vacinestream.value?.isEmpty ?? true,
+                  type: "vaccine",
+                  route: "/addvaccine",
+                  text: "  Agregar vacuna    "),
           const SizedBox(
             height: 20,
           ),
@@ -497,15 +539,17 @@ class VaccineView extends ConsumerWidget {
                   "Historial ",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                 ),
-                TextButton(
-                    onPressed: () {
-                      context.push("/addvaccine");
-                    },
-                    child: const Icon(
-                      Icons.add_circle_outline,
-                      size: 30,
-                      color: Color(0xff3D9A51),
-                    ))
+                isvet
+                    ? SizedBox()
+                    : TextButton(
+                        onPressed: () {
+                          context.push("/addvaccine");
+                        },
+                        child: const Icon(
+                          Icons.add_circle_outline,
+                          size: 30,
+                          color: Color(0xff3D9A51),
+                        ))
               ],
             ),
           ),
@@ -606,6 +650,10 @@ class VaccineView extends ConsumerWidget {
                         ),
                         ListTile(
                           onTap: () {
+                            ref
+                                .read(intoVaccinefromVetProvider.notifier)
+                                .update((state) => true);
+                            //if isvet is true go to screen
                             ref
                                 .read(sightinProvider.notifier)
                                 .update((state) => vaccine);
