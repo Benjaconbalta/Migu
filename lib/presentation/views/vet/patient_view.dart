@@ -94,7 +94,7 @@ class PatientView extends ConsumerWidget {
                                 ),
                               ListTile(
                                 subtitle: Text(
-                                  "tutor:${tutor.othername.isEmpty?"nombre-no-definido":tutor.name}",
+                                  "tutor:${tutor.othername.isEmpty?"":tutor.name}",
                                   style: TextStyle(
                                       fontSize: 15, fontWeight: FontWeight.w400),
                                 ),

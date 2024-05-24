@@ -17,7 +17,6 @@ final atentionSwitchProvider = StateProvider<bool>((ref) {
 final atention2SwitchProvider = StateProvider<bool>((ref) {
   return false;
 });
-
 final typeSwitchProvider = StateProvider<bool>((ref) {
   return false;
 });
@@ -27,7 +26,6 @@ final typ1SwitchProvider = StateProvider<bool>((ref) {
 final type2atention2SwitchProvider = StateProvider<bool>((ref) {
   return false;
 });
-
 final yearOfExperience = StateProvider<String>((ref) {
   return "seleccionar";
 });
@@ -35,23 +33,18 @@ final yearOfExperience = StateProvider<String>((ref) {
 final phoneNumber = StateProvider<int>((ref) {
   return 0;
 });
-
 final specialtyProvider = StateProvider<String>((ref) {
   return "Seleccionar";
 });
-
 final imageUrlProvider = StateProvider<String>((ref) {
   return "";
 });
-
 final isLoadingProvider = StateProvider<bool>((ref) {
   return false;
 });
-
 final lasnameProvider = StateProvider<String>((ref) {
   return "";
 });
-
 final offerparagraphProvider = StateProvider<String>((ref) {
   return "";
 });
@@ -162,10 +155,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 child: Column(
                   children: [
                     Container(
-                      color: Color(
+                      color: const Color(
                           0xFFF9F2E0), // Define el color usando el código hexadecimal
                       width: 500,
-                      padding: EdgeInsets.all(
+                      padding: const EdgeInsets.all(
                           16), // Añade un relleno para espaciar los botones del borde del contenedor
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment
@@ -187,12 +180,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               context.pop();
                               // Acción cuando se presiona el botón "Cancelar"
                             },
-                            child: Text(
+                            child:const Text(
                               "Cancelar",
                               style: TextStyle(color: Colors.red), // Texto rojo
                             ),
                           ),
-                          SizedBox(width: 16), // Espacio entre los botones
+                         const SizedBox(width: 16), // Espacio entre los botones
                           // Botón "Guardar"
                           ElevatedButton(
                             style: ButtonStyle(
@@ -259,7 +252,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 // Acción cuando se presiona el botón "Guardar"
                               }
                             },
-                            child: Text(
+                            child:const Text(
                               "Guardar",
                               style: TextStyle(
                                   color: Colors.white), // Texto blanco
@@ -269,14 +262,14 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(25),
+                      padding:const EdgeInsets.all(25),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
+                            const  SizedBox(
                                 height: 10,
                               ),
                               const Text(
@@ -318,7 +311,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                                   "assets/Frame1.png",
                                                   width: 60,
                                                 ),
-                                                Text(
+                                              const  Text(
                                                   "+Añade una Foto",
                                                   style: TextStyle(
                                                       color: Colors.green),
@@ -326,9 +319,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                               ])),
                                       ],
                                     )
-                                  : CircularProgressIndicator(), // Muestra un indicador de carga mientras se está cargando la imagen
+                                  : const CircularProgressIndicator(), // Muestra un indicador de carga mientras se está cargando la imagen
 
-                              SizedBox(
+                            const  SizedBox(
                                 height: 40,
                               ),
                               Row(
@@ -337,13 +330,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                    const  Text(
                                         "Nombre",
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 15),
                                       ),
-                                      SizedBox(
+                                    const  SizedBox(
                                         height: 4,
                                       ),
                                       SizedBox(
@@ -355,20 +348,20 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                           ))
                                     ],
                                   ),
-                                  SizedBox(
+                                const  SizedBox(
                                     width: 10,
                                   ),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                    const  Text(
                                         "Apellido",
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 15),
                                       ),
-                                      SizedBox(
+                                    const SizedBox(
                                         height: 4,
                                       ),
                                       SizedBox(
@@ -388,17 +381,17 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 20),
+                             const SizedBox(height: 20),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                 const Text(
                                     "Correo",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 15),
                                   ),
-                                  SizedBox(
+                                 const SizedBox(
                                     height: 4,
                                   ),
                                   SizedBox(
@@ -412,17 +405,17 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                       ))
                                 ],
                               ),
-                              SizedBox(height: 20),
+                            const  SizedBox(height: 20),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                const  Text(
                                     "Telefono",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 15),
                                   ),
-                                  SizedBox(
+                                const  SizedBox(
                                     height: 4,
                                   ),
                                   SizedBox(
@@ -443,7 +436,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                       ))
                                 ],
                               ),
-                              SizedBox(
+                            const  SizedBox(
                                 height: 10,
                               ),
                               MyDropdown(
@@ -465,7 +458,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                   //     .update((state) => marc!);
                                 },
                               ),
-                              SizedBox(
+                             const SizedBox(
                                 height: 10,
                               ),
                               MyDropdown(
@@ -500,7 +493,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                         const SizedBox(
                             height: 15,
                           ),
                           Divider(color: Colors.grey[200], thickness: 10),
@@ -517,9 +510,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                   10), // Ajusta el radio según tus necesidades
                             ),
                             height: 35,
-                            child: Padding(
+                            child: const Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                                   EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
                                 children: [
                                   Icon(Icons.help_outline),
@@ -528,7 +521,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                         const SizedBox(
                             height: 20,
                           ),
                           SwitchDemo(
@@ -546,12 +539,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                            const  Text(
                                 "Direccion",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 15),
                               ),
-                              SizedBox(
+                            const  SizedBox(
                                 height: 4,
                               ),
                               SizedBox(
@@ -568,7 +561,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                   ))
                             ],
                           ),
-                          SizedBox(
+                        const  SizedBox(
                             height: 20,
                           ),
                           const Text(
@@ -584,9 +577,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                   10), // Ajusta el radio según tus necesidades
                             ),
                             height: 35,
-                            child: Padding(
+                            child: const Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                                   EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
                                 children: [
                                   Icon(Icons.help_outline),
@@ -611,7 +604,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 type2atention2SwitchProvider,
                             text: "Exoticos",
                           ),
-                          SizedBox(
+                         const SizedBox(
                             height: 20,
                           ),
                           const Text(
@@ -627,9 +620,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                   10), // Ajusta el radio según tus necesidades
                             ),
                             height: 35,
-                            child: Padding(
+                            child:const Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                                   EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
                                 children: [
                                   Icon(Icons.help_outline),
@@ -638,18 +631,18 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                         const SizedBox(
                             height: 10,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                             const Text(
                                 "¿Que servicios ofreces?",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 15),
                               ),
-                              SizedBox(
+                             const SizedBox(
                                 height: 4,
                               ),
                               SizedBox(
@@ -670,7 +663,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                     label: "Beatriz",
                                     hint: "Ej: Veterinario General",
                                   )),
-                              Text("10 máx. Usa una coma (,) para separar")
+                            const  Text("10 máx. Usa una coma (,) para separar")
                             ],
                           ),
                           Container(
@@ -686,16 +679,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                       onPressed: () {
                                         context.pop();
                                       },
-                                      child: Text(
+                                      child:const Text(
                                         "Cancelar",
                                         style: TextStyle(color: Colors.red),
                                       )),
-                                  SizedBox(
+                                 const SizedBox(
                                     width: 30,
                                   ),
                                   FilledButton.tonal(
                                       style: FilledButton.styleFrom(
-                                          backgroundColor: Color(0xff3D9A51)),
+                                          backgroundColor:const Color(0xff3D9A51)),
                                       onPressed: () {
                                         // Lista para almacenar los mensajes de error
                                         List<String> errores = [];
@@ -770,7 +763,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             } else {
               return SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.all(25),
+                  padding: const EdgeInsets.all(25),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -787,30 +780,6 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          // Row(
-                          //   children: [
-                          //     Image.asset(
-                          //       'assets/Frame1.png',
-                          //       width: 80,
-                          //     ),
-                          //     imagep.isEmpty
-                          //         ? GestureDetector(
-                          //             onTap: () async {
-                          //               // Inicia la carga de la imagen
-                          //               uploadPhoto(ref);
-                          //             },
-                          //             child: Text(
-                          //               "+Añade una foto",
-                          //               style:
-                          //                   TextStyle(color: Color(0xff3D9A51)),
-                          //             ),
-                          //           )
-                          //         : Image.network(
-                          //             imagep,
-                          //             width: 50,
-                          //           ),
-                          //   ],
-                          // ),
                           isloading == true
                               ? const CircularProgressIndicator() // Muestra un indicador de carga mientras se está cargando la imagen
                               : data[0]["image"] == ""
@@ -847,13 +816,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                const  Text(
                                     "Nombre",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 15),
                                   ),
-                                  SizedBox(
+                                 const SizedBox(
                                     height: 4,
                                   ),
                                   SizedBox(
@@ -865,19 +834,19 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                       ))
                                 ],
                               ),
-                              SizedBox(
+                             const SizedBox(
                                 width: 10,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                              const    Text(
                                     "Apellido",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 15),
                                   ),
-                                  SizedBox(
+                                const  SizedBox(
                                     height: 4,
                                   ),
                                   SizedBox(
@@ -891,16 +860,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 20),
+                        const  SizedBox(height: 20),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                             const Text(
                                 "Correo",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 15),
                               ),
-                              SizedBox(
+                            const  SizedBox(
                                 height: 4,
                               ),
                               SizedBox(
@@ -914,16 +883,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                   ))
                             ],
                           ),
-                          SizedBox(height: 20),
+                        const  SizedBox(height: 20),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                             const Text(
                                 "Telefono",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 15),
                               ),
-                              SizedBox(
+                             const SizedBox(
                                 height: 4,
                               ),
                               SizedBox(
@@ -958,9 +927,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               ref
                                   .read(yearOfExperience.notifier)
                                   .update((state) => years!);
-                              // ref
-                              //     .read(marcaAntiparasitesProvider.notifier)
-                              //     .update((state) => marc!);
+                        
                             },
                           ),
                           MyDropdown(
@@ -988,9 +955,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               ref
                                   .read(specialtyProvider.notifier)
                                   .update((state) => speciality!);
-                              // ref
-                              //     .read(marcaAntiparasitesProvider.notifier)
-                              //     .update((state) => marc!);
+                            
                             },
                           ),
                         ],
@@ -1003,7 +968,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       Container(
                         height: 30,
                         color: Colors.grey[200],
-                        child: Padding(
+                        child: const Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Row(
                             children: [
@@ -1013,7 +978,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                    const  SizedBox(
                         height: 20,
                       ),
                       SwitchDemo(
@@ -1033,12 +998,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                         const Text(
                             "Direccion",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 15),
                           ),
-                          SizedBox(
+                         const SizedBox(
                             height: 4,
                           ),
                           SizedBox(
@@ -1055,7 +1020,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               ))
                         ],
                       ),
-                      SizedBox(
+                    const  SizedBox(
                         height: 20,
                       ),
                       const Text(
@@ -1066,8 +1031,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       Container(
                         height: 30,
                         color: Colors.grey[200],
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: const Padding(
+                          padding:  EdgeInsets.symmetric(horizontal: 10),
                           child: Row(
                             children: [
                               Icon(Icons.help),
@@ -1098,7 +1063,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                             type2atention2SwitchProvider,
                         text: "Exoticos",
                       ),
-                      SizedBox(
+                    const  SizedBox(
                         height: 20,
                       ),
                       const Text(
@@ -1119,18 +1084,18 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                    const  SizedBox(
                         height: 10,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                        const  Text(
                             "¿Que servicios ofreces?",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 15),
                           ),
-                          SizedBox(
+                         const SizedBox(
                             height: 4,
                           ),
                           SizedBox(
@@ -1150,7 +1115,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 label: "Beatriz",
                                 hint: "${data[0]["offerparagraph"]}",
                               )),
-                          Text("10 máx. Usa una coma (,) para separar")
+                        const  Text("10 máx. Usa una coma (,) para separar")
                         ],
                       ),
                       Container(
@@ -1164,44 +1129,18 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                   style: FilledButton.styleFrom(
                                       backgroundColor: Colors.white),
                                   onPressed: () {},
-                                  child: Text(
+                                  child:const Text(
                                     "Cancelar",
                                     style: TextStyle(color: Colors.red),
                                   )),
-                              SizedBox(
+                           const   SizedBox(
                                 width: 30,
                               ),
                               FilledButton.tonal(
                                   style: FilledButton.styleFrom(
-                                      backgroundColor: Color(0xff3D9A51)),
+                                      backgroundColor:const Color(0xff3D9A51)),
                                   onPressed: () {
-                                    // Lista para almacenar los mensajes de error
-                                    // List<String> errores = [];
-                                    // if (yearOfExperiences.isEmpty) {
-                                    //   errores.add(
-                                    //       "El campo de años de experiencia está vacío");
-                                    // }
-                                    // // Validar cada campo y almacenar mensajes de error según corresponda
-                                    // if (!atentionswitch && !atention2switch) {
-                                    //   errores.add(
-                                    //       "Debe seleccionar al menos una opción de atención");
-                                    // }
-                                    // if (!typevalueSwitchProvider &&
-                                    //     !typegatoSwitchProvider &&
-                                    //     !typeExoticos) {
-                                    //   errores.add(
-                                    //       "Debe seleccionar al menos una opción de tipo");
-                                    // }
-
-                                    // // Mostrar solo el primer error de cada tipo, si lo hay
-                                    // if (errores.isNotEmpty) {
-                                    //   final snackbar = SnackBar(
-                                    //       content: Text(errores.first));
-                                    //   ScaffoldMessenger.of(context)
-                                    //       .showSnackBar(snackbar);
-                                    // } else {
-
-                                    //agregar apellido
+                        
 
                                   ref.read(vetProvider.notifier).setUser(
     name == "" ? data[0]["name"] : name,
@@ -1246,10 +1185,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             }
           },
           error: (error, stackTrace) {
-            return Text("");
+            return const Text("");
           },
           loading: () {
-            return Text("asd");
+            return const Text("asd");
           },
         ));
   }
@@ -1311,17 +1250,3 @@ class _SwitchDemoState extends ConsumerState<SwitchDemo> {
   }
 }
 
-
-
-
-//nombre
-//apellido
-//correo
-//telefono
-//que servicio ofreces
-//cuantos años de experiencia
-//que expecialidad
-//atencion
-//direcion
-//especies
-//servicio que ofreces

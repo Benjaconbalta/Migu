@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:migu/domain/entities/antiparasites.dart';
 import 'package:migu/presentation/auth/Addpet_Screen.dart';
 import 'package:migu/presentation/home/addvaccine_Screen.dart';
 import 'package:migu/presentation/home/into_antiparasitic.dart';
@@ -80,16 +79,16 @@ class Addantiparasitic extends ConsumerStatefulWidget {
 }
 
 class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
-  late List<bool> _selections;
+  late List<bool> selections;
   @override
   void initState() {
     super.initState();
-    _selections = List.generate(2, (index) => false); // Inicializar selecciones
+    selections = List.generate(2, (index) => false); // Inicializar selecciones
   }
 
   @override
   Widget build(BuildContext context) {
-    final antiparasites = ref.watch(antiparasitesFirebaseProvider);
+
     final typeAntiparasites = ref.watch(typeAntiparasitesProvider);
     final marcaAntiparasites = ref.watch(marcaAntiparasitesProvider);
     final nextAntiparasites = ref.watch(nextAntiparasitesProvider);
@@ -100,7 +99,6 @@ class _AddantiparasiticState extends ConsumerState<Addantiparasitic> {
     int _selectedIndex = typeAntiparasites == "Interna"
         ? 0
         : 1; // Índice de la opción predeterminada
-    List<String> options = ["Interna", "Externa"];
     String obtenerMesEnPalabras(int numeroMes) {
       switch (numeroMes) {
         case 1:

@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:migu/domain/entities/vaccine.dart';
 import 'package:migu/presentation/home/into_vaccine.dart';
-import 'package:migu/presentation/providers/Vaccineandantiparasites/Vaccineandantiparasites_repository_provider.dart';
+
 import 'package:migu/presentation/providers/Vaccineandantiparasites/vaccineandAntiparasites_provider.dart';
 import 'package:migu/presentation/views/home_view.dart';
 
@@ -112,7 +112,6 @@ class AddVaccineScreen extends ConsumerWidget {
       try {
         await referenceImageToUplad.putFile(File(photo.path));
         imagerUrl = await referenceImageToUplad.getDownloadURL();
-        print("imageurl${imagerUrl}");
         ref.read(urlrProvider.notifier).update((state) => imagerUrl);
         ref.read(isurlrFinishProvider.notifier).update((state) => true);
       } catch (e) {
@@ -430,7 +429,7 @@ class AddVaccineScreen extends ConsumerWidget {
                                 .update((state) => date);
                           } else {
                             // Manejar el caso de fecha inválida aquí
-                            print("Fecha inválida");
+  
                           }
                         },
                       )
@@ -452,8 +451,7 @@ class AddVaccineScreen extends ConsumerWidget {
                                 .read(nextDosis.notifier)
                                 .update((state) => date);
                           } else {
-                            // Manejar el caso de fecha inválida aquí
-                            print("Fecha inválida");
+                         
                           }
                         },
                       ),
@@ -668,9 +666,7 @@ class AddVaccineScreen extends ConsumerWidget {
                                   });
                         }
                       } else {
-                        // image1firebase.isEmpty ||
-                        //  imagen2firebase.isEmpty
-                        //TODO:     //aca poner algo como si el image1firebase imagen se esta cargando
+                      
                         if (tipo.isEmpty || marca.isEmpty) {
                           final snackBar = SnackBar(
                             content: const Text(
@@ -810,7 +806,7 @@ class _MultiSelectDropdownState extends State<MultiSelectDropdown> {
               _selectedOption = newValue ??
                   _selectedOption; // Utilizar operador ?? para manejar nulos
             });
-            print('Selected option: $_selectedOption');
+     
           },
           items: _options.map((option) {
             return DropdownMenuItem(
@@ -957,11 +953,11 @@ class _MyDropdown1State extends State<MyDropdown1> {
           children: <Widget>[
             Text(
               '${widget.label}*',
-              style: TextStyle(fontSize: 18, color: Colors.black),
+              style:const TextStyle(fontSize: 18, color: Colors.black),
             ),
-            SizedBox(height: 7),
+           const SizedBox(height: 7),
             DropdownButtonFormField(
-              hint: Text(
+              hint:const Text(
                 'Seleccionar',
                 style: TextStyle(fontSize: 18),
               ),
@@ -974,7 +970,7 @@ class _MyDropdown1State extends State<MyDropdown1> {
                 if (widget.onChanged != null) {
                   widget.onChanged!(_selectedOption);
                 }
-                print('Selected option: $_selectedOption');
+              
               },
               items: [
                 ...widget.options.map((option) {
@@ -1127,7 +1123,7 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
       Flexible(
         fit: FlexFit.loose,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+          padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey.shade400, width: 1.0),
             borderRadius: BorderRadius.circular(8.0),
@@ -1135,7 +1131,7 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
           width: 100, // Puedes ajustar este valor según tus necesidades
 
           child: DropdownButtonFormField<String>(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 border: UnderlineInputBorder(borderSide: BorderSide.none)),
             value: selectedDay.isNotEmpty ? selectedDay : null,
             onChanged: (String? value) {
@@ -1145,7 +1141,7 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
               });
             },
             items: [
-              DropdownMenuItem<String>(
+            const  DropdownMenuItem<String>(
                 value: 'Dia',
                 child: Text(
                   'Día',
@@ -1163,7 +1159,7 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
           ),
         ),
       ),
-      SizedBox(width: 10),
+    const  SizedBox(width: 10),
       Flexible(
         fit: FlexFit.loose,
         child: Container(
@@ -1175,7 +1171,7 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
           width: 100, // Puedes ajustar este valor según tus necesidades
 
           child: DropdownButtonFormField<String>(
-            decoration: InputDecoration(
+            decoration:const InputDecoration(
                 border: UnderlineInputBorder(borderSide: BorderSide.none)),
             value: selectedMonth,
             onChanged: (String? value) {
@@ -1185,7 +1181,7 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
               });
             },
             items: [
-              DropdownMenuItem<String>(
+            const  DropdownMenuItem<String>(
                 value: 'Mes',
                 child: Text(
                   'Mes',
@@ -1210,7 +1206,7 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
               ].map((String month) {
                 return DropdownMenuItem<String>(
                   value: month,
-                  child: Text(month, style: TextStyle(fontSize: 18)),
+                  child: Text(month, style: const TextStyle(fontSize: 18)),
                 );
               }).toList(),
             ],
@@ -1221,7 +1217,7 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
       Flexible(
         fit: FlexFit.loose,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+          padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey.shade400, width: 1.0),
             borderRadius: BorderRadius.circular(8.0),
@@ -1267,177 +1263,3 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
     }
   }
 }
-
-// class DatePicker extends ConsumerStatefulWidget {
-//   final void Function(int year, int month, int day)? onDateChanged;
-//   final int deaydefault;
-//   final int monthdefault;
-//   final int yeardefault;
-
-//   const DatePicker(
-//       {Key? key,
-//       this.onDateChanged,
-//       this.deaydefault = 0,
-//       this.monthdefault = 0,
-//       this.yeardefault = 0})
-//       : super(key: key);
-
-//   @override
-//   _DatePickerState createState() => _DatePickerState();
-// }
-
-// class _DatePickerState extends ConsumerState<DatePicker> {
-//   late int _selectedYear;
-//   late int _selectedMonth;
-//   late int _selectedDay;
-// //aca pasar
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _selectedYear = widget.yeardefault;
-//     _selectedMonth = widget.monthdefault;
-//     _selectedDay = widget.deaydefault;
-//     // _selectedDay = now.day
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//       mainAxisSize: MainAxisSize.min,
-//       children: [
-//         _buildDatePicker("", _buildDayDropdown()),
-//         SizedBox(width: 10),
-//         _buildDatePicker("", _buildMonthDropdown()),
-//         SizedBox(width: 10),
-//         _buildDatePicker("", _buildYearDropdown()),
-//       ],
-//     );
-//   }
-
-//   Widget _buildDatePicker(String labelText, Widget dropdown) {
-//     return Column(
-//       children: [
-//         Text(
-//           labelText,
-//           style: TextStyle(fontSize: 18, color: Colors.black),
-//         ),
-//         dropdown,
-//       ],
-//     );
-//   }
-
-//   Widget _buildYearDropdown() {
-//     return Container(
-//       padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-//       decoration: BoxDecoration(
-//         border: Border.all(color: Colors.grey.shade400, width: 1.0),
-//         borderRadius: BorderRadius.circular(8.0),
-//       ),
-//       child: DropdownButton<int>(
-//         value: _selectedYear,
-//         items: _buildYearItems(),
-//         onChanged: (value) {
-//           setState(() {
-//             _selectedYear = value!;
-//             widget.onDateChanged
-//                 ?.call(_selectedYear, _selectedMonth, _selectedDay);
-//           });
-//         },
-//         icon: null,
-//         hint: Text('Año'),
-//       ),
-//     );
-//   }
-
-//   Widget _buildMonthDropdown() {
-//     return Container(
-//       padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-//       decoration: BoxDecoration(
-//         border: Border.all(color: Colors.grey.shade400, width: 1.0),
-//         borderRadius: BorderRadius.circular(8.0),
-//       ),
-//       child: DropdownButton<int>(
-//         value: _selectedMonth,
-//         items: _buildMonthItems(),
-//         onChanged: (value) {
-//           setState(() {
-//             _selectedMonth = value!;
-//             widget.onDateChanged
-//                 ?.call(_selectedYear, _selectedMonth, _selectedDay);
-//           });
-//         },
-//         icon: null,
-//         hint: Text('Mes'),
-//       ),
-//     );
-//   }
-
-//   Widget _buildDayDropdown() {
-//     return Container(
-//       padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-//       decoration: BoxDecoration(
-//         border: Border.all(color: Colors.grey.shade400, width: 1.0),
-//         borderRadius: BorderRadius.circular(8.0),
-//       ),
-//       child: DropdownButton<int>(
-//         value: _selectedDay,
-//         items: _buildDayItems(),
-//         onChanged: (value) {
-//           setState(() {
-//             _selectedDay = value!;
-//             widget.onDateChanged
-//                 ?.call(_selectedYear, _selectedMonth, _selectedDay);
-//           });
-//         },
-//         icon: null,
-//         hint: Text('Día'),
-//       ),
-//     );
-//   }
-
-//   List<DropdownMenuItem<int>> _buildYearItems() {
-//     List<DropdownMenuItem<int>> items = [];
-//     int currentYear = DateTime.now().year;
-//     for (int year = currentYear; year <= currentYear + 100; year++) {
-//       items.add(DropdownMenuItem<int>(
-//         value: year,
-//         child: Text(
-//           year.toString(),
-//           style: TextStyle(fontSize: 20),
-//         ),
-//       ));
-//     }
-//     return items;
-//   }
-
-//   List<DropdownMenuItem<int>> _buildMonthItems() {
-//     List<DropdownMenuItem<int>> items = [];
-//     for (int month = 1; month <= 12; month++) {
-//       items.add(DropdownMenuItem<int>(
-//         value: month,
-//         child: Text(
-//           month.toString(),
-//           style: TextStyle(fontSize: 20),
-//         ),
-//       ));
-//     }
-//     return items;
-//   }
-
-//   List<DropdownMenuItem<int>> _buildDayItems() {
-//     List<DropdownMenuItem<int>> items = [];
-//     int daysInMonth = DateTime(_selectedYear, _selectedMonth + 1, 0).day;
-//     for (int day = 1; day <= daysInMonth; day++) {
-//       items.add(DropdownMenuItem<int>(
-//         value: day,
-//         child: Text(
-//           day.toString(),
-//           style: TextStyle(fontSize: 20),
-//         ),
-//       ));
-//     }
-//     return items;
-//   }
-// }

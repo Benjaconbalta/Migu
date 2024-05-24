@@ -96,7 +96,7 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
     if (snapshot.exists) {
       final data = snapshot.data() as Map<String, dynamic>;
       setState(() {
-        gmailGlobal = data['gmail'] ?? 'correo-no-registrado';
+        gmailGlobal = data['gmail'] ?? '';
       });
     }
   }
@@ -114,10 +114,7 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
-          actions: [
-            // Resto del contenido de tu pantalla
-          ],
+          iconTheme: const IconThemeData(color: Colors.white),
           toolbarHeight: 180,
           backgroundColor: const Color(0xFF272B4E), // Color azul marino
           title: Column(
@@ -137,11 +134,6 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
                       var name = snapshot.data!.get('name');
                       var type = snapshot.data!.get('type');
                       var namepet = data['namePet'] ?? '';
-                      // var gmail = data['gmail'] ?? '';
-//  gmailGlobal = data['gmail'] ?? '';
-                      // var patient = snapshot.data!.get('patients');
-                      // print("type$photoUrl");
-                      // ref.read(namepetProvider.notifier).update((state) => name);
                       return Row(
                         children: [
                           photoUrl == ""
@@ -174,10 +166,10 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.only(right: 70),
+                                    padding: const EdgeInsets.only(right: 70),
                                     child: Text(
                                       ' ${namepet.isNotEmpty ? "${namepet}" : "${name}"}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 20.0,
                                         color: Colors.white,
                                       ),
@@ -210,14 +202,13 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
               profileVet.when(
                 data: (data) {
                   if (data.isEmpty) {
-                    return Text("");
+                    return const Text("");
                   }
                   return Column(
                     children: data.map((e) {
                       if (e["patients"].contains(uid)) {
                         // Accede de manera segura al campo 'gmail'
-                        String gmail = e['gmail'] ?? 'No Gmail available';
-
+                      
                         return Column(
                           children: [
                             Row(
@@ -225,7 +216,7 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
                                 GestureDetector(
                                   onTap: () =>
                                       context.push("/ClinicalRecordScreen"),
-                                  child: Text(
+                                  child:const Text(
                                     "Ficha clinica ",
                                     style: TextStyle(
                                       fontSize: 18,
@@ -233,8 +224,8 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
                                     ),
                                   ),
                                 ),
-                                Icon(Icons.arrow_right_rounded),
-                                SizedBox(width: 90),
+                              const  Icon(Icons.arrow_right_rounded),
+                             const   SizedBox(width: 90),
                                 IconButton(
                                   onPressed: () {
                                     // Acción al presionar el icono de flecha
@@ -243,31 +234,22 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5),
+                          const  SizedBox(height: 5),
                             Column(
                               children: [
                                 Row(
                                   children: [
-                                    Icon(Icons.email),
+                                 const   Icon(Icons.email),
                                     Text( 
                                        gmailGlobal,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 18,
                                         color: Colors.white,
                                       ),
                                     ),
                                   ],
                                 ),
-                                // Puedes agregar más filas aquí si es necesario
-                                // Row(
-                                //   children: [
-                                //     Icon(Icons.phone),
-                                //     Text(
-                                //       "+569 98398129",
-                                //       style: TextStyle(fontSize: 18, color: Colors.white),
-                                //     ),
-                                //   ],
-                                // ),
+                             
                               ],
                             ),
                           ],
@@ -282,7 +264,7 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
                   return Text("Error: $error");
                 },
                 loading: () {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 },
               ),
 
@@ -304,7 +286,7 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
                         style: FilledButton.styleFrom(
                           backgroundColor:
                               Colors.white, // Color de fondo del botón
-                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
                                 10), // Ajusta el radio de los bordes aquí
@@ -313,9 +295,9 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
                         ),
                         onPressed: () {
                           if (profileVet.value!.isEmpty) {
-                            final snackbar = SnackBar(
+                            final snackbar =   SnackBar(
                                 content:
-                                    Text("Primero debes Completar Tu Perfil"));
+                                   const Text("Primero debes Completar Tu Perfil"));
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackbar);
                           } else {
@@ -332,7 +314,7 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
                           style: TextStyle(color: Color(0xff3D9A51)),
                         ),
                       )
-                    : SizedBox
+                    : const SizedBox
                         .shrink(), // Si el UID está en la lista, oculta el botón
               ),
             ],
@@ -380,7 +362,7 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
                       uid), // Reemplaza 'userId' con el ID de usuario correcto
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Text("Error: ${snapshot.error}");
                     } else {
@@ -401,7 +383,7 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child:  CircularProgressIndicator());
                           } else if (snapshot.hasError) {
                             return Text("Error: ${snapshot.error}");
                           } else {
@@ -412,359 +394,12 @@ class _IntoPatientScreenState extends ConsumerState<IntopatientScreen> {
                           }
                         },
                       ),
-                //crear un datasource para traerme los vaccine y antiparasites
-                // y pasarselos a el vacine view y intoantiparasites
-
-                // pressFalseorTrue
-                //     ? const IntoVaccine()
-                //     : VaccineView(
-                //         vacinestream: vacinestream,
-                //       ),
-                // pressAntiparasites
-                //     ? const IntoAntiparasites()
-                //     : AntiparasitesView(
-                //         antiparasites: antiparasites,
-                //       )
               ]),
       ),
     );
   }
 
 }
-
-
-// class IntopatientScreen extends ConsumerWidget {
-//   const IntopatientScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final uid = ref.watch(uidUserProvider);
-//     final intoVaccinefromVet = ref.watch(intoVaccinefromVetProvider);
-//     final intoantiparasitesfromvet =
-//         ref.watch(intoAntiparasitedfromVetProvider);
-//     final profileVet = ref.watch(getProfileProvider);
-
-//     return DefaultTabController(
-//       length: 2,
-//       child: Scaffold(
-//         backgroundColor: Colors.white,
-//         appBar: AppBar(
-//           iconTheme: IconThemeData(color: Colors.white),
-//           actions: [
-//             // Resto del contenido de tu pantalla
-//           ],
-//           toolbarHeight: 180,
-//           backgroundColor: const Color(0xFF272B4E), // Color azul marino
-//           title: Column(
-//             children: [
-//               //debemos de subir la informacion del veterinario , quitar veteinarios en el filter del vet
-//               Row(children: [
-//                 StreamBuilder<DocumentSnapshot>(
-//                   stream: FirebaseFirestore.instance
-//                       .collection("users")
-//                       .doc(uid)
-//                       .snapshots(),
-//                   builder: (context, snapshot) {
-//                     if (snapshot.hasData && snapshot.data!.exists) {
-//                       var data = snapshot.data!.data() as Map<String, dynamic>;
-
-//                       var photoUrl = snapshot.data!.get('urlImage');
-//                       var name = snapshot.data!.get('name');
-//                       var type = snapshot.data!.get('type');
-//                       var namepet = data['namePet'] ?? '';
-//                       // var gmail = data['gmail'] ?? '';
-//  gmailGlobal = data['gmail'] ?? '';
-//                       // var patient = snapshot.data!.get('patients');
-//                       // print("type$photoUrl");
-//                       // ref.read(namepetProvider.notifier).update((state) => name);
-//                       return Row(
-//                         children: [
-//                           photoUrl == ""
-//                               ? type == "Perro"
-//                                   ? ClipOval(
-//                                       child: Image.asset(
-//                                       "assets/perro.png",
-//                                       width: 40,
-//                                     )) // Si no hay foto y es un perro, muestra una imagen de gato
-//                                   : type == "otro"
-//                                       ? ClipOval(
-//                                           child: Image.asset(
-//                                               "assets/conejo.png",
-//                                               width:
-//                                                   40)) // Si no hay foto y es otro, muestra una imagen específica
-//                                       : ClipOval(
-//                                           child: Image.asset("assets/gato.png",
-//                                               width:
-//                                                   40)) // Si no hay foto y no es un perro ni otro, muestra una imagen de perro
-//                               : CircleAvatar(
-//                                   backgroundImage: NetworkImage(
-//                                       photoUrl), // Si hay una foto, muestra el avatar del usuario
-//                                   radius: 18.0, // Radio para hacerlo redondo
-//                                 ),
-//                           Row(
-//                             mainAxisAlignment: MainAxisAlignment
-//                                 .spaceBetween, // Alinea los elementos a los extremos
-//                             children: [
-//                               Column(
-//                                 mainAxisAlignment: MainAxisAlignment.start,
-//                                 children: [
-//                                   Padding(
-//                                     padding: EdgeInsets.only(right: 70),
-//                                     child: Text(
-//                                       ' ${namepet.isNotEmpty ? "${namepet}" : "${name}"}',
-//                                       style: TextStyle(
-//                                         fontSize: 20.0,
-//                                         color: Colors.white,
-//                                       ),
-//                                     ),
-//                                   ),
-
-//                                   // Padding(
-//                                   //   padding: EdgeInsets.only(left: 10),
-//                                   //   child: Text(
-//                                   //     "tutor: benjamin perez",
-//                                   //     style: TextStyle(
-//                                   //       color: Colors.grey[400],
-//                                   //       fontSize: 16,
-//                                   //     ),
-//                                   //   ),
-//                                   // ),
-//                                 ],
-//                               ),
-//                             ],
-//                           ),
-//                         ],
-//                       );
-//                     } else {
-//                       return const SizedBox.shrink();
-//                     }
-//                   },
-//                 )
-//               ]),
-
-//               profileVet.when(
-//                 data: (data) {
-//                   if (data.isEmpty) {
-//                     return Text("");
-//                   }
-//                   return Column(
-//                     children: data.map((e) {
-//                       if (e["patients"].contains(uid)) {
-//                         // Accede de manera segura al campo 'gmail'
-//                         String gmail = e['gmail'] ?? 'No Gmail available';
-
-//                         return Column(
-//                           children: [
-//                             Row(
-//                               children: [
-//                                 GestureDetector(
-//                                   onTap: () =>
-//                                       context.push("/ClinicalRecordScreen"),
-//                                   child: Text(
-//                                     "Ficha clinica ",
-//                                     style: TextStyle(
-//                                       fontSize: 18,
-//                                       color: Colors.white,
-//                                     ),
-//                                   ),
-//                                 ),
-//                                 Icon(Icons.arrow_right_rounded),
-//                                 SizedBox(width: 90),
-//                                 IconButton(
-//                                   onPressed: () {
-//                                     // Acción al presionar el icono de flecha
-//                                   },
-//                                   icon: const Icon(Icons.check),
-//                                 ),
-//                               ],
-//                             ),
-//                             SizedBox(height: 5),
-//                             Column(
-//                               children: [
-//                                 Row(
-//                                   children: [
-//                                     Icon(Icons.email),
-//                                     Text(
-//                                       gmailGlobal,
-//                                       style: TextStyle(
-//                                         fontSize: 18,
-//                                         color: Colors.white,
-//                                       ),
-//                                     ),
-//                                   ],
-//                                 ),
-//                                 // Puedes agregar más filas aquí si es necesario
-//                                 // Row(
-//                                 //   children: [
-//                                 //     Icon(Icons.phone),
-//                                 //     Text(
-//                                 //       "+569 98398129",
-//                                 //       style: TextStyle(fontSize: 18, color: Colors.white),
-//                                 //     ),
-//                                 //   ],
-//                                 // ),
-//                               ],
-//                             ),
-//                           ],
-//                         );
-//                       } else {
-//                         return Container(); // Devuelve un contenedor vacío si el uid no está en los pacientes
-//                       }
-//                     }).toList(),
-//                   );
-//                 },
-//                 error: (error, stackTrace) {
-//                   return Text("Error: $error");
-//                 },
-//                 loading: () {
-//                   return CircularProgressIndicator();
-//                 },
-//               ),
-
-//               //                 SizedBox(height: 10,),
-
-//               // SizedBox(
-//               //   height: 20,
-//               // ),
-//               SizedBox(
-//                 width: MediaQuery.of(context).size.width *
-//                     0.8, // 80% del ancho de la pantalla
-//                 child: (profileVet.maybeWhen(
-//                   data: (data) => !data.any((e) => e["patients"].contains(
-//                       uid)), // Verifica si el UID no está en la lista de pacientes
-//                   orElse: () =>
-//                       true, // Si no hay datos o hay un error, muestra el botón por defecto
-//                 ))
-//                     ? FilledButton(
-//                         style: FilledButton.styleFrom(
-//                           backgroundColor:
-//                               Colors.white, // Color de fondo del botón
-//                           padding: EdgeInsets.symmetric(horizontal: 20),
-//                           shape: RoundedRectangleBorder(
-//                             borderRadius: BorderRadius.circular(
-//                                 10), // Ajusta el radio de los bordes aquí
-//                           ), // Ajustar el relleno horizontal según sea necesario
-//                           // Puedes ajustar otras propiedades de estilo aquí según tus necesidades
-//                         ),
-//                         onPressed: () {
-//                           if (profileVet.value!.isEmpty) {
-//                             final snackbar = SnackBar(
-//                                 content:
-//                                     Text("Primero debes Completar Tu Perfil"));
-//                             ScaffoldMessenger.of(context)
-//                                 .showSnackBar(snackbar);
-//                           } else {
-//                             FirebaseFirestore.instance
-//                                 .collection("vets")
-//                                 .doc(FirebaseAuth.instance.currentUser!.uid)
-//                                 .update({
-//                               "patients": FieldValue.arrayUnion([uid])
-//                             });
-//                           }
-//                         },
-//                         child: const Text(
-//                           "Agregar Paciente",
-//                           style: TextStyle(color: Color(0xff3D9A51)),
-//                         ),
-//                       )
-//                     : SizedBox
-//                         .shrink(), // Si el UID está en la lista, oculta el botón
-//               ),
-//             ],
-//           ),
-//           bottom: PreferredSize(
-//             preferredSize: const Size.fromHeight(48.0), // Altura del TabBar
-//             child: Align(
-//               alignment: Alignment.centerLeft,
-//               child: TabBar(
-//                 tabs: const [
-//                   Tab(
-//                     child: Text(
-//                       "Vacunas",
-//                       style: TextStyle(fontSize: 17),
-//                     ),
-//                   ),
-//                   Tab(
-//                     child: Text(
-//                       "Antiparasitarios",
-//                       style: TextStyle(fontSize: 17),
-//                     ),
-//                   ),
-//                 ],
-//                 indicator: BoxDecoration(
-//                   color: Colors.white,
-//                   borderRadius: BorderRadius.circular(3),
-//                 ),
-//                 labelColor: Colors.black,
-//                 unselectedLabelColor: Colors.grey,
-//                 indicatorColor: Colors.white,
-//                 indicatorSize: TabBarIndicatorSize.tab,
-//                 indicatorWeight: 0.0,
-//                 isScrollable: false,
-//               ),
-//             ),
-//           ),
-//         ),
-//         body: intoVaccinefromVet
-//             ? VaccineintoViewFromVet(
-//                 key: key,
-//               )
-//             : TabBarView(children: [
-//                 StreamBuilder<List<Vaccine>>(
-//                   stream: getVaccineStream(
-//                       uid), // Reemplaza 'userId' con el ID de usuario correcto
-//                   builder: (context, snapshot) {
-//                     if (snapshot.connectionState == ConnectionState.waiting) {
-//                       return Center(child: CircularProgressIndicator());
-//                     } else if (snapshot.hasError) {
-//                       return Text("Error: ${snapshot.error}");
-//                     } else {
-//                       final vaccineStream =
-//                           AsyncValue.data(snapshot.data ?? []);
-//                       return VaccineView(vacinestream: vaccineStream, true);
-//                     }
-//                   },
-//                 ),
-
-//                 intoantiparasitesfromvet
-//                     ? AntiparasiteViewFromVet(
-//                         key: key,
-//                       )
-//                     : StreamBuilder<List<Antiparasites>>(
-//                         stream: getAntiparasites(
-//                             uid), // Reemplaza 'userId' con el ID de usuario correcto
-//                         builder: (context, snapshot) {
-//                           if (snapshot.connectionState ==
-//                               ConnectionState.waiting) {
-//                             return Center(child: CircularProgressIndicator());
-//                           } else if (snapshot.hasError) {
-//                             return Text("Error: ${snapshot.error}");
-//                           } else {
-//                             final antiparasiteStream =
-//                                 AsyncValue.data(snapshot.data ?? []);
-//                             return AntiparasitesView(
-//                                 antiparasites: antiparasiteStream, true);
-//                           }
-//                         },
-//                       ),
-//                 //crear un datasource para traerme los vaccine y antiparasites
-//                 // y pasarselos a el vacine view y intoantiparasites
-
-//                 // pressFalseorTrue
-//                 //     ? const IntoVaccine()
-//                 //     : VaccineView(
-//                 //         vacinestream: vacinestream,
-//                 //       ),
-//                 // pressAntiparasites
-//                 //     ? const IntoAntiparasites()
-//                 //     : AntiparasitesView(
-//                 //         antiparasites: antiparasites,
-//                 //       )
-//               ]),
-//       ),
-//     );
-//   }
-// }
 
 final uidUserProvider = StateProvider<String>((ref) {
   return "";
@@ -781,7 +416,7 @@ class AntiparasiteViewFromVet extends ConsumerWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 10),
+        const  SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -852,7 +487,7 @@ class AntiparasiteViewFromVet extends ConsumerWidget {
             child: RichText(
               text: TextSpan(
                 children: [
-                  TextSpan(
+                const  TextSpan(
                       text: "Ultima dosis: ",
                       style: TextStyle(
                           color: Colors.black,
@@ -887,41 +522,8 @@ class AntiparasiteViewFromVet extends ConsumerWidget {
             ),
           ),
           SizedBox(height: screenHeight * 0.2),
-          // const  Spacer(),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     context.push("/Addantiparasitic");
-          //     // ref.read(editantiparasitesProvider.notifier).update((state) => true);
-          //     // ref.read(infoeditantiparasitesProvider.notifier).update((state) => nn);
-          //   },
-          //   style: ElevatedButton.styleFrom(
-          //     padding: EdgeInsets.symmetric(
-          //         horizontal: screenWidth * 0.4, vertical: 20),
-          //     backgroundColor: Colors.white,
-          //     shape: RoundedRectangleBorder(
-          //       borderRadius: BorderRadius.circular(15),
-          //       side: const BorderSide(color: Colors.green),
-          //     ),
-          //   ),
-          //   child: const Text(
-          //     'Editar',
-          //     style: TextStyle(color: Colors.black),
-          //   ),
-          // ),
-          // TextButton(
-          //   onPressed: () {
-          //     // FirebaseFirestore.instance
-          //     //     .collection("users")
-          //     //     .doc(FirebaseAuth.instance.currentUser!.uid)
-          //     //     .collection("Antiparasites")
-          //     //     .doc(nn.id)
-          //     //     .delete()
-          //     //     .then((value) => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Antiparasitario borrado!'))))
-          //     //     .then((value) => ref.read(pressAntiparasitesIntoProvider.notifier).update((state) => false));
-          //   },
-          //   child: const Text("Eliminar", style: TextStyle(color: Colors.red)),
-          // ),
-          SizedBox(
+     
+        const  SizedBox(
             height: 100,
           )
         ],
@@ -947,9 +549,6 @@ class VaccineintoViewFromVet extends ConsumerWidget {
             children: [
               TextButton.icon(
                 onPressed: () {
-                  // ref
-                  //     .read(editvaccineProvider.notifier)
-                  //     .update((state) => false);
                   ref
                       .read(intoVaccinefromVetProvider.notifier)
                       .update((state) => false);
@@ -1088,7 +687,7 @@ class VaccineintoViewFromVet extends ConsumerWidget {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text("Etiqueta Vacuna"),
+                                title: const Text("Etiqueta Vacuna"),
                                 content: Image.network(
                                   loadingBuilder:
                                       (context, child, loadingProgress) {
@@ -1146,7 +745,7 @@ class VaccineintoViewFromVet extends ConsumerWidget {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: Text("Certificado"),
+                                    title: const  Text("Certificado"),
                                     content: Image.network(
                                       loadingBuilder:
                                           (context, child, loadingProgress) {
@@ -1268,7 +867,7 @@ class VaccineintoViewFromVet extends ConsumerWidget {
                   const Icon(Icons.help),
                   "" == ""
                       ? const Text("no-Image")
-                      : Container(
+                      :  Container(
                           width: screenWidth * 0.2,
                           height: screenWidth * 0.2,
                           child: Image.network(
@@ -1296,45 +895,7 @@ class VaccineintoViewFromVet extends ConsumerWidget {
           const SizedBox(
             height: 20,
           ),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     context.push("/addvaccine");
-          //     // ref.read(editvaccineProvider.notifier).update((state) => true);
-          //     // ref.read(infoeditvaccineProvider.notifier).update((state) => nn);
-          //   },
-          //   style: ElevatedButton.styleFrom(
-          //     padding: EdgeInsets.symmetric(
-          //         horizontal: screenWidth * 0.4, vertical: screenHeight * 0.02),
-          //     backgroundColor: Colors.white,
-          //     shape: RoundedRectangleBorder(
-          //       borderRadius: BorderRadius.circular(screenWidth * 0.05),
-          //       side: BorderSide(color: Colors.green),
-          //     ),
-          //   ),
-          //   child: const Text(
-          //     'Editar',
-          //     style: TextStyle(color: Colors.black),
-          //   ),
-          // ),
-          // TextButton(
-          //   onPressed: () {
-          //     // FirebaseFirestore.instance
-          //     //     .collection("users")
-          //     //     .doc(FirebaseAuth.instance.currentUser!.uid)
-          //     //     .collection("vaccine")
-          //     //     .doc(nn.id)
-          //     //     .delete()
-          //     //     .then((value) =>
-          //     //         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          //     //           content: Text('Vacuna borrada!'),
-          //     //         )))
-          //     //     .then((value) => ref
-          //     //         .read(pressVaccineIntoProvider.notifier)
-          //     //         .update((state) => false));
-          //   },
-          //   child: const Text("Eliminarrr", style: TextStyle(color: Colors.red)),
-          // ),
-          const SizedBox(
+       const SizedBox(
             height: 100,
           ),
         ],

@@ -1,11 +1,9 @@
-import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:migu/domain/entities/clinicalrecord.dart';
+
 import 'package:migu/presentation/home/vet/intopatientScreen.dart';
 import 'package:migu/presentation/providers/vets/vets_provider.dart';
 
@@ -27,7 +25,7 @@ class ClinicalRecordScreen extends ConsumerWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                       // Ajusta el valor de la esquina para hacerlo menos redondeado
-                      side: BorderSide(
+                      side:const BorderSide(
                           color: Colors.grey,
                           strokeAlign: 2), // Agrega un borde al botón
                     ),
@@ -35,21 +33,21 @@ class ClinicalRecordScreen extends ConsumerWidget {
                   onPressed: () {
                     context.push("/EditClinicalRecordScreen");
                   },
-                  child: Text(
+                  child: const Text(
                     "Editar ",
                     style: TextStyle(color: Color(0xff3D9A51)),
                   )),
             )
           ],
-          title: Text("Ficha clinica"),
+          title:const Text("Ficha clinica"),
         ),
         body: clinicalRecordStream.when(
           data: (data) {
             // print(data.isEmpty);
             if (data.isEmpty) {
-          return SingleChildScrollView(
+          return const SingleChildScrollView(
   child: Padding(
-    padding: const EdgeInsets.all(40.0),
+    padding:  EdgeInsets.all(40.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -127,57 +125,57 @@ class ClinicalRecordScreen extends ConsumerWidget {
                           //   "Actualizado el 10 Ene 2024",
                           //   style: TextStyle(fontSize: 15, color: Colors.grey),
                           // )),
-                          SizedBox(
+                         const SizedBox(
                             height: 20,
                           ),
-                          Text(
+                        const  Text(
                             "Nombre Mascota",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w600),
                           ),
                           Text(
                             "${record.name}",
-                            style: TextStyle(fontSize: 17),
+                            style:const TextStyle(fontSize: 17),
                           ),
-                          SizedBox(
+                         const SizedBox(
                             height: 10,
                           ),
-                          Text("Nacimiento",
+                         const Text("Nacimiento",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600)),
                           Text("${record.birthdate}"),
-                          SizedBox(
+                       const  SizedBox(
                             height: 10,
                           ),
-                          Text("Nutricion",
+                        const  Text("Nutricion",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600)),
                           Text("${record.nutrition}"),
-                          SizedBox(
+                       const   SizedBox(
                             height: 10,
                           ),
-                          Text("Peso",
+                       const Text("Peso",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600)),
                           Text("${record.weight}"),
-                          SizedBox(
+                        const  SizedBox(
                             height: 10,
                           ),
-                          Text("Conducta",
+                        const  Text("Conducta",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600)),
                           Text("${record.behavior}"),
-                          SizedBox(
+                        const  SizedBox(
                             height: 10,
                           ),
-                          Text("Tratamiento",
+                       const   Text("Tratamiento",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600)),
                           Text("${record.treatmen} "),
-                          SizedBox(
+                        const  SizedBox(
                             height: 10,
                           ),
-                          Text("Observaciones",
+                        const  Text("Observaciones",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600)),
                           Text("${record.observations}"),
@@ -190,10 +188,10 @@ class ClinicalRecordScreen extends ConsumerWidget {
             }
           },
           error: (error, stackTrace) {
-            return Text("error${error}");
+            return const Text("error");
           },
           loading: () {
-            return Text(
+            return const Text(
              ""
             );
           },
@@ -209,29 +207,22 @@ class ClinicalRecordTutorScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final uid = ref.watch(uidUserProvider);
     final clinicalRecordStream = ref.watch(getclinicalRecord(FirebaseAuth.instance.currentUser!.uid));
     return Scaffold(
         appBar: AppBar(
          
-          title: Text("Ficha clinica"),
+          title: const Text("Ficha clinica"),
         ),
         body: clinicalRecordStream.when(
           data: (data) {
             // print(data.isEmpty);
             if (data.isEmpty) {
-          return SingleChildScrollView(
-  child: Padding(
-    padding: const EdgeInsets.all(40.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Center(
-        //   child: Text(
-        //     "Actualizado el 10 Ene 2024",
-        //     style: TextStyle(fontSize: 15, color: Colors.grey),
-        //   ),
-        // ),
+          return const SingleChildScrollView(
+      child: Padding(
+          padding:  EdgeInsets.all(40.0),
+         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
         SizedBox(height: 20),
         Text(
           "Nombre Mascota",
@@ -295,15 +286,10 @@ class ClinicalRecordTutorScreen extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Center(
-                          //     child: Text(
-                          //   "Actualizado el 10 Ene 2024",
-                          //   style: TextStyle(fontSize: 15, color: Colors.grey),
-                          // )),
-                          SizedBox(
+                   const  SizedBox(
                             height: 20,
                           ),
-                          Text(
+                       const   Text(
                             "Nombre Mascota",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w600),
@@ -312,45 +298,45 @@ class ClinicalRecordTutorScreen extends ConsumerWidget {
                             "${record.name}",
                             style: TextStyle(fontSize: 17),
                           ),
-                          SizedBox(
+                        const  SizedBox(
                             height: 10,
                           ),
-                          Text("Nacimiento",
+                         const Text("Nacimiento",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600)),
                           Text("${record.birthdate}"),
-                          SizedBox(
+                         const SizedBox(
                             height: 10,
                           ),
-                          Text("Nutricion",
+                        const  Text("Nutricion",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600)),
                           Text("${record.nutrition}"),
-                          SizedBox(
+                       const   SizedBox(
                             height: 10,
                           ),
-                          Text("Peso",
+                        const  Text("Peso",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600)),
                           Text("${record.weight}"),
-                          SizedBox(
+                        const  SizedBox(
                             height: 10,
                           ),
-                          Text("Conducta",
+                        const  Text("Conducta",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600)),
                           Text("${record.behavior}"),
-                          SizedBox(
+                        const  SizedBox(
                             height: 10,
                           ),
-                          Text("Tratamiento",
+                        const  Text("Tratamiento",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600)),
                           Text("${record.treatmen} "),
-                          SizedBox(
+                       const   SizedBox(
                             height: 10,
                           ),
-                          Text("Observaciones",
+                        const  Text("Observaciones",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600)),
                           Text("${record.observations}"),
@@ -366,7 +352,7 @@ class ClinicalRecordTutorScreen extends ConsumerWidget {
             return Text("error${error}");
           },
           loading: () {
-            return Text(
+            return const Text(
              ""
             );
           },

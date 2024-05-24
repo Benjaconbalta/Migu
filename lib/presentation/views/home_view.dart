@@ -325,7 +325,7 @@ class AntiparasitesView extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                  Text(
-                  "Historial${FirebaseAuth.instance.currentUser!.uid} ",
+                  "Historial ",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                 ),
                 isvet
